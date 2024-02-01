@@ -1,7 +1,11 @@
 package fr.uge.revue;
 
-import fr.uge.revue.model.Test;
-import fr.uge.revue.repository.TestRepository;
+import fr.uge.revue.model.Review;
+import fr.uge.revue.model.Role;
+import fr.uge.revue.model.User;
+import fr.uge.revue.repository.ReviewRepository;
+import fr.uge.revue.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,13 +18,13 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner test(TestRepository repository) {
+    public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository) {
         return args -> {
-            repository.save(new Test());
-            System.out.println("repository.findAll() = " + repository.findAll());
-            System.out.println("repository.findById(0) = " + repository.findById(0));
-            System.out.println("repository.findById(1) = " + repository.findById(1));
-            System.out.println("repository.findById(2) = " + repository.findById(2));
+            var user = new User("User1", "user1@gmail.com", "user1password", Role.USER);
+            userRepository.save(user);
+
+            var review = new Review("Review1", "code", "test", user);
+            reviewRepository.save(review);
         };
     }
 }
