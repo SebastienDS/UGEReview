@@ -5,7 +5,6 @@ import fr.uge.revue.model.Role;
 import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
