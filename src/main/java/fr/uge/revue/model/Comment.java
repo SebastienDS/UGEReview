@@ -85,9 +85,6 @@ public class Comment {
                 ", content='" + content + '\'' +
                 ", date=" + date +
                 ", likes=" + likes +
-                ", author=" + author +
-                ", review=" + review +
-                ", responses=" + responses +
                 '}';
     }
 }

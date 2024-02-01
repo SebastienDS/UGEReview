@@ -3,6 +3,7 @@ package fr.uge.revue.model;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,14 @@ public class User {
     private Set<User> friends;
 
     public User() {
+    }
+
+    public User(String username, String email, String password, Role role) {
+        this.username = Objects.requireNonNull(username);
+        this.email = Objects.requireNonNull(email);
+        this.password = Objects.requireNonNull(password);
+        this.role = Objects.requireNonNull(role);
+        this.date_creation = new Date();
     }
 
     public long getId() {
@@ -110,9 +119,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", date_creation=" + date_creation +
-                ", reviews=" + reviews +
-                ", comments=" + comments +
-                ", responses=" + responses +
                 '}';
     }
 }

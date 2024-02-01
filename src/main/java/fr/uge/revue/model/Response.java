@@ -75,8 +75,6 @@ public class Response {
                 ", content='" + content + '\'' +
                 ", date=" + date +
                 ", likes=" + likes +
-                ", author=" + author +
-                ", comment=" + comment +
                 '}';
     }
 }

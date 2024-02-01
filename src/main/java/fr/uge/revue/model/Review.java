@@ -3,6 +3,7 @@ package fr.uge.revue.model;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Review {
@@ -20,6 +21,14 @@ public class Review {
     private List<Comment> comments;
 
     public Review() {
+    }
+
+    public Review(String title, String code, String test, User author) {
+        this.title = Objects.requireNonNull(title);
+        this.code = Objects.requireNonNull(code);
+        this.test = Objects.requireNonNull(test);
+        this.author = Objects.requireNonNull(author);
+        this.date = new Date();
     }
 
     public long getId() {
@@ -95,8 +104,6 @@ public class Review {
                 ", code='" + code + '\'' +
                 ", test='" + test + '\'' +
                 ", likes=" + likes +
-                ", author=" + author +
-                ", comments=" + comments +
                 '}';
     }
 }
