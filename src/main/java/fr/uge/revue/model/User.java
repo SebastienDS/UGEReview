@@ -3,6 +3,7 @@ package fr.uge.revue.model;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -22,6 +23,8 @@ public class User {
     private List<Comment> comments;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private List<Response> responses;
+    @ManyToMany
+    private Set<User> friends;
 
     public User() {
     }
