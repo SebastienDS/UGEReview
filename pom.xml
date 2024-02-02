@@ -73,15 +73,6 @@
         </dependency>
     </dependencies>
     <build>
-        <resources>
-            <resource>
-                <directory>frontend/dist</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -96,7 +87,6 @@
                     <nodeVersion>v20.11.0</nodeVersion>
                     <npmVersion>10.4.0</npmVersion>
 
-                    <workingDirectory>frontend</workingDirectory>
                     <installDirectory>target</installDirectory>
                 </configuration>
 

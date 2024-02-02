@@ -1,10 +1,10 @@
 {
-	"name": "frontend",
+	"name": "uge-revue",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview"
+		"dev": "vite --config src/main/js/vite.config.js dev",
+		"build": "vite --config src/main/js/vite.config.js build",
+		"watch": "vite --config src/main/js/vite.config.js build --watch"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
