@@ -20,5 +20,4 @@ public class ReviewController {
         model.addAttribute("reviews", reviews);
         return "reviews";
     }
-
 }
