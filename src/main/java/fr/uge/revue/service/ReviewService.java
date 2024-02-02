@@ -2,6 +2,7 @@ package fr.uge.revue.service;
 
 import fr.uge.revue.model.Review;
 import fr.uge.revue.repository.ReviewRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public class ReviewService {
     public List<Review> allReviews() {
         return reviewRepository.findAll();
     }
+
+    public List<Review> searchReview(String search) { return reviewRepository.searchReview(search); }
+
 }
