@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class Application {
@@ -17,9 +18,9 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository) {
+    public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository, BCryptPasswordEncoder passwordEncoder) {
         return args -> {
-            var user = new User("User1", "user1@gmail.com", "user1password", Role.USER);
+            var user = new User("User1", "user1@gmail.com", passwordEncoder.encode("user1password"), Role.USER);
             userRepository.save(user);
 
             var review = new Review("Review1", "code", "test", user);
@@ -30,6 +31,9 @@ public class Application {
             reviewRepository.save(review3);
             var review4 = new Review("Quentin le brigand", "code", "test", user);
             reviewRepository.save(review4);
+
+            userRepository.save(new User("test", "test@gmail.com", passwordEncoder.encode("test"), Role.USER));
+            userRepository.save(new User("admin", "admin@gmail.com", passwordEncoder.encode("admin"), Role.ADMIN));
         };
     }
 }
