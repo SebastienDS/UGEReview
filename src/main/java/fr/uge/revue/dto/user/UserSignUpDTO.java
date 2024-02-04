@@ -1,12 +1,12 @@
 package fr.uge.revue.dto.user;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 public record UserSignUpDTO(
         String username,
-        @Email
+        @Email(regexp = "^.+@.+$")
         String email,
-        @Min(4)
+        @Size(min = 4)
         String password) {
 }

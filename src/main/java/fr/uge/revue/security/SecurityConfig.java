@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authenticationProvider(daoAuthenticationProvider())
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/registration/**").permitAll()
+                    .antMatchers("/signup").permitAll()
                     .anyRequest().authenticated()
                 .and().formLogin();
         return http.build();
