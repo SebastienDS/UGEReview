@@ -3,6 +3,7 @@ package fr.uge.revue.controller;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
 import fr.uge.revue.service.ReviewService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,10 @@ public class ReviewController {
     }
 
     @GetMapping("/")
-    public String allReviews(Model model) {
+    public String allReviews(Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("connected", true);
+        }
         var reviews = reviewService.allReviews().stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
         return "reviews";

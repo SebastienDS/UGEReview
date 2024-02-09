@@ -6,6 +6,10 @@
 </head>
 <body>
 <h1>UGERevue</h1>
+
+<p th:text="${connected} ? 'Connected' : 'Not Connected'"></p>
+
+
 <form th:action="@{/}" method="post">
     <div>
         <label for="h">Search:</label>
