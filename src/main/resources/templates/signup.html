@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UGERevue</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>UGERevue</h1>
+
+<form th:action="@{/signup}" method="post">
+    <div>
+        <label for="username">Username :</label>
+        <input id="username" type="text" name="username">
+    </div>
+    <div>
+        <label for="email">Email :</label>
+        <input id="email" type="email" name="email">
+    </div>
+    <div>
+        <label for="password">Password :</label>
+        <input id="password" type="password" name="password">
+    </div>
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
+
+<div th:if="${registered != null}">
+    <p th:text="${registered}"></p>
+</div>
+
+</body>
+</html>
