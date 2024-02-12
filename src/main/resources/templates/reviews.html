@@ -3,25 +3,29 @@
 <head>
     <title>UGERevue</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
-<h1>UGERevue</h1>
 
-<p th:text="${connected} ? 'Connected' : 'Not Connected'"></p>
+<div class="container">
+    <h1>UGERevue</h1>
+
+    <p th:text="${connected} ? 'Connected' : 'Not Connected'"></p>
+
+    <form th:action="@{/}" method="post">
+        <div class="input-group mb-3">
+            <input type="text" name="search" class="form-control" placeholder="Search">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button">Submit</button>
+            </div>
+        </div>
+    </form>
 
 
-<form th:action="@{/}" method="post">
-    <div>
-        <label for="h">Search:</label>
-        <input id="h" type="text" name="search">
-    </div>
-
-    <div><button type="submit">Submit</button></div>
-</form>
-
-<ul>
-    <li th:each="review : ${reviews}" th:text="${review}"/>
-</ul>
+    <ul class="list-group">
+        <li th:each="review : ${reviews}" th:text="${review}" class="list-group-item"/>
+    </ul>
+</div>
 
 </body>
 </html>
