@@ -22,11 +22,16 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
+        return userRepository.findByUsername(username)
+                .or(() -> userRepository.findByEmail(username))
+                .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
     }
 
     public boolean register(UserSignUpDTO user) {
-        if (userRepository.findByUsername(user.username()).isPresent()) {
+        var userAlreadyExist = userRepository.findByUsername(user.username())
+                .or(() -> userRepository.findByEmail(user.email()))
+                .isPresent();
+        if (userAlreadyExist) {
             return false;
         }
         var encodedPassword = passwordEncoder.encode(user.password());
