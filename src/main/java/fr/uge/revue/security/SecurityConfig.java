@@ -33,11 +33,7 @@ public class SecurityConfig {
                 .authenticationProvider(daoAuthenticationProvider())
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/signup").permitAll()
-                    .antMatchers("/").permitAll()
-                    .antMatchers("/reviews/{reviewId}").permitAll()
-                    .antMatchers("/users/{userId}").permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 .and().formLogin();
         return http.build();
     }
