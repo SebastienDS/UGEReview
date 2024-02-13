@@ -1,4 +1,4 @@
-package fr.uge.revue.security;
+package fr.uge.revue.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

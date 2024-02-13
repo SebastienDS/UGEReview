@@ -19,16 +19,13 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        Objects.requireNonNull(userRepository);
-        Objects.requireNonNull(passwordEncoder);
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.userRepository = Objects.requireNonNull(userRepository);
+        this.passwordEncoder = Objects.requireNonNull(passwordEncoder);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Objects.requireNonNull(username);
-        return userRepository.findByUsername(username)
+        return userRepository.findByUsername(Objects.requireNonNull(username))
                 .or(() -> userRepository.findByEmail(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
     }
@@ -49,5 +46,16 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> getUserById(long userId) {
         return userRepository.findById(userId);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(Objects.requireNonNull(email));
+    }
+
+    public void updateUserPassword(User user, String password) {
+        Objects.requireNonNull(user);
+        Objects.requireNonNull(password);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 }

@@ -1,6 +1,5 @@
 package fr.uge.revue.dto.review;
 
-import fr.uge.revue.dto.user.UserDTO;
 import fr.uge.revue.model.Review;
 
 import java.util.Date;
