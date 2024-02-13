@@ -44,6 +44,7 @@ public class Review {
     }
 
     public void setTitle(String title) {
+        Objects.requireNonNull(title);
         this.title = title;
     }
 
@@ -52,6 +53,7 @@ public class Review {
     }
 
     public void setDate(Date date) {
+        Objects.requireNonNull(date);
         this.date = date;
     }
 
@@ -60,6 +62,7 @@ public class Review {
     }
 
     public void setCode(String code) {
+        Objects.requireNonNull(code);
         this.code = code;
     }
 
@@ -68,6 +71,7 @@ public class Review {
     }
 
     public void setTest(String test) {
+        Objects.requireNonNull(test);
         this.test = test;
     }
 
@@ -84,6 +88,7 @@ public class Review {
     }
 
     public void setAuthor(User author) {
+        Objects.requireNonNull(author);
         this.author = author;
     }
 
@@ -92,6 +97,7 @@ public class Review {
     }
 
     public void setComments(List<Comment> comments) {
+        Objects.requireNonNull(comments);
         this.comments = comments;
     }
 

@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Objects;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -18,12 +20,15 @@ public class SecurityConfig {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public SecurityConfig(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+        Objects.requireNonNull(userService);
+        Objects.requireNonNull(passwordEncoder);
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        Objects.requireNonNull(http);
         http
                 .authenticationProvider(daoAuthenticationProvider())
                 .csrf().disable()
@@ -39,6 +44,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        Objects.requireNonNull(authenticationConfiguration);
         return authenticationConfiguration.getAuthenticationManager();
     }
 

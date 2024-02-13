@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -18,18 +19,22 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        Objects.requireNonNull(userRepository);
+        Objects.requireNonNull(passwordEncoder);
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Objects.requireNonNull(username);
         return userRepository.findByUsername(username)
                 .or(() -> userRepository.findByEmail(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
     }
 
     public boolean register(UserSignUpDTO user) {
+        Objects.requireNonNull(user);
         var userAlreadyExist = userRepository.findByUsername(user.username())
                 .or(() -> userRepository.findByEmail(user.email()))
                 .isPresent();

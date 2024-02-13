@@ -53,6 +53,7 @@ public class User implements UserDetails {
     }
 
     public void setUsername(String username) {
+        Objects.requireNonNull(username);
         this.username = username;
     }
 
@@ -61,6 +62,7 @@ public class User implements UserDetails {
     }
 
     public void setEmail(String email) {
+        Objects.requireNonNull(email);
         this.email = email;
     }
 
@@ -69,6 +71,7 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
+        Objects.requireNonNull(password);
         this.password = password;
     }
 
@@ -77,6 +80,7 @@ public class User implements UserDetails {
     }
 
     public void setRole(Role role) {
+        Objects.requireNonNull(role);
         this.role = role;
     }
 
@@ -85,6 +89,7 @@ public class User implements UserDetails {
     }
 
     public void setDate_creation(Date date_creation) {
+        Objects.requireNonNull(date_creation);
         this.date_creation = date_creation;
     }
 
@@ -93,6 +98,7 @@ public class User implements UserDetails {
     }
 
     public void setReviews(List<Review> reviews) {
+        Objects.requireNonNull(reviews);
         this.reviews = reviews;
     }
 
@@ -101,6 +107,7 @@ public class User implements UserDetails {
     }
 
     public void setComments(List<Comment> comments) {
+        Objects.requireNonNull(comments);
         this.comments = comments;
     }
 
@@ -109,6 +116,7 @@ public class User implements UserDetails {
     }
 
     public void setResponses(List<Response> responses) {
+        Objects.requireNonNull(responses);
         this.responses = responses;
     }
 
