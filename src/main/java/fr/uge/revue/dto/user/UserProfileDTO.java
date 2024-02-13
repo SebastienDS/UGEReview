@@ -6,6 +6,6 @@ import java.util.Date;
 
 public record UserProfileDTO(String username, Date dateCreation) {
     public static UserProfileDTO from(User user){
-        return new UserProfileDTO(user.getUsername(), user.getDate_creation());
+        return new UserProfileDTO(user.getUsername(), user.getCreationDate());
     }
 }

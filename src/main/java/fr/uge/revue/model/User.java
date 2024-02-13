@@ -18,7 +18,7 @@ public class User implements UserDetails {
     private String password;
     @Enumerated
     private Role role;
-    private Date date_creation;
+    private Date creationDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private List<Review> reviews;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
@@ -36,7 +36,7 @@ public class User implements UserDetails {
         this.email = Objects.requireNonNull(email);
         this.password = Objects.requireNonNull(password);
         this.role = Objects.requireNonNull(role);
-        this.date_creation = new Date();
+        this.creationDate = new Date();
     }
 
     public long getId() {
@@ -53,7 +53,6 @@ public class User implements UserDetails {
     }
 
     public void setUsername(String username) {
-        Objects.requireNonNull(username);
         this.username = username;
     }
 
@@ -62,7 +61,6 @@ public class User implements UserDetails {
     }
 
     public void setEmail(String email) {
-        Objects.requireNonNull(email);
         this.email = email;
     }
 
@@ -71,7 +69,6 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        Objects.requireNonNull(password);
         this.password = password;
     }
 
@@ -80,17 +77,15 @@ public class User implements UserDetails {
     }
 
     public void setRole(Role role) {
-        Objects.requireNonNull(role);
         this.role = role;
     }
 
-    public Date getDate_creation() {
-        return date_creation;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setDate_creation(Date date_creation) {
-        Objects.requireNonNull(date_creation);
-        this.date_creation = date_creation;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public List<Review> getReviews() {
@@ -98,7 +93,6 @@ public class User implements UserDetails {
     }
 
     public void setReviews(List<Review> reviews) {
-        Objects.requireNonNull(reviews);
         this.reviews = reviews;
     }
 
@@ -107,7 +101,6 @@ public class User implements UserDetails {
     }
 
     public void setComments(List<Comment> comments) {
-        Objects.requireNonNull(comments);
         this.comments = comments;
     }
 
@@ -116,7 +109,6 @@ public class User implements UserDetails {
     }
 
     public void setResponses(List<Response> responses) {
-        Objects.requireNonNull(responses);
         this.responses = responses;
     }
 
@@ -128,7 +120,7 @@ public class User implements UserDetails {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
-                ", date_creation=" + date_creation +
+                ", creationDate=" + creationDate +
                 '}';
     }
 
