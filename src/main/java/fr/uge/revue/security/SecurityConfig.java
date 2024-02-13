@@ -30,6 +30,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                     .antMatchers("/signup").permitAll()
                     .antMatchers("/").permitAll()
+                    .antMatchers("/reviews/{reviewId}").permitAll()
+                    .antMatchers("/users/{userId}").permitAll()
                     .anyRequest().authenticated()
                 .and().formLogin();
         return http.build();
