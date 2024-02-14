@@ -1,9 +1,23 @@
 <!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>UGERevue</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
-<h1>USER FOUND</h1>
+
+<div class="container">
+    <h1>USER FOUND</h1>
+
+    <div th:if="${authenticated != null && removeFollowBtn == null}">
+        <form th:action="@{${followUrl}}" method="post" class="mb-5">
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-primary" th:text="${follow != null && follow ? 'Follow' : 'Unfollow'}"/>
+            </div>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

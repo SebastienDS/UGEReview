@@ -26,7 +26,7 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private List<Response> responses;
     @ManyToMany
-    private Set<User> friends;
+    private Set<User> followers;
     @ManyToMany
     private Set<Comment> commentsLikes;
     @ManyToMany
@@ -65,7 +65,7 @@ public class User implements UserDetails {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = Objects.requireNonNull(username);
     }
 
     public String getEmail() {
@@ -73,7 +73,7 @@ public class User implements UserDetails {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = Objects.requireNonNull(email);
     }
 
     public String getPassword() {
@@ -81,7 +81,7 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = Objects.requireNonNull(password);
     }
 
     public Role getRole() {
@@ -89,7 +89,7 @@ public class User implements UserDetails {
     }
 
     public void setRole(Role role) {
-        this.role = role;
+        this.role = Objects.requireNonNull(role);
     }
 
     public Date getCreationDate() {
@@ -97,7 +97,7 @@ public class User implements UserDetails {
     }
 
     public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+        this.creationDate = Objects.requireNonNull(creationDate);
     }
 
     public List<Review> getReviews() {
@@ -105,7 +105,7 @@ public class User implements UserDetails {
     }
 
     public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+        this.reviews = Objects.requireNonNull(reviews);
     }
 
     public List<Comment> getComments() {
@@ -113,7 +113,7 @@ public class User implements UserDetails {
     }
 
     public void setComments(List<Comment> comments) {
-        this.comments = comments;
+        this.comments = Objects.requireNonNull(comments);
     }
 
     public List<Response> getResponses() {
@@ -121,7 +121,7 @@ public class User implements UserDetails {
     }
 
     public void setResponses(List<Response> responses) {
-        this.responses = responses;
+        this.responses = Objects.requireNonNull(responses);
     }
 
     public Set<Comment> getCommentsLikes() {
@@ -129,7 +129,7 @@ public class User implements UserDetails {
     }
 
     public void setCommentsLikes(Set<Comment> commentsLikes) {
-        this.commentsLikes = commentsLikes;
+        this.commentsLikes = Objects.requireNonNull(commentsLikes);
     }
 
     public Set<Comment> getCommentsDislikes() {
@@ -137,7 +137,7 @@ public class User implements UserDetails {
     }
 
     public void setCommentsDislikes(Set<Comment> commentsDislikes) {
-        this.commentsDislikes = commentsDislikes;
+        this.commentsDislikes = Objects.requireNonNull(commentsDislikes);
     }
 
     public Set<Response> getResponsesLikes() {
@@ -145,7 +145,7 @@ public class User implements UserDetails {
     }
 
     public void setResponsesLikes(Set<Response> responsesLikes) {
-        this.responsesLikes = responsesLikes;
+        this.responsesLikes = Objects.requireNonNull(responsesLikes);
     }
 
     public Set<Response> getResponsesDislikes() {
@@ -153,7 +153,7 @@ public class User implements UserDetails {
     }
 
     public void setResponsesDislikes(Set<Response> responsesDislikes) {
-        this.responsesDislikes = responsesDislikes;
+        this.responsesDislikes = Objects.requireNonNull(responsesDislikes);
     }
 
     public Set<Review> getReviewsLikes() {
@@ -161,7 +161,7 @@ public class User implements UserDetails {
     }
 
     public void setReviewsLikes(Set<Review> reviewsLikes) {
-        this.reviewsLikes = reviewsLikes;
+        this.reviewsLikes = Objects.requireNonNull(reviewsLikes);
     }
 
     public Set<Review> getReviewsDislikes() {
@@ -169,7 +169,15 @@ public class User implements UserDetails {
     }
 
     public void setReviewsDislikes(Set<Review> reviewsDislikes) {
-        this.reviewsDislikes = reviewsDislikes;
+        this.reviewsDislikes = Objects.requireNonNull(reviewsDislikes);
+    }
+
+    public Set<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<User> followers) {
+        this.followers = Objects.requireNonNull(followers);
     }
 
     @Override
@@ -208,5 +216,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof User u && u.id == id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

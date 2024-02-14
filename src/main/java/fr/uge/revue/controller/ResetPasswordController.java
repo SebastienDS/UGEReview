@@ -73,7 +73,7 @@ public class ResetPasswordController {
     }
 
     @PostMapping("/resetPassword/{token}")
-    public String resetPassword(Model model, @PathVariable("token") String token,
+    public String resetPassword(Model model, @PathVariable String token,
                                 @Valid @ModelAttribute ResetPasswordDTO resetPasswordDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("passwordError", "Le mot de passe est invalide");

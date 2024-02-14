@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .authenticationProvider(daoAuthenticationProvider())
                 .csrf().disable()
                 .authorizeRequests()
+                    .antMatchers("/users/addFriend/{userId}").authenticated()
+                    .antMatchers("/reviews/{reviewID}/like").authenticated()
                     .anyRequest().permitAll()
                 .and().formLogin()
                     .loginPage("/login");

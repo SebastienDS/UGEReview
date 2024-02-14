@@ -13,8 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-
 import java.util.Objects;
 import java.util.Optional;
 
@@ -149,4 +147,32 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    public Optional<User> findByIdWithFollowers(long userId) {
+        return userRepository.findByIdWithFollowers(userId);
+    }
+
+    public boolean follow(long userId, long userFollowedId) {
+        var userFound = userRepository.findByIdWithFollowers(userId);
+        var userFollowedFound = getUserById(userFollowedId);
+        if (userFound.isEmpty() || userFollowedFound.isEmpty()) {
+            return false;
+        }
+        var user = userFound.get();
+        user.getFollowers().add(userFollowedFound.get());
+        userRepository.save(user);
+        return true;
+    }
+
+
+    public boolean unfollow(long userId, long userFollowedId) {
+        var userFound = userRepository.findByIdWithFollowers(userId);
+        var userFollowedFound = getUserById(userFollowedId);
+        if (userFound.isEmpty() || userFollowedFound.isEmpty()) {
+            return false;
+        }
+        var user = userFound.get();
+        user.getFollowers().remove(userFollowedFound.get());
+        userRepository.save(user);
+        return true;
+    }
 }

@@ -82,4 +82,14 @@ public final class Response implements Likeable {
                 ", likes=" + likes +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Response r && r.id == id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

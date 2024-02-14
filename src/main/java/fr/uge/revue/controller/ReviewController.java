@@ -27,7 +27,7 @@ public class ReviewController {
     @GetMapping("/")
     public String allReviews(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            model.addAttribute("connected", true);
+            model.addAttribute("authenticated", true);
         }
         var reviews = reviewService.allReviews().stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
@@ -42,7 +42,7 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{reviewID}")
-    public String oneReviews(@PathVariable("reviewID")long reviewID, Model model, Authentication authentication) {
+    public String oneReviews(@PathVariable long reviewID, Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             model.addAttribute("connected", true);
         }
@@ -57,7 +57,7 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews/{reviewID}/like")
-    public RedirectView toggleReviewLikeButton(@PathVariable("reviewID")long reviewID, Model model, Authentication authentication) {
+    public RedirectView toggleReviewLikeButton(@PathVariable long reviewID, Model model, Authentication authentication) {
         var review = reviewService.getReview(reviewID);
         var userId = ((User) authentication.getPrincipal()).getId();
         review.ifPresent(value -> {

@@ -93,4 +93,14 @@ public final class Comment implements Likeable {
                 ", likes=" + likes +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Comment c && c.id == id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
