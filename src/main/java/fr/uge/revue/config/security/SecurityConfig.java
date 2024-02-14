@@ -37,6 +37,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                     .antMatchers("/users/addFriend/{userId}").authenticated()
                     .antMatchers("/reviews/{reviewID}/like").authenticated()
+                    .antMatchers("/reviews/{reviewID}/dislike").authenticated()
+                    .antMatchers("/createReview").authenticated()
                     .anyRequest().permitAll()
                 .and().formLogin()
                     .loginPage("/login");

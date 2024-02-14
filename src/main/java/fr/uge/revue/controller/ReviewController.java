@@ -1,5 +1,6 @@
 package fr.uge.revue.controller;
 
+import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
 import fr.uge.revue.model.User;
@@ -74,6 +75,18 @@ public class ReviewController {
             userService.toggleDislikeReview(userId, value);
         });
         return new RedirectView("/reviews/" + reviewID);
+    }
+
+    @GetMapping("/createReview")
+    public String getCreateReviewForm() {
+        return "/createReview";
+    }
+
+    @PostMapping("/createReview")
+    public RedirectView createReview(Model model, Authentication authentication, @ModelAttribute CreateReviewDTO createReviewDTO) {
+        var user = (User) authentication.getPrincipal();
+        var review = userService.createReview(createReviewDTO, user);
+        return new RedirectView("/reviews/" + review.getId());
     }
 
 }

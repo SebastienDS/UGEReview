@@ -23,13 +23,13 @@ public class Application {
             var user = new User("User1", "user1@gmail.com", passwordEncoder.encode("user1password"), Role.USER);
             userRepository.save(user);
 
-            var review = new Review("Review1", "code", "test", user);
+            var review = new Review("Review1", "commentary", "code", "test", user);
             reviewRepository.save(review);
-            var review2 = new Review("Review2", "code", "test", user);
+            var review2 = new Review("Review2", "commentary","code", "test", user);
             reviewRepository.save(review2);
-            var review3 = new Review("Rom le bg mysterieux", "code", "test", user);
+            var review3 = new Review("Rom le bg mysterieux", "commentary","code", "test", user);
             reviewRepository.save(review3);
-            var review4 = new Review("Quentin le brigand", "code", "test", user);
+            var review4 = new Review("Quentin le brigand", "commentary","code", "test", user);
             reviewRepository.save(review4);
 
             userRepository.save(new User("test", "test@gmail.com", passwordEncoder.encode("test"), Role.USER));

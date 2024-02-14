@@ -12,6 +12,7 @@ public final class Review implements Likeable {
     private long id;
     private String title;
     private Date date;
+    private String commentary;
     private String code;
     private String test;
     private int likes;
@@ -23,8 +24,10 @@ public final class Review implements Likeable {
     public Review() {
     }
 
-    public Review(String title, String code, String test, User author) {
+
+    public Review(String title, String commentary, String code, String test, User author) {
         this.title = Objects.requireNonNull(title);
+        this.commentary = Objects.requireNonNull(commentary);
         this.code = Objects.requireNonNull(code);
         this.test = Objects.requireNonNull(test);
         this.author = Objects.requireNonNull(author);
@@ -55,6 +58,14 @@ public final class Review implements Likeable {
     public void setDate(Date date) {
         Objects.requireNonNull(date);
         this.date = date;
+    }
+
+    public String getCommentary() {
+        return commentary;
+    }
+
+    public void setCommentary(String commentary) {
+        this.commentary = commentary;
     }
 
     public String getCode() {

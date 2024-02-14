@@ -1,5 +1,6 @@
 package fr.uge.revue.service;
 
+import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.CommentRepository;
@@ -200,5 +201,11 @@ public class UserService implements UserDetailsService {
         userRepository.save(user.get());
         reviewRepository.save(review);
         return true;
+    }
+
+    public Review createReview(CreateReviewDTO createReviewDTO, User user) {
+        var review = new Review(createReviewDTO.title(), createReviewDTO.commentary(), createReviewDTO.code(), createReviewDTO.test(), user);
+        reviewRepository.save(review);
+        return review;
     }
 }
