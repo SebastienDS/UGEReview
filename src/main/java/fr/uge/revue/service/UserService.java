@@ -175,4 +175,30 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         return true;
     }
+
+    @Transactional
+    public boolean toggleDislikeReview(long userId, Review review) {
+        var user = userRepository.findByIdWithReviewLikes(userId);
+        if (user.isEmpty()) {
+            return false;
+        }
+        var likes = user.get().getReviewsLikes();
+        var dislikes = user.get().getReviewsDislikes();
+        var likeIsRemoved = likes.remove(review);
+        var dislikeIsRemoved = dislikes.remove(review);
+        if (likeIsRemoved) {
+            dislikes.add(review);
+            review.setLikes(review.getLikes() - 2); //remove like +  dislike
+        }
+        else if (dislikeIsRemoved) {
+            review.setLikes(review.getLikes() + 1);
+        }
+        else {
+            dislikes.add(review);
+            review.setLikes(review.getLikes() - 1);
+        }
+        userRepository.save(user.get());
+        reviewRepository.save(review);
+        return true;
+    }
 }

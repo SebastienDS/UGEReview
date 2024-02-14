@@ -44,7 +44,7 @@ public class ReviewController {
     @GetMapping("/reviews/{reviewID}")
     public String oneReviews(@PathVariable long reviewID, Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            model.addAttribute("connected", true);
+            model.addAttribute("authenticated", true);
         }
         var review = reviewService.getReview(reviewID);
         if(review.isEmpty()){
@@ -62,6 +62,16 @@ public class ReviewController {
         var userId = ((User) authentication.getPrincipal()).getId();
         review.ifPresent(value -> {
             userService.toggleLikeReview(userId, value);
+        });
+        return new RedirectView("/reviews/" + reviewID);
+    }
+
+    @PostMapping("/reviews/{reviewID}/dislike")
+    public RedirectView toggleReviewDisLikeButton(@PathVariable("reviewID")long reviewID, Model model, Authentication authentication) {
+        var review = reviewService.getReview(reviewID);
+        var userId = ((User) authentication.getPrincipal()).getId();
+        review.ifPresent(value -> {
+            userService.toggleDislikeReview(userId, value);
         });
         return new RedirectView("/reviews/" + reviewID);
     }
