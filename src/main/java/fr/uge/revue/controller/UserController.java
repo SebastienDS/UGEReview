@@ -21,8 +21,6 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String userProfile(@PathVariable("userId")long userId, Model model, Authentication authentication) {
-        Objects.requireNonNull(model);
-        Objects.requireNonNull(authentication);
         var user = userService.getUserById(userId);
         if(user.isEmpty()){
             return "notFound";
