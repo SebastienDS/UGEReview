@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Comment {
+public final class Comment implements Likeable {
     @Id
     @GeneratedValue
     private long id;

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Review {
+public final class Review implements Likeable {
     @Id
     @GeneratedValue
     private long id;
@@ -111,5 +111,15 @@ public class Review {
                 ", test='" + test + '\'' +
                 ", likes=" + likes +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Review r && r.id == id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

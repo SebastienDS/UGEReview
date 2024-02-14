@@ -27,6 +27,18 @@ public class User implements UserDetails {
     private List<Response> responses;
     @ManyToMany
     private Set<User> friends;
+    @ManyToMany
+    private Set<Comment> commentsLikes;
+    @ManyToMany
+    private Set<Comment> commentsDislikes;
+    @ManyToMany
+    private Set<Response> responsesLikes;
+    @ManyToMany
+    private Set<Response> responsesDislikes;
+    @ManyToMany
+    private Set<Review> reviewsLikes;
+    @ManyToMany
+    private Set<Review> reviewsDislikes;
 
     public User() {
     }
@@ -110,6 +122,54 @@ public class User implements UserDetails {
 
     public void setResponses(List<Response> responses) {
         this.responses = responses;
+    }
+
+    public Set<Comment> getCommentsLikes() {
+        return commentsLikes;
+    }
+
+    public void setCommentsLikes(Set<Comment> commentsLikes) {
+        this.commentsLikes = commentsLikes;
+    }
+
+    public Set<Comment> getCommentsDislikes() {
+        return commentsDislikes;
+    }
+
+    public void setCommentsDislikes(Set<Comment> commentsDislikes) {
+        this.commentsDislikes = commentsDislikes;
+    }
+
+    public Set<Response> getResponsesLikes() {
+        return responsesLikes;
+    }
+
+    public void setResponsesLikes(Set<Response> responsesLikes) {
+        this.responsesLikes = responsesLikes;
+    }
+
+    public Set<Response> getResponsesDislikes() {
+        return responsesDislikes;
+    }
+
+    public void setResponsesDislikes(Set<Response> responsesDislikes) {
+        this.responsesDislikes = responsesDislikes;
+    }
+
+    public Set<Review> getReviewsLikes() {
+        return reviewsLikes;
+    }
+
+    public void setReviewsLikes(Set<Review> reviewsLikes) {
+        this.reviewsLikes = reviewsLikes;
+    }
+
+    public Set<Review> getReviewsDislikes() {
+        return reviewsDislikes;
+    }
+
+    public void setReviewsDislikes(Set<Review> reviewsDislikes) {
+        this.reviewsDislikes = reviewsDislikes;
     }
 
     @Override

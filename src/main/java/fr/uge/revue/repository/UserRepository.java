@@ -1,6 +1,7 @@
 package fr.uge.revue.repository;
 
 import fr.uge.revue.model.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
@@ -8,4 +9,10 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.reviewsLikes LEFT JOIN FETCH u.reviewsDislikes WHERE u.id = :id")
+    Optional<User> findByIdWithReviewLikes(long id);
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.commentsLikes LEFT JOIN FETCH u.commentsDislikes WHERE u.id = :id")
+    Optional<User> findByIdWithCommentLikes(long id);
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.responsesLikes LEFT JOIN FETCH u.responsesDislikes WHERE u.id = :id")
+    Optional<User> findByIdWithResponseLikes(long id);
 }

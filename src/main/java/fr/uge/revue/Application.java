@@ -34,6 +34,7 @@ public class Application {
 
             userRepository.save(new User("test", "test@gmail.com", passwordEncoder.encode("test"), Role.USER));
             userRepository.save(new User("admin", "admin@gmail.com", passwordEncoder.encode("admin"), Role.ADMIN));
+            reviewRepository.findAll().forEach(System.out::println);
         };
     }
 }

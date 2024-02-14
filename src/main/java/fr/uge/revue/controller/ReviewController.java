@@ -2,7 +2,9 @@ package fr.uge.revue.controller;
 
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
+import fr.uge.revue.model.User;
 import fr.uge.revue.service.ReviewService;
+import fr.uge.revue.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class ReviewController {
     private final ReviewService reviewService;
+    private final UserService userService;
 
-    public ReviewController(ReviewService reviewService) {
+    public ReviewController(ReviewService reviewService, UserService userService) {
         this.reviewService = reviewService;
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -37,12 +42,28 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{reviewID}")
-    public String oneReviews(@PathVariable("reviewID")long reviewID, Model model) {
+    public String oneReviews(@PathVariable("reviewID")long reviewID, Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("connected", true);
+        }
         var review = reviewService.getReview(reviewID);
         if(review.isEmpty()){
             return "notFound";
         }
         model.addAttribute("reviews", ReviewOneReviewDTO.from(review.get()));
+        model.addAttribute("reviewId", reviewID);
+        model.addAttribute("likesNumber", review.get().getLikes());
         return "review";
     }
+
+    @PostMapping("/reviews/{reviewID}/like")
+    public RedirectView toggleReviewLikeButton(@PathVariable("reviewID")long reviewID, Model model, Authentication authentication) {
+        var review = reviewService.getReview(reviewID);
+        var userId = ((User) authentication.getPrincipal()).getId();
+        review.ifPresent(value -> {
+            userService.toggleLikeReview(userId, value);
+        });
+        return new RedirectView("/reviews/" + reviewID);
+    }
+
 }

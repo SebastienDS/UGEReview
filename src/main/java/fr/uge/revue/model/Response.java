@@ -6,7 +6,7 @@ import java.util.Objects;
 
 
 @Entity
-public class Response {
+public final class Response implements Likeable {
     @Id
     @GeneratedValue
     private long id;
