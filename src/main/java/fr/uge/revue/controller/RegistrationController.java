@@ -36,4 +36,9 @@ public class RegistrationController {
         model.addAttribute("registered", registered);
         return "signup";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }

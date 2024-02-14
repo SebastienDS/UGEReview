@@ -34,7 +34,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                     .anyRequest().permitAll()
-                .and().formLogin();
+                .and().formLogin()
+                    .loginPage("/login");
         return http.build();
     }
 
