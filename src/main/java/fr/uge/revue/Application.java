@@ -20,6 +20,9 @@ public class Application {
     @Bean
     public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository, BCryptPasswordEncoder passwordEncoder) {
         return args -> {
+            var userDeleted = new User("UserDeleted", "", "", Role.USER);
+            userDeleted.setId(1L);
+            userRepository.save(userDeleted);
             var user = new User("User1", "user1@gmail.com", passwordEncoder.encode("user1password"), Role.USER);
             userRepository.save(user);
 

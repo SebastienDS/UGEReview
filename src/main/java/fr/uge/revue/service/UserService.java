@@ -16,14 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 public class UserService implements UserDetailsService {
+    private static final long USER_DELETED_ID = 1L;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final CommentRepository commentRepository;
     private final ResponseRepository responseRepository;
-
     private final BCryptPasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
@@ -208,4 +210,21 @@ public class UserService implements UserDetailsService {
         reviewRepository.save(review);
         return review;
     }
+
+    @Transactional
+    public boolean deleteUser(long userId) {
+        var userDeleted = userRepository.findById(USER_DELETED_ID).orElseThrow();
+        var user = userRepository.findByIdWithContent(userId).orElseThrow();
+        user.getReviews().forEach(review -> review.setAuthor(userDeleted));
+        user.getComments().forEach(comment -> comment.setAuthor(userDeleted));
+        user.getResponses().forEach(response -> response.setAuthor(userDeleted));
+        user.setReviews(Set.of());
+        user.setComments(Set.of());
+        user.setResponses(Set.of());
+        userRepository.delete(user);
+        userRepository.save(userDeleted);
+        return true;
+    }
+
+
 }

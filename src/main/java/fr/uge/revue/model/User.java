@@ -20,11 +20,11 @@ public class User implements UserDetails {
     private Role role;
     private Date creationDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-    private List<Review> reviews;
+    private Set<Review> reviews;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-    private List<Comment> comments;
+    private Set<Comment> comments;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-    private List<Response> responses;
+    private Set<Response> responses;
     @ManyToMany
     private Set<User> followers;
     @ManyToMany
@@ -100,27 +100,27 @@ public class User implements UserDetails {
         this.creationDate = Objects.requireNonNull(creationDate);
     }
 
-    public List<Review> getReviews() {
+    public Set<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(Set<Review> reviews) {
         this.reviews = Objects.requireNonNull(reviews);
     }
 
-    public List<Comment> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(Set<Comment> comments) {
         this.comments = Objects.requireNonNull(comments);
     }
 
-    public List<Response> getResponses() {
+    public Set<Response> getResponses() {
         return responses;
     }
 
-    public void setResponses(List<Response> responses) {
+    public void setResponses(Set<Response> responses) {
         this.responses = Objects.requireNonNull(responses);
     }
 

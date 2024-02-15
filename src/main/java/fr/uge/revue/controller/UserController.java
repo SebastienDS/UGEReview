@@ -63,4 +63,13 @@ public class UserController {
         userService.unfollow(myId, userId);
         return new RedirectView("/users/" + userId);
     }
+
+    @PostMapping("/deleteProfile")
+    public RedirectView deleteUser(Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        userService.deleteUser(user.getId());
+        return new RedirectView("/logout");
+    }
 }
+
+

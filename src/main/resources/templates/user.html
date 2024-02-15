@@ -17,6 +17,12 @@
             </div>
         </form>
     </div>
+    <div th:if="${authenticated}">
+        <form th:action="@{/deleteProfile}" method="post">
+            <input type="hidden" name="userId" th:value="${userId}"/>
+            <button type="submit">Supprimer mon compte</button>
+        </form>
+    </div>
 </div>
 
 </body>
