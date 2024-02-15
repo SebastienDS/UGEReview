@@ -41,7 +41,8 @@ public class SecurityConfig {
                     .antMatchers("/createReview").authenticated()
                     .anyRequest().permitAll()
                 .and().formLogin()
-                    .loginPage("/login");
+                    .loginPage("/login")
+                .and().logout().logoutSuccessUrl("/");
         return http.build();
     }
 

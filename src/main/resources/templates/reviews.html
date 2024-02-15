@@ -22,7 +22,9 @@
     </form>
 
     <ul class="list-group">
-        <li th:each="review : ${reviews}" th:text="${review}" class="list-group-item"/>
+        <li th:each="review : ${reviews}" class="list-group-item position-relative">
+            <a th:href="@{'/reviews/' + ${review.id()}}" th:text="${review}" class="stretched-link"/>
+        </li>
     </ul>
 </div>
 

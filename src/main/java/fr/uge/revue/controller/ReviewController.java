@@ -26,6 +26,11 @@ public class ReviewController {
     }
 
     @GetMapping("/")
+    public RedirectView goToReviews() {
+        return new RedirectView("/reviews");
+    }
+
+    @GetMapping("/reviews")
     public String allReviews(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             model.addAttribute("authenticated", true);
@@ -35,7 +40,7 @@ public class ReviewController {
         return "reviews";
     }
 
-    @PostMapping("/")
+    @PostMapping("/reviews")
     public String searchReview(@ModelAttribute("search") String search, Model model) {
         var reviews = reviewService.searchReview(search).stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
