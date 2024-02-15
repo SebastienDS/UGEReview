@@ -35,7 +35,7 @@ public class UserController {
             var me = userService.findByIdWithFollowers(myId).orElseThrow();
 
             if (me.equals(user.get())) {
-                model.addAttribute("removeFollowBtn", true);
+                model.addAttribute("isMyUserPage", true);
             } else if (me.getFollowers().contains(user.get())) {
                 model.addAttribute("follow", false);
                 model.addAttribute("followUrl", "/users/" + userId + "/unfollow");

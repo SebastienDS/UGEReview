@@ -39,6 +39,7 @@ public class SecurityConfig {
                     .antMatchers("/reviews/{reviewID}/like").authenticated()
                     .antMatchers("/reviews/{reviewID}/dislike").authenticated()
                     .antMatchers("/createReview").authenticated()
+                    .antMatchers("/deleteProfile").authenticated()
                     .anyRequest().permitAll()
                 .and().formLogin()
                     .loginPage("/login")

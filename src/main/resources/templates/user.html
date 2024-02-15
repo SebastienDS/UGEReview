@@ -10,16 +10,15 @@
 <div class="container">
     <h1>USER FOUND</h1>
 
-    <div th:if="${authenticated != null && removeFollowBtn == null}">
+    <div th:if="${authenticated != null && isMyUserPage == null}">
         <form th:action="@{${followUrl}}" method="post" class="mb-5">
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary" th:text="${follow != null && follow ? 'Follow' : 'Unfollow'}"/>
             </div>
         </form>
     </div>
-    <div th:if="${authenticated}">
+    <div th:if="${authenticated != null && isMyUserPage != null}">
         <form th:action="@{/deleteProfile}" method="post">
-            <input type="hidden" name="userId" th:value="${userId}"/>
             <button type="submit">Supprimer mon compte</button>
         </form>
     </div>

@@ -73,7 +73,7 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews/{reviewID}/dislike")
-    public RedirectView toggleReviewDisLikeButton(@PathVariable("reviewID")long reviewID, Model model, Authentication authentication) {
+    public RedirectView toggleReviewDisLikeButton(@PathVariable long reviewID, Model model, Authentication authentication) {
         var review = reviewService.getReview(reviewID);
         var userId = ((User) authentication.getPrincipal()).getId();
         review.ifPresent(value -> {
