@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -230,4 +231,11 @@ public class UserService implements UserDetailsService {
         return user.getComments();
     }
 
+    public List<Review> findAllUserReviews(long userId) {
+        return reviewRepository.findAllUserReviews(userId);
+    }
+
+    public List<Review> findAllUserReviewsMatching(long userId, String search) {
+        return reviewRepository.findAllUserReviewsMatching(userId, Objects.requireNonNull(search));
+    }
 }

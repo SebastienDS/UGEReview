@@ -1,12 +1,15 @@
 package fr.uge.revue.controller;
 
+import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.model.User;
+import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
@@ -16,8 +19,10 @@ import java.util.Objects;
 @Controller
 public class UserController {
     private final UserService userService;
+    private final ReviewService reviewService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ReviewService reviewService) {
+        this.reviewService = Objects.requireNonNull(reviewService);
         this.userService = Objects.requireNonNull(userService);
     }
 
@@ -75,6 +80,20 @@ public class UserController {
         var comments = userService.getComments(userId);
         model.addAttribute("comments", comments);
         return "comments";
+    }
+
+    @GetMapping("/users/{userId}/reviews")
+    public String showUserReviews(@PathVariable long userId, Model model) {
+        var reviews = userService.findAllUserReviews(userId).stream().map(ReviewAllReviewDTO::from).toList();
+        model.addAttribute("reviews", reviews);
+        return "reviews";
+    }
+
+    @PostMapping("/users/{userId}/reviews")
+    public String showUserReviewsWithFilter(@PathVariable long userId, @ModelAttribute("search") String search, Model model) {
+        var reviews = userService.findAllUserReviewsMatching(userId, search).stream().map(ReviewAllReviewDTO::from).toList();
+        model.addAttribute("reviews", reviews);
+        return "reviews";
     }
 }
 

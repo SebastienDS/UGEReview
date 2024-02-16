@@ -10,7 +10,7 @@
 <div class="container">
     <h1>UGERevue</h1>
 
-    <p th:text="${authenticated} ? 'Connected' : 'Not Connected'"></p>
+    <p th:if="${authenticated}">Connected</p>
 
     <form method="post">
         <div class="input-group mb-3">
