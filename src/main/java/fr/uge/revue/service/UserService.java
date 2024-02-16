@@ -212,7 +212,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean deleteUser(long userId) {
+    public void deleteUser(long userId) {
         var userDeleted = userRepository.findById(USER_DELETED_ID).orElseThrow();
         var user = userRepository.findByIdWithContent(userId).orElseThrow();
         user.getReviews().forEach(review -> review.setAuthor(userDeleted));
@@ -223,8 +223,11 @@ public class UserService implements UserDetailsService {
         user.setResponses(Set.of());
         userRepository.delete(user);
         userRepository.save(userDeleted);
-        return true;
     }
 
+    public Set<Comment> getComments(long userId) {
+        var user = userRepository.findByIdWithComments(userId).orElseThrow();
+        return user.getComments();
+    }
 
 }

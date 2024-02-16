@@ -18,8 +18,7 @@ public class UserController {
     private final UserService userService;
 
     public UserController(UserService userService) {
-        Objects.requireNonNull(userService);
-        this.userService = userService;
+        this.userService = Objects.requireNonNull(userService);
     }
 
     @GetMapping("/users/{userId}")
@@ -69,6 +68,13 @@ public class UserController {
         var user = (User) authentication.getPrincipal();
         userService.deleteUser(user.getId());
         return new RedirectView("/logout");
+    }
+
+    @GetMapping("/users/{userId}/comments")
+    public String getUserComments(@PathVariable long userId, Model model) {
+        var comments = userService.getComments(userId);
+        model.addAttribute("comments", comments);
+        return "comments";
     }
 }
 

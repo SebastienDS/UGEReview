@@ -23,6 +23,13 @@ public final class Comment implements Likeable {
     public Comment() {
     }
 
+    public Comment(String content, User author, Review review) {
+        this.content = content;
+        this.author = author;
+        this.review = review;
+        this.date = new Date();
+    }
+
     public long getId() {
         return id;
     }

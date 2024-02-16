@@ -4,6 +4,7 @@ import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
 import fr.uge.revue.model.User;
+import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -19,10 +20,12 @@ import org.springframework.web.servlet.view.RedirectView;
 public class ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
+    private final CommentService commentService;
 
-    public ReviewController(ReviewService reviewService, UserService userService) {
+    public ReviewController(ReviewService reviewService, UserService userService, CommentService commentService) {
         this.reviewService = reviewService;
         this.userService = userService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -80,6 +83,26 @@ public class ReviewController {
             userService.toggleDislikeReview(userId, value);
         });
         return new RedirectView("/reviews/" + reviewID);
+    }
+
+    @PostMapping("/comments/{commentId}/likeComment")
+    public RedirectView toggleCommentLikeButton(@PathVariable long commentId, Model model, Authentication authentication) {
+        var comment = commentService.getComment(commentId);
+        var userId = ((User) authentication.getPrincipal()).getId();
+        comment.ifPresent(value -> {
+            userService.toggleLikeComment(userId, value);
+        });
+        return new RedirectView("/comments/" + commentId);
+    }
+
+    @PostMapping("/comments/{commentId}/dislikeComment")
+    public RedirectView toggleCommentDisLikeButton(@PathVariable long commentId, Model model, Authentication authentication) {
+        var comment = commentService.getComment(commentId);
+        var userId = ((User) authentication.getPrincipal()).getId();
+        comment.ifPresent(value -> {
+            userService.toggleLikeComment(userId, value);
+        });
+        return new RedirectView("/comments/" + commentId);
     }
 
     @GetMapping("/createReview")

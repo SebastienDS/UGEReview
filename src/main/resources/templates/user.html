@@ -17,6 +17,7 @@
             </div>
         </form>
     </div>
+    <a th:href="@{'/users/' + ${userId} + '/comments'}">Consulter les commentaires</a>
     <div th:if="${authenticated != null && isMyUserPage != null}">
         <form th:action="@{/deleteProfile}" method="post">
             <button type="submit">Supprimer mon compte</button>

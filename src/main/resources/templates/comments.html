@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UGERevue</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>UGERevue</h1>
+
+    <ul class="list-group">
+        <li th:each="comment : ${comments}" th:text="${comment}" class="list-group-item"/>
+    </ul>
+</div>
+
+</body>
+</html>
