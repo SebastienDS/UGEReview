@@ -5,13 +5,14 @@ import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Objects;
@@ -32,7 +33,6 @@ public class UserController {
         if (user.isEmpty()) {
             return "notFound";
         }
-
         if (authentication != null && authentication.isAuthenticated()) {
             model.addAttribute("authenticated", true);
             var myId = ((User) authentication.getPrincipal()).getId();
@@ -94,6 +94,31 @@ public class UserController {
         var reviews = userService.findAllUserReviewsMatching(userId, search).stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
         return "reviews";
+    }
+
+    @PutMapping("/users/{userId}/update")
+    public ResponseEntity<String> modifyData(@PathVariable long userId, @RequestBody User newUser, Authentication authentication){
+        Objects.requireNonNull(newUser);
+        Objects.requireNonNull(authentication);
+        var user = (User) authentication.getPrincipal();
+        var userProfile = userService.getUserById(userId);
+        if(userProfile.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if(!user.getUsername().equals(userProfile.get().getUsername())){
+            //WTF le hacker
+            System.out.println(user.getUsername() + " " + userProfile.get().getUsername());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not User");
+        }
+        if(userService.getUsernames().contains(newUser.getUsername()) || newUser.getUsername().equals("")){
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Username already taken");
+        }
+        userService.setUsername(userId, newUser.getUsername());
+        var newData = userService.getUserById(userId).orElseThrow();
+        var authenticationToken =
+                new UsernamePasswordAuthenticationToken(newData, newData.getPassword(), newData.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return ResponseEntity.ok("Ok");
     }
 }
 
