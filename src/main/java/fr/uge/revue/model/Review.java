@@ -2,8 +2,8 @@ package fr.uge.revue.model;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public final class Review implements Likeable {
@@ -19,7 +19,7 @@ public final class Review implements Likeable {
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
-    private List<Comment> comments;
+    private Set<Comment> comments;
 
     public Review() {
     }
@@ -103,11 +103,11 @@ public final class Review implements Likeable {
         this.author = author;
     }
 
-    public List<Comment> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(Set<Comment> comments) {
         Objects.requireNonNull(comments);
         this.comments = comments;
     }

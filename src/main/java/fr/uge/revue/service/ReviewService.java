@@ -24,5 +24,5 @@ public class ReviewService {
         return reviewRepository.searchReview(Objects.requireNonNull(search));
     }
 
-    public Optional<Review> getReview(long reviewID) { return reviewRepository.findById(reviewID); }
+    public Optional<Review> getReview(long reviewID) { return reviewRepository.findByIdWithFullContent(reviewID); }
 }
