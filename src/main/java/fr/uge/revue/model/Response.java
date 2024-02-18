@@ -21,6 +21,13 @@ public final class Response implements Likeable {
     public Response() {
     }
 
+    public Response(String content, User author, Comment comment) {
+        this.content = Objects.requireNonNull(content);
+        this.author = Objects.requireNonNull(author);
+        this.comment = Objects.requireNonNull(comment);
+        date = new Date();
+    }
+
     public long getId() {
         return id;
     }

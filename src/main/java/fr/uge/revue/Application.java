@@ -1,10 +1,8 @@
 package fr.uge.revue;
 
-import fr.uge.revue.model.Comment;
-import fr.uge.revue.model.Review;
-import fr.uge.revue.model.Role;
-import fr.uge.revue.model.User;
+import fr.uge.revue.model.*;
 import fr.uge.revue.repository.CommentRepository;
+import fr.uge.revue.repository.ResponseRepository;
 import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +20,7 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, BCryptPasswordEncoder passwordEncoder) {
+    public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
         return args -> {
             var userDeleted = new User("UserDeleted", "", "", Role.USER);
             userDeleted.setId(1L);
@@ -48,6 +46,10 @@ public class Application {
             var comment2 = new Comment("Kukakuka", user2, review);
             var comment3 = new Comment("Quentin est nul", user, review2);
             commentRepository.saveAll(List.of(comment, comment2, comment3));
+
+            responseRepository.save(new Response("response1", user, comment));
+            responseRepository.save(new Response("response2", user2, comment));
+            responseRepository.save(new Response("response3", user, comment2));
         };
     }
 }

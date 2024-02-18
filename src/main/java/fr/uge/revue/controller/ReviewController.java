@@ -50,39 +50,38 @@ public class ReviewController {
         return "reviews";
     }
 
-    @GetMapping("/reviews/{reviewID}")
-    public String oneReviews(@PathVariable long reviewID, Model model, Authentication authentication) {
+    @GetMapping("/reviews/{reviewId}")
+    public String oneReview(@PathVariable long reviewId, Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             model.addAttribute("authenticated", true);
         }
-        var review = reviewService.getReview(reviewID);
+        var review = reviewService.getReview(reviewId);
         if(review.isEmpty()){
             return "notFound";
         }
-        model.addAttribute("reviews", ReviewOneReviewDTO.from(review.get()));
-        model.addAttribute("reviewId", reviewID);
-        model.addAttribute("likesNumber", review.get().getLikes());
+        model.addAttribute("review", ReviewOneReviewDTO.from(review.get()));
+        model.addAttribute("reviewId", reviewId);
         return "review";
     }
 
-    @PostMapping("/reviews/{reviewID}/like")
-    public RedirectView toggleReviewLikeButton(@PathVariable long reviewID, Model model, Authentication authentication) {
-        var review = reviewService.getReview(reviewID);
+    @PostMapping("/reviews/{reviewId}/like")
+    public RedirectView toggleReviewLikeButton(@PathVariable long reviewId, Model model, Authentication authentication) {
+        var review = reviewService.getReview(reviewId);
         var userId = ((User) authentication.getPrincipal()).getId();
         review.ifPresent(value -> {
             userService.toggleLikeReview(userId, value);
         });
-        return new RedirectView("/reviews/" + reviewID);
+        return new RedirectView("/reviews/" + reviewId);
     }
 
-    @PostMapping("/reviews/{reviewID}/dislike")
-    public RedirectView toggleReviewDisLikeButton(@PathVariable long reviewID, Model model, Authentication authentication) {
-        var review = reviewService.getReview(reviewID);
+    @PostMapping("/reviews/{reviewId}/dislike")
+    public RedirectView toggleReviewDisLikeButton(@PathVariable long reviewId, Model model, Authentication authentication) {
+        var review = reviewService.getReview(reviewId);
         var userId = ((User) authentication.getPrincipal()).getId();
         review.ifPresent(value -> {
             userService.toggleDislikeReview(userId, value);
         });
-        return new RedirectView("/reviews/" + reviewID);
+        return new RedirectView("/reviews/" + reviewId);
     }
 
     @PostMapping("/comments/{commentId}/likeComment")
