@@ -16,6 +16,6 @@ public class CommentService {
     }
 
     public Optional<Comment> getComment(long commentId) {
-        return commentRepository.findById(commentId);
+        return commentRepository.findByIdWithReview(commentId);
     }
 }

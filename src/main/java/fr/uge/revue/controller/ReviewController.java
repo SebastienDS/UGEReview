@@ -66,42 +66,34 @@ public class ReviewController {
 
     @PostMapping("/reviews/{reviewId}/like")
     public RedirectView toggleReviewLikeButton(@PathVariable long reviewId, Model model, Authentication authentication) {
-        var review = reviewService.getReview(reviewId);
+        var review = reviewService.getReview(reviewId).orElseThrow();
         var userId = ((User) authentication.getPrincipal()).getId();
-        review.ifPresent(value -> {
-            userService.toggleLikeReview(userId, value);
-        });
+        userService.toggleLikeReview(userId, review);
         return new RedirectView("/reviews/" + reviewId);
     }
 
     @PostMapping("/reviews/{reviewId}/dislike")
     public RedirectView toggleReviewDisLikeButton(@PathVariable long reviewId, Model model, Authentication authentication) {
-        var review = reviewService.getReview(reviewId);
+        var review = reviewService.getReview(reviewId).orElseThrow();
         var userId = ((User) authentication.getPrincipal()).getId();
-        review.ifPresent(value -> {
-            userService.toggleDislikeReview(userId, value);
-        });
+        userService.toggleDislikeReview(userId, review);
         return new RedirectView("/reviews/" + reviewId);
     }
 
-    @PostMapping("/comments/{commentId}/likeComment")
+    @PostMapping("/comments/{commentId}/like")
     public RedirectView toggleCommentLikeButton(@PathVariable long commentId, Model model, Authentication authentication) {
-        var comment = commentService.getComment(commentId);
+        var comment = commentService.getComment(commentId).orElseThrow();
         var userId = ((User) authentication.getPrincipal()).getId();
-        comment.ifPresent(value -> {
-            userService.toggleLikeComment(userId, value);
-        });
-        return new RedirectView("/comments/" + commentId);
+        userService.toggleLikeComment(userId, comment);
+        return new RedirectView("/reviews/" + comment.getReview().getId() + "#comment_" + commentId);
     }
 
-    @PostMapping("/comments/{commentId}/dislikeComment")
+    @PostMapping("/comments/{commentId}/dislike")
     public RedirectView toggleCommentDisLikeButton(@PathVariable long commentId, Model model, Authentication authentication) {
-        var comment = commentService.getComment(commentId);
+        var comment = commentService.getComment(commentId).orElseThrow();
         var userId = ((User) authentication.getPrincipal()).getId();
-        comment.ifPresent(value -> {
-            userService.toggleLikeComment(userId, value);
-        });
-        return new RedirectView("/comments/" + commentId);
+        userService.toggleLikeComment(userId, comment);
+        return new RedirectView("/reviews/" + comment.getReview().getId() + "#comment_" + commentId);
     }
 
     @GetMapping("/createReview")

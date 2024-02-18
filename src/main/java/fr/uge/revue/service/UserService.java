@@ -1,6 +1,7 @@
 package fr.uge.revue.service;
 
 import fr.uge.revue.dto.review.CreateReviewDTO;
+import fr.uge.revue.dto.user.UserAllLikesDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.CommentRepository;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -258,5 +258,10 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userId).orElseThrow();
         user.setUsername(email);
         userRepository.save(user);
+    }
+
+    public UserAllLikesDTO getUserWithLikes(long userId) {
+        var user = userRepository.findByIdWithLikes(userId).orElseThrow();
+        return UserAllLikesDTO.from(user);
     }
 }

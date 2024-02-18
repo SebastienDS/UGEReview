@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UGERevue</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>UGERevue</h1>
+
+    <ul class="list-group">
+        <li th:each="review : ${likedReviews}" class="list-group-item position-relative">
+            <a th:href="@{'/reviews/' + ${review.getId()}}" th:text="${review}" class="stretched-link"/>
+        </li>
+        <li th:each="comment : ${likedComments}" class="list-group-item position-relative">
+            <a th:href="@{'/reviews/' + ${comment.review.getId()} + '#comment_' + ${comment.getId()}}" th:text="${comment}" class="stretched-link"/>
+        </li>
+        <li th:each="response : ${likedResponses}" class="list-group-item position-relative">
+            <a th:href="@{'/reviews/' + ${response.comment.review.getId()} + '#response_' + ${response.getId()}}" th:text="${response}" class="stretched-link"/>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
