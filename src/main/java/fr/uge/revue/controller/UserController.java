@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Controller
 public class UserController {
@@ -96,9 +97,9 @@ public class UserController {
         return "reviews";
     }
 
-    @PutMapping("/users/{userId}/update")
-    public ResponseEntity<String> modifyData(@PathVariable long userId, @RequestBody User newUser, Authentication authentication){
-        Objects.requireNonNull(newUser);
+    @PutMapping("/users/{userId}/updateUsername")
+    public ResponseEntity<String> updateUsername(@PathVariable long userId, @RequestBody String newUsername, Authentication authentication){
+        Objects.requireNonNull(newUsername);
         Objects.requireNonNull(authentication);
         var user = (User) authentication.getPrincipal();
         var userProfile = userService.getUserById(userId);
@@ -108,12 +109,73 @@ public class UserController {
         if(!user.getUsername().equals(userProfile.get().getUsername())){
             //WTF le hacker
             System.out.println(user.getUsername() + " " + userProfile.get().getUsername());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not User");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Users doesn't match");
         }
-        if(userService.getUsernames().contains(newUser.getUsername()) || newUser.getUsername().equals("")){
+        if(userService.getUsernames().contains(newUsername) || newUsername.equals("")){
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Username already taken");
         }
-        userService.setUsername(userId, newUser.getUsername());
+        userService.setUsername(userId, newUsername);
+        var newData = userService.getUserById(userId).orElseThrow();
+        var authenticationToken =
+                new UsernamePasswordAuthenticationToken(newData, newData.getPassword(), newData.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return ResponseEntity.ok("Ok");
+    }
+
+    @PutMapping("/users/{userId}/updateEmail")
+    public ResponseEntity<String> updateEmail(@PathVariable long userId, @RequestBody String newEmail, Authentication authentication){
+        Objects.requireNonNull(newEmail);
+        Objects.requireNonNull(authentication);
+        var user = (User) authentication.getPrincipal();
+        var userProfile = userService.getUserById(userId);
+        if(userProfile.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if(!user.getUsername().equals(userProfile.get().getUsername())){
+            //WTF le hacker
+            System.out.println(user.getUsername() + " " + userProfile.get().getUsername());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Users doesn't match");
+        }
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        var pattern = Pattern.compile(regex);
+        var matcher = pattern.matcher(newEmail);
+        if(!matcher.matches()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email Not Valid");
+        }
+        if(userService.getEmails().contains(newEmail)){
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Username already taken");
+        }
+        userService.setEmail(userId, newEmail);
+        var newData = userService.getUserById(userId).orElseThrow();
+        var authenticationToken =
+                new UsernamePasswordAuthenticationToken(newData, newData.getPassword(), newData.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return ResponseEntity.ok("Ok");
+    }
+
+    private record PasswordReceived(String oldPassword, String newPassword){}
+
+    @PutMapping("/users/{userId}/updatePassword")
+    public ResponseEntity<String> updatePassword(@PathVariable long userId, @RequestBody PasswordReceived passwords, Authentication authentication){
+        Objects.requireNonNull(passwords);
+        Objects.requireNonNull(authentication);
+        var user = (User) authentication.getPrincipal();
+        var userProfile = userService.getUserById(userId);
+        var oldPassword = passwords.oldPassword; //TODO: encode
+        var newPassword = passwords.newPassword; //TODO: encode / maybe add constraint
+        if(userProfile.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if(!user.getUsername().equals(userProfile.get().getUsername())){
+            //WTF le hacker
+            System.out.println(user.getUsername() + " " + userProfile.get().getUsername());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Users doesn't match");
+        }
+        if(!user.getPassword().equals(passwords.oldPassword())){
+            System.out.println("lack encode " + oldPassword + " " + newPassword);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong Password");
+        }
+        userService.updateUserPassword(user, newPassword);
         var newData = userService.getUserById(userId).orElseThrow();
         var authenticationToken =
                 new UsernamePasswordAuthenticationToken(newData, newData.getPassword(), newData.getAuthorities());

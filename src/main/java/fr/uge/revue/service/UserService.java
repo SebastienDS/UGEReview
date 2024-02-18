@@ -242,8 +242,21 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void setUsername(long userId, String username) {
+        Objects.requireNonNull(username);
         User user = userRepository.findById(userId).orElseThrow();
         user.setUsername(username);
+        userRepository.save(user);
+    }
+
+    public List<String> getEmails() {
+        return userRepository.findAllEmails();
+    }
+
+    @Transactional
+    public void setEmail(long userId, String email) {
+        Objects.requireNonNull(email);
+        User user = userRepository.findById(userId).orElseThrow();
+        user.setUsername(email);
         userRepository.save(user);
     }
 }

@@ -56,20 +56,53 @@
                 <!-- Insérez votre balise d'image ici -->
             </div>
             <div class="col">
-                <div class="row normal">
+                <div id="rowNormalUsername" class="row">
                     <p>
                         <span id="username" th:text="${user.username}" class="me-2"></span>
                         <div th:if="${isMyUserPage}">
-                            <i class="fas fa-edit"></i>
+                            <i id="editIconUsername" class="fas fa-edit"></i>
                         </div>
                     </p>
                </div>
-               <div class="row edit" style="display: none";>
+               <div id="rowEditUsername" class="row" style="display: none";>
                    <div class="col">
                        <input id="usernameInput" maxlength="30" th:value="${user.username}" class="form-control me-2">
                    </div>
                    <div class = "col">
-                        <i id="validateIcon" class="fas fa-check"></i>
+                        <i id="validateIconUsername" class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="row" th:if="${isMyUserPage}">
+                    <div id="rowNormalEmail" class="row">
+                        <p>
+                            <span id="email" th:text="${user.email}" class="me-2"></span>
+                            <i id="editIconEmail" class="fas fa-edit"></i>
+                        </p>
+                    </div>
+                    <div id="rowEditEmail" class="row" style="display: none";>
+                        <div class="col">
+                            <input id="emailInput" maxlength="30" th:value="${user.email}" class="form-control me-2">
+                        </div>
+                        <div class = "col">
+                            <i id="validateIconEmail" class="fas fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" th:if="${isMyUserPage}">
+                    <div id="rowNormalPassword" class="row">
+                        <p>
+                            <span id="password" class="me-2">********</span>
+                            <i id="editIconPassword" class="fas fa-edit"></i>
+                        </p>
+                    </div>
+                    <div id="rowEditPassword" class="row" style="display: none";>
+                        <div class="col">
+                            <input id="oldPasswordInput" placeholder="Old Password" maxlength="30" class="form-control me-2">
+                            <input id="newPasswordInput" placeholder="New Password" maxlength="30" class="form-control me-2">
+                        </div>
+                        <div class = "col">
+                            <i id="validateIconPassword" class="fas fa-check"></i>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -83,44 +116,111 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 <script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        const isConnected = [[${showDiv}]];
-        const editIcon = document.querySelector('.fa-edit');
-        const normalRow = document.querySelector('.row.normal');
-        const editRow = document.querySelector('.row.edit');
-        const validateIcon = document.getElementById('validateIcon');
-        const span = document.getElementById('username');
-        const input = document.getElementById('usernameInput');
 
+    function edit(normalRow, editRow, editIcon, validateIcon, url, input, field, span) {
         editIcon.addEventListener('click', function () {
-            normalRow.style.display = 'none';
-            editRow.style.display = 'block';
+                normalRow.style.display = 'none';
+                editRow.style.display = 'block';
         });
 
         validateIcon.addEventListener('click', function () {
-            normalRow.style.display = 'block';
-            editRow.style.display = 'none';
-            const url = window.location.href + "/update";
-            const newUsername = { username: input.value };
-            fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newUsername)
-            })
-            .then(response => {
-                if(response.ok){
-                    username.textContent = input.value
-                    console.log("OK");
-                } else {
-                    console.log(response);
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de la requête PUT :', error);
+                normalRow.style.display = 'block';
+                editRow.style.display = 'none';
+                const newData = input.value
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: newData
+                })
+                .then(response => {
+                    if(response.ok){
+                        span.textContent = input.value
+                        console.log("OK");
+                    } else {
+                        input.value = span.textContent
+                        console.log(response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la requête PUT :', error);
+                });
             });
+    }
+
+    function editUser(){
+        const editIconUser = document.getElementById('editIconUsername');
+        const normalUsername = document.getElementById('rowNormalUsername');
+        const editUsername = document.getElementById('rowEditUsername');
+        const span = document.getElementById('username');
+        const input = document.getElementById('usernameInput');
+        const validateIconUser = document.getElementById('validateIconUsername');
+        const url = window.location.href + "/updateUsername";
+        edit(normalUsername, editUsername, editIconUser, validateIconUser, url, input, 'username', span);
+    }
+
+    function editEmail(){
+        const editIconEmail = document.getElementById('editIconEmail');
+        const normalEmailRow = document.getElementById('rowNormalEmail');
+        const editEmailRow = document.getElementById('rowEditEmail');
+        const span = document.getElementById('email');
+        const input = document.getElementById('emailInput');
+        const validateIconEmail = document.getElementById('validateIconEmail');
+        const url = window.location.href + "/updateEmail";
+        edit(normalEmailRow, editEmailRow, editIconEmail, validateIconEmail, url, input, 'email', span);
+    }
+
+    function manageEditPassword(normalRow, editRow, editIcon, validateIcon, url, inputOldPassword, inputNewPassword, span){
+        editIcon.addEventListener('click', function () {
+                normalRow.style.display = 'none';
+                editRow.style.display = 'block';
         });
+
+        validateIcon.addEventListener('click', function () {
+                normalRow.style.display = 'block';
+                editRow.style.display = 'none';
+                const newData = JSON.stringify({ oldPassword: inputOldPassword.value, newPassword: inputNewPassword.value })
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: newData
+                })
+                .then(response => {
+                    if(response.ok){
+                        console.log("OK");
+                    } else {
+                        console.log(response);
+                    }
+                    inputOldPassword.value = ""
+                    inputNewPassword.value = ""
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la requête PUT :', error);
+                });
+            });
+    }
+
+    function editPassword(){
+        const editIconPassword = document.getElementById('editIconPassword');
+        const normalPasswordRow = document.getElementById('rowNormalPassword');
+        const editPasswordRow = document.getElementById('rowEditPassword');
+        const span = document.getElementById('password');
+        const inputOldPassword = document.getElementById('oldPasswordInput');
+        const inputNewPassword = document.getElementById('newPasswordInput');
+        const validateIconPassword = document.getElementById('validateIconPassword');
+        const url = window.location.href + "/updatePassword";
+        manageEditPassword(normalPasswordRow, editPasswordRow, editIconPassword, validateIconPassword, url, inputOldPassword, inputNewPassword, span);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if([[${isMyUserPage}]]){
+            editUser();
+            editEmail();
+            editPassword();
+        }
     });
 </script>
 
