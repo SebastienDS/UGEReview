@@ -4,4 +4,4 @@
   <a href="/reviews">Reviews</a>
 </nav>
 
-<h1>Test page</h1>
+<h1>Reviews page</h1>
