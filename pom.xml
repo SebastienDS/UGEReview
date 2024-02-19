@@ -88,6 +88,7 @@
                     <npmVersion>10.4.0</npmVersion>
 
                     <installDirectory>target</installDirectory>
+                    <workingDirectory>frontend</workingDirectory>
                 </configuration>
 
                 <executions>
@@ -123,6 +124,45 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>Copy svelte app into target static folder</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes/static</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>frontend/build</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>frontend/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>frontend/.svelte-kit</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>frontend/build</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
             </plugin>
         </plugins>
         <pluginManagement>
