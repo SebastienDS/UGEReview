@@ -28,6 +28,11 @@ public class ReviewController {
         this.commentService = commentService;
     }
 
+    @GetMapping("/")
+    public RedirectView goToReviews() {
+        return new RedirectView("/reviews");
+    }
+
     @GetMapping("/reviews")
     public String allReviews(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
