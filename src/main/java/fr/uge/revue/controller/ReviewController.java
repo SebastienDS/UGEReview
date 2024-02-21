@@ -5,6 +5,7 @@ import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
+import fr.uge.revue.service.ResponseService;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -21,11 +22,13 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
     private final CommentService commentService;
+    private final ResponseService responseService;
 
-    public ReviewController(ReviewService reviewService, UserService userService, CommentService commentService) {
+    public ReviewController(ReviewService reviewService, UserService userService, CommentService commentService, ResponseService responseService) {
         this.reviewService = reviewService;
         this.userService = userService;
         this.commentService = commentService;
+        this.responseService = responseService;
     }
 
     @GetMapping("/")
@@ -92,8 +95,24 @@ public class ReviewController {
     public RedirectView toggleCommentDisLikeButton(@PathVariable long commentId, Model model, Authentication authentication) {
         var comment = commentService.getComment(commentId).orElseThrow();
         var userId = ((User) authentication.getPrincipal()).getId();
-        userService.toggleLikeComment(userId, comment);
+        userService.toggleDislikeComment(userId, comment);
         return new RedirectView("/reviews/" + comment.getReview().getId() + "#comment_" + commentId);
+    }
+
+    @PostMapping("/responses/{responseId}/like")
+    public RedirectView toggleResponseLikeButton(@PathVariable long responseId, Model model, Authentication authentication) {
+        var response = responseService.getResponse(responseId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        userService.toggleLikeResponse(userId, response);
+        return new RedirectView("/reviews/" + response.getComment().getReview().getId() + "#response_" + responseId);
+    }
+
+    @PostMapping("/responses/{responseId}/dislike")
+    public RedirectView toggleResponseDisLikeButton(@PathVariable long responseId, Model model, Authentication authentication) {
+        var response = responseService.getResponse(responseId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        userService.toggleDislikeResponse(userId, response);
+        return new RedirectView("/reviews/" + response.getComment().getReview().getId() + "#response_" + responseId);
     }
 
     @GetMapping("/createReview")
