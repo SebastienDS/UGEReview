@@ -1,6 +1,7 @@
 package fr.uge.revue.service;
 
 import fr.uge.revue.dto.review.CreateReviewDTO;
+import fr.uge.revue.dto.user.UserAllLikesDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.CommentRepository;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -203,6 +203,58 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    @Transactional
+    public boolean toggleDislikeComment(long userId, Comment comment) {
+        var user = userRepository.findByIdWithCommentLikes(userId);
+        if (user.isEmpty()) {
+            return false;
+        }
+        var likes = user.get().getCommentsLikes();
+        var dislikes = user.get().getCommentsDislikes();
+        var likeIsRemoved = likes.remove(comment);
+        var dislikeIsRemoved = dislikes.remove(comment);
+        if (likeIsRemoved) {
+            dislikes.add(comment);
+            comment.setLikes(comment.getLikes() - 2); //remove like +  dislike
+        }
+        else if (dislikeIsRemoved) {
+            comment.setLikes(comment.getLikes() + 1);
+        }
+        else {
+            dislikes.add(comment);
+            comment.setLikes(comment.getLikes() - 1);
+        }
+        userRepository.save(user.get());
+        commentRepository.save(comment);
+        return true;
+    }
+
+    @Transactional
+    public boolean toggleDislikeResponse(long userId, Response response) {
+        var user = userRepository.findByIdWithResponseLikes(userId);
+        if (user.isEmpty()) {
+            return false;
+        }
+        var likes = user.get().getResponsesLikes();
+        var dislikes = user.get().getResponsesDislikes();
+        var likeIsRemoved = likes.remove(response);
+        var dislikeIsRemoved = dislikes.remove(response);
+        if (likeIsRemoved) {
+            dislikes.add(response);
+            response.setLikes(response.getLikes() - 2); //remove like +  dislike
+        }
+        else if (dislikeIsRemoved) {
+            response.setLikes(response.getLikes() + 1);
+        }
+        else {
+            dislikes.add(response);
+            response.setLikes(response.getLikes() - 1);
+        }
+        userRepository.save(user.get());
+        responseRepository.save(response);
+        return true;
+    }
+
     public Review createReview(CreateReviewDTO createReviewDTO, User user) {
         var review = new Review(createReviewDTO.title(), createReviewDTO.commentary(), createReviewDTO.code(), createReviewDTO.test(), user);
         reviewRepository.save(review);
@@ -265,5 +317,10 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByIdWithContent(userId).orElseThrow();
         user.addComment(comment);
         userRepository.save(user);
+    }
+
+    public UserAllLikesDTO getUserWithLikes(long userId) {
+        var user = userRepository.findByIdWithLikes(userId).orElseThrow();
+        return UserAllLikesDTO.from(user);
     }
 }

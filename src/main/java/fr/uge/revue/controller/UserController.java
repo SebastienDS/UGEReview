@@ -192,6 +192,20 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return ResponseEntity.ok("Ok");
     }
-}
 
+    @GetMapping("/users/{userId}/likes")
+    public String getLikedContents(@PathVariable long userId, Model model) {
+        var user = userService.getUserWithLikes(userId);
+        var likedReviews = user.reviews();
+        var likedComments = user.comments();
+        var likedResponses = user.responses();
+        System.out.println(likedReviews);
+        System.out.println(likedResponses);
+        System.out.println(likedComments);
+        model.addAttribute("likedReviews", likedReviews);
+        model.addAttribute("likedComments", likedComments);
+        model.addAttribute("likedResponses", likedResponses);
+        return "likes";
+    }
+}
 

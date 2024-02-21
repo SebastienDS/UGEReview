@@ -25,7 +25,7 @@ public class Application {
             var userDeleted = new User("UserDeleted", "", "", Role.USER);
             userDeleted.setId(1L);
             userRepository.save(userDeleted);
-            var user = new User("User1", "user1@gmail.com", passwordEncoder.encode("user1password"), Role.USER);
+            var user = new User("User1", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
             userRepository.save(user);
 
             var review = new Review("Review1", "commentary", "code", "test", user);
@@ -46,6 +46,9 @@ public class Application {
             var comment2 = new Comment("Kukakuka", user2, review);
             var comment3 = new Comment("Quentin est nul", user, review2);
             commentRepository.saveAll(List.of(comment, comment2, comment3));
+            for (int i = 0; i < 100; i++) {
+                commentRepository.save(new Comment("test", user, review));
+            }
 
             responseRepository.save(new Response("response1", user, comment));
             responseRepository.save(new Response("response2", user2, comment));

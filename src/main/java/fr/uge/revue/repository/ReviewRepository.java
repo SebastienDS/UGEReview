@@ -4,10 +4,12 @@ import fr.uge.revue.model.Review;
 import fr.uge.revue.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface ReviewRepository extends CrudRepository<Review, Long> {
     @Query("SELECT r FROM Review r LEFT JOIN FETCH r.author LEFT JOIN FETCH r.comments c LEFT JOIN FETCH c.author " +
             "LEFT JOIN FETCH c.responses r2 LEFT JOIN FETCH r2.author WHERE r.id = :id")
