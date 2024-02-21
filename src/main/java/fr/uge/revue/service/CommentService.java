@@ -1,6 +1,8 @@
 package fr.uge.revue.service;
 
 import fr.uge.revue.model.Comment;
+import fr.uge.revue.model.Review;
+import fr.uge.revue.model.User;
 import fr.uge.revue.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +19,9 @@ public class CommentService {
 
     public Optional<Comment> getComment(long commentId) {
         return commentRepository.findById(commentId);
+    }
+
+    public void saveComment(Comment comment) {
+        commentRepository.save(comment);
     }
 }

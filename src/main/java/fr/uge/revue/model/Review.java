@@ -133,4 +133,8 @@ public final class Review implements Likeable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
 }

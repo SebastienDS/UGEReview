@@ -48,6 +48,38 @@
             </ul>
         </div>
     </div>
+    <div class="row>" th:if="${authenticated}">
+        <textarea id="newComment" rows="4" cols="50"></textarea>
+        <button onclick="comment()">Commenter</button>
+    </div>
+
+    <script>
+        function comment() {
+            var content = document.getElementById("newComment");
+            const url = window.location.href + "/comment";
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: content.value
+            })
+            .then(response => {
+                if(response.ok){
+                    console.log("OK");
+                    content.value = "";
+                    var scrollPosition = window.scrollY;
+                    window.location.reload();
+                    window.scrollTo(0, scrollPosition);
+                } else {
+                    console.log(response);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête PUT :', error);
+            });
+        }
+    </script>
 </div>
 </body>
 </html>

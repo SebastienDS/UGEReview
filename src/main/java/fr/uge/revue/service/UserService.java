@@ -259,4 +259,11 @@ public class UserService implements UserDetailsService {
         user.setUsername(email);
         userRepository.save(user);
     }
+
+    @Transactional
+    public void addComment(long userId, Comment comment) {
+        User user = userRepository.findByIdWithContent(userId).orElseThrow();
+        user.addComment(comment);
+        userRepository.save(user);
+    }
 }

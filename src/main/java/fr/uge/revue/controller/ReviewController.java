@@ -3,18 +3,20 @@ package fr.uge.revue.controller;
 import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
+import fr.uge.revue.model.Comment;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.Objects;
 
 @Controller
 public class ReviewController {
@@ -114,6 +116,28 @@ public class ReviewController {
         var user = (User) authentication.getPrincipal();
         var review = userService.createReview(createReviewDTO, user);
         return new RedirectView("/reviews/" + review.getId());
+    }
+
+    @PostMapping("/reviews/{reviewId}/comment")
+    public ResponseEntity<String> createComment(Model model, @PathVariable long reviewId, @RequestBody String content, Authentication authentication, @ModelAttribute CreateReviewDTO createReviewDTO) {
+        Objects.requireNonNull(content);
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
+        }
+        var user = (User) authentication.getPrincipal();
+        var review = reviewService.getReview(reviewId);
+        if(user == null){
+            System.out.println("cc");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
+        }
+        if(review.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review Not Found");
+        }
+        var comment = new Comment(content, user, review.get());
+        commentService.saveComment(comment);
+        reviewService.addComment(review.get(), comment);
+        userService.addComment(user.getId(), comment);
+        return ResponseEntity.ok("");
     }
 
 }

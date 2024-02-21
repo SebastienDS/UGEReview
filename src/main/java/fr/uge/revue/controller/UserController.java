@@ -104,7 +104,9 @@ public class UserController {
     @PutMapping("/users/{userId}/updateUsername")
     public ResponseEntity<String> updateUsername(@PathVariable long userId, @RequestBody String newUsername, Authentication authentication){
         Objects.requireNonNull(newUsername);
-        Objects.requireNonNull(authentication);
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
+        }
         var user = (User) authentication.getPrincipal();
         var userProfile = userService.getUserById(userId);
         if(userProfile.isEmpty()){
@@ -129,7 +131,9 @@ public class UserController {
     @PutMapping("/users/{userId}/updateEmail")
     public ResponseEntity<String> updateEmail(@PathVariable long userId, @RequestBody String newEmail, Authentication authentication){
         Objects.requireNonNull(newEmail);
-        Objects.requireNonNull(authentication);
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
+        }
         var user = (User) authentication.getPrincipal();
         var userProfile = userService.getUserById(userId);
         if(userProfile.isEmpty()){
@@ -162,7 +166,9 @@ public class UserController {
                                                  Authentication authentication, BCryptPasswordEncoder passwordEncoder,
                                                  BindingResult bindingResult){
         Objects.requireNonNull(passwords);
-        Objects.requireNonNull(authentication);
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
+        }
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password not valid");
         }

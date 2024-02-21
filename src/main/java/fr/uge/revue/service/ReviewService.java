@@ -1,6 +1,8 @@
 package fr.uge.revue.service;
 
+import fr.uge.revue.model.Comment;
 import fr.uge.revue.model.Review;
+import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +27,9 @@ public class ReviewService {
     }
 
     public Optional<Review> getReview(long reviewID) { return reviewRepository.findByIdWithFullContent(reviewID); }
+
+    public void addComment(Review review, Comment comment) {
+        review.addComment(comment);
+        reviewRepository.save(review);
+    }
 }
