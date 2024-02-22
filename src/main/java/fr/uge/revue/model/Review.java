@@ -20,6 +20,8 @@ public final class Review implements Likeable {
     private User author;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
     private Set<Comment> comments;
+    @ManyToMany
+    private Set<User> requestNotifications;
 
     public Review() {
     }
@@ -47,8 +49,7 @@ public final class Review implements Likeable {
     }
 
     public void setTitle(String title) {
-        Objects.requireNonNull(title);
-        this.title = title;
+        this.title = Objects.requireNonNull(title);
     }
 
     public Date getDate() {
@@ -56,8 +57,7 @@ public final class Review implements Likeable {
     }
 
     public void setDate(Date date) {
-        Objects.requireNonNull(date);
-        this.date = date;
+        this.date = Objects.requireNonNull(date);
     }
 
     public String getCommentary() {
@@ -65,7 +65,7 @@ public final class Review implements Likeable {
     }
 
     public void setCommentary(String commentary) {
-        this.commentary = commentary;
+        this.commentary = Objects.requireNonNull(commentary);
     }
 
     public String getCode() {
@@ -73,8 +73,7 @@ public final class Review implements Likeable {
     }
 
     public void setCode(String code) {
-        Objects.requireNonNull(code);
-        this.code = code;
+        this.code = Objects.requireNonNull(code);
     }
 
     public String getTest() {
@@ -82,8 +81,7 @@ public final class Review implements Likeable {
     }
 
     public void setTest(String test) {
-        Objects.requireNonNull(test);
-        this.test = test;
+        this.test = Objects.requireNonNull(test);
     }
 
     public int getLikes() {
@@ -99,8 +97,7 @@ public final class Review implements Likeable {
     }
 
     public void setAuthor(User author) {
-        Objects.requireNonNull(author);
-        this.author = author;
+        this.author = Objects.requireNonNull(author);
     }
 
     public Set<Comment> getComments() {
@@ -108,8 +105,15 @@ public final class Review implements Likeable {
     }
 
     public void setComments(Set<Comment> comments) {
-        Objects.requireNonNull(comments);
-        this.comments = comments;
+        this.comments = Objects.requireNonNull(comments);
+    }
+
+    public Set<User> getRequestNotifications() {
+        return requestNotifications;
+    }
+
+    public void setRequestNotifications(Set<User> requestNotifications) {
+        this.requestNotifications = Objects.requireNonNull(requestNotifications);
     }
 
     @Override

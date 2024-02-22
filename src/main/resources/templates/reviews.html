@@ -21,9 +21,16 @@
         </div>
     </form>
 
-    <ul class="list-group">
+    <ul class="list-group mb-3">
         <li th:each="review : ${reviews}" class="list-group-item position-relative">
             <a th:href="@{'/reviews/' + ${review.id()}}" th:text="${review}" class="stretched-link"/>
+        </li>
+    </ul>
+
+    <ul th:if="${authenticated}" class="list-group mb-3">
+        <li th:each="notification : ${notifications}" th:switch="${notification.getType().name()}" class="list-group-item position-relative">
+            <a th:case="'NEW_COMMENT'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#comment_' + ${notification.getCommentId()}}" th:text="${notification}" class="stretched-link"/>
+            <a th:case="'NEW_RESPONSE'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#response_' + ${notification.getResponseId()}}" th:text="${notification}" class="stretched-link"/>
         </li>
     </ul>
 </div>

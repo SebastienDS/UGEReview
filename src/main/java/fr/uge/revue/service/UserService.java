@@ -255,12 +255,6 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public Review createReview(CreateReviewDTO createReviewDTO, User user) {
-        var review = new Review(createReviewDTO.title(), createReviewDTO.commentary(), createReviewDTO.code(), createReviewDTO.test(), user);
-        reviewRepository.save(review);
-        return review;
-    }
-
     @Transactional
     public void deleteUser(long userId) {
         var userDeleted = userRepository.findById(USER_DELETED_ID).orElseThrow();

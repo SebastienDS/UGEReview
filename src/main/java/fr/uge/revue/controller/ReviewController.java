@@ -7,6 +7,7 @@ import fr.uge.revue.model.Comment;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
+import fr.uge.revue.service.NotificationService;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,14 @@ public class ReviewController {
     private final UserService userService;
     private final CommentService commentService;
     private final ResponseService responseService;
+    private final NotificationService notificationService;
 
-    public ReviewController(ReviewService reviewService, UserService userService, CommentService commentService, ResponseService responseService) {
-        this.reviewService = reviewService;
-        this.userService = userService;
-        this.commentService = commentService;
-        this.responseService = responseService;
+    public ReviewController(ReviewService reviewService, UserService userService, CommentService commentService, ResponseService responseService, NotificationService notificationService) {
+        this.reviewService = Objects.requireNonNull(reviewService);
+        this.userService = Objects.requireNonNull(userService);
+        this.commentService = Objects.requireNonNull(commentService);
+        this.responseService = Objects.requireNonNull(responseService);
+        this.notificationService = Objects.requireNonNull(notificationService);
     }
 
     @GetMapping("/")
@@ -41,7 +44,9 @@ public class ReviewController {
     @GetMapping("/reviews")
     public String allReviews(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
+            var user = (User) authentication.getPrincipal();
             model.addAttribute("authenticated", true);
+            model.addAttribute("notifications", notificationService.findAllUserNotifications(user.getId()));
         }
         var reviews = reviewService.allReviews().stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
@@ -58,10 +63,12 @@ public class ReviewController {
     @GetMapping("/reviews/{reviewId}")
     public String oneReview(@PathVariable long reviewId, Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
+            var user = (User) authentication.getPrincipal();
             model.addAttribute("authenticated", true);
+            model.addAttribute("notificationActivated", notificationService.isUserRequestingNotification(reviewId, user.getId()));
         }
         var review = reviewService.getReview(reviewId);
-        if(review.isEmpty()){
+        if (review.isEmpty()) {
             return "notFound";
         }
         model.addAttribute("review", ReviewOneReviewDTO.from(review.get()));
@@ -125,7 +132,7 @@ public class ReviewController {
     @PostMapping("/createReview")
     public RedirectView createReview(Model model, Authentication authentication, @ModelAttribute CreateReviewDTO createReviewDTO) {
         var user = (User) authentication.getPrincipal();
-        var review = userService.createReview(createReviewDTO, user);
+        var review = reviewService.createReview(createReviewDTO, user);
         return new RedirectView("/reviews/" + review.getId());
     }
 
