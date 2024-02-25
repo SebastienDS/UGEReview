@@ -41,6 +41,7 @@ public class SecurityConfig {
                     .antMatchers("/createReview").authenticated()
                     .antMatchers("/deleteProfile").authenticated()
                     .antMatchers("/reviews/{reviewId}/notifications/activate", "/reviews/{reviewId}/notifications/deactivate").authenticated()
+                    .antMatchers("/notifications/{notificationId}/markAsRead").authenticated()
                     .anyRequest().permitAll()
                 .and().formLogin()
                     .loginPage("/login")

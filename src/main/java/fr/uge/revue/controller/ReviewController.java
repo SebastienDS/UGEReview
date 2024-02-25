@@ -57,7 +57,12 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews")
-    public String searchReview(@ModelAttribute("search") String search, Model model) {
+    public String searchReview(@ModelAttribute("search") String search, Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            var user = (User) authentication.getPrincipal();
+            model.addAttribute("authenticated", true);
+            model.addAttribute("notifications", notificationService.findAllUserNotifications(user.getId()));
+        }
         var reviews = reviewService.searchReview(search).stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
         return "reviews";
