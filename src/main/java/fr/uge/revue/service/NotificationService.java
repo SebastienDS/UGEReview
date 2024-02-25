@@ -25,18 +25,19 @@ public class NotificationService {
     public void notifyNewComment(Comment comment) {
         Objects.requireNonNull(comment);
         var review = reviewRepository.findByIdWithNotifications(comment.getReview().getId()).orElseThrow();
-        notifyUsers(review, user -> Notification.newComment(user, review.getId(), comment.getId()));
+        notifyOtherUsers(review, comment.getAuthor(), user -> Notification.newComment(user, review.getId(), comment.getId()));
     }
 
     public void notifyNewResponse(Response response) {
         Objects.requireNonNull(response);
         var review = reviewRepository.findByIdWithNotifications(response.getComment().getReview().getId()).orElseThrow();
-        notifyUsers(review, user -> Notification.newResponse(user, review.getId(), response.getId()));
+        notifyOtherUsers(review, response.getAuthor(), user -> Notification.newResponse(user, review.getId(), response.getId()));
     }
 
-    private void notifyUsers(Review review, Function<User, Notification> notificationMapper) {
+    private void notifyOtherUsers(Review review, User author, Function<User, Notification> notificationMapper) {
         review.getRequestNotifications()
                 .stream()
+                .filter(user -> !author.equals(user))
                 .map(notificationMapper)
                 .forEach(notificationRepository::save);
     }
@@ -46,12 +47,14 @@ public class NotificationService {
     }
 
     public void activateNotifications(long reviewId, User user) {
+        Objects.requireNonNull(user);
         var review = reviewRepository.findByIdWithNotifications(reviewId).orElseThrow();
         review.getRequestNotifications().add(user);
         reviewRepository.save(review);
     }
 
     public void deactivateNotifications(long reviewId, User user) {
+        Objects.requireNonNull(user);
         var review = reviewRepository.findByIdWithNotifications(reviewId).orElseThrow();
         review.getRequestNotifications().remove(user);
         reviewRepository.save(review);
