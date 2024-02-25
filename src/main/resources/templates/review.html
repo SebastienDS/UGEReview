@@ -10,7 +10,15 @@
 <div class="container">
     <div class="row">
         <div class="col-11">
-            <h1>REVIEW</h1>
+            <div class="row">
+                <h1>REVIEW</h1>
+                <form th:action="@{/deleteReview}" method="post" th:if="${isUserAdmin}">
+                    <input type="hidden" name="id" th:value="${reviewId}" />
+                    <button type="submit">
+                        Delete
+                    </button>
+                </form>
+            </div>
         </div>
         <div th:if="${authenticated}" class="col-1">
             <form th:action="@{'/reviews/' + ${reviewId} + '/notifications/activate'}" method="post" th:if="${!notificationActivated}">

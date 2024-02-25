@@ -7,6 +7,7 @@ import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,5 +44,15 @@ public class ReviewService {
         review.setRequestNotifications(Set.of(user));
         reviewRepository.save(review);
         return review;
+    }
+
+    @Transactional
+    public boolean delete(long id) {
+        var review = getReview(id);
+        if(review.isEmpty()){
+            return false;
+        }
+        reviewRepository.delete(review.get());
+        return true;
     }
 }

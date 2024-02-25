@@ -90,12 +90,10 @@ public class UserController {
     @PostMapping("/banProfile")
     public RedirectView banProfile(Authentication authentication, @RequestParam("id") long id) {
         if(authentication == null || (!authentication.isAuthenticated())){
-            System.out.println("here 2 ?");
             return new RedirectView("/users/" + id);
         }
         var user = (User) authentication.getPrincipal();
         if(user.getRole() != Role.ADMIN){
-            System.out.println("here?");
             return new RedirectView("/users/" + id);
         }
         var userPage = userService.getUserById(id);

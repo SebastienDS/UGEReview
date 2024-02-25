@@ -6,6 +6,7 @@ import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
 import fr.uge.revue.model.Comment;
 import fr.uge.revue.model.Response;
+import fr.uge.revue.model.Role;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
@@ -67,6 +68,7 @@ public class ReviewController {
         if (authentication != null && authentication.isAuthenticated()) {
             var user = (User) authentication.getPrincipal();
             model.addAttribute("authenticated", true);
+            model.addAttribute("isUserAdmin", user.getRole() == Role.ADMIN);
             model.addAttribute("notificationActivated", notificationService.isUserRequestingNotification(reviewId, user.getId()));
         }
         var review = reviewService.getReview(reviewId);
@@ -176,4 +178,20 @@ public class ReviewController {
         return ResponseEntity.ok("");
     }
 
+    @PostMapping("/deleteReview")
+    public RedirectView deleteReview(Authentication authentication, @RequestParam("id") long id) {
+        if(authentication == null || (!authentication.isAuthenticated())){
+            return new RedirectView("/reviews/" + id);
+        }
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            return new RedirectView("/reviews/" + id);
+        }
+
+        var success = reviewService.delete(id);
+        if(!success){
+            return new RedirectView("/reviews/" + id);
+        }
+        return new RedirectView("/reviews");
+    }
 }
