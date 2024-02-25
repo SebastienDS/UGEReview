@@ -39,4 +39,13 @@ public class CommentService {
     public Optional<Comment> getCommentWithResponse(long id) {
         return commentRepository.findByIdWithResponses(id);
     }
+
+    public boolean delete(long id) {
+        var comment = getComment(id);
+        if(comment.isEmpty()){
+            return false;
+        }
+        commentRepository.delete(comment.get());
+        return true;
+    }
 }

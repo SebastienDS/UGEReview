@@ -194,4 +194,21 @@ public class ReviewController {
         }
         return new RedirectView("/reviews");
     }
+
+    @PostMapping("/deleteComment")
+    public RedirectView deleteComment(Authentication authentication, @RequestParam("id") long id, @RequestParam("reviewId") long reviewId) {
+        if(authentication == null || (!authentication.isAuthenticated())){
+            return new RedirectView("/reviews/" + reviewId);
+        }
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            return new RedirectView("/reviews/" + reviewId);
+        }
+
+        var success = commentService.delete(id);
+        if(!success){
+            return new RedirectView("/reviews/" + reviewId);
+        }
+        return new RedirectView("/reviews/" + reviewId);
+    }
 }

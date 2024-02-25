@@ -4,6 +4,7 @@
     <title>UGERevue</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -79,7 +80,14 @@
                                 </button>
                             </form>
                         </div>
-                        <p class="col-11" th:text="${comment}" th:id = "'comment_' + ${comment.id}"/>
+                        <form th:action="@{/deleteComment}" method="post">
+                            <input type="hidden" name="id" th:value="${comment.id()}" />
+                            <input type="hidden" name="reviewId" th:value="${reviewId}" />
+                            <button class="col-0">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                        <p class="col-10" th:text="${comment}" th:id = "'comment_' + ${comment.id}"></p>
                     </div>
 
                     <ul class="list-group">
