@@ -21,16 +21,21 @@
         </div>
     </form>
 
-    <ul class="list-group mb-3">
-        <li th:each="review : ${reviews}" class="list-group-item position-relative">
-            <a th:href="@{'/reviews/' + ${review.id()}}" th:text="${review}" class="stretched-link"/>
+    <ul th:if="${authenticated}" class="list-group mb-3">
+        <li th:each="notification : ${notifications}" class="list-group-item list-group-item-action list-group-item-info d-flex">
+            <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead'}" method="post" class="me-3">
+                <button type="submit" class="btn-close" aria-label="Close"></button>
+            </form>
+            <div th:switch="${notification.getType().name()}" class="position-relative">
+                <a th:case="'NEW_COMMENT'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#comment_' + ${notification.getCommentId()}}" th:text="${notification}" class="stretched-link"/>
+                <a th:case="'NEW_RESPONSE'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#response_' + ${notification.getResponseId()}}" th:text="${notification}" class="stretched-link"/>
+            </div>
         </li>
     </ul>
 
-    <ul th:if="${authenticated}" class="list-group mb-3">
-        <li th:each="notification : ${notifications}" th:switch="${notification.getType().name()}" class="list-group-item position-relative">
-            <a th:case="'NEW_COMMENT'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#comment_' + ${notification.getCommentId()}}" th:text="${notification}" class="stretched-link"/>
-            <a th:case="'NEW_RESPONSE'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#response_' + ${notification.getResponseId()}}" th:text="${notification}" class="stretched-link"/>
+    <ul class="list-group mb-3">
+        <li th:each="review : ${reviews}" class="list-group-item position-relative">
+            <a th:href="@{'/reviews/' + ${review.id()}}" th:text="${review}" class="stretched-link"/>
         </li>
     </ul>
 </div>

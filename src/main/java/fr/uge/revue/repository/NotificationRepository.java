@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -16,5 +17,8 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
 
     @Query("SELECT n FROM Notification n WHERE n.notifiedUser.id = :userId")
     Set<Notification> findAllUserNotifications(@Param("userId") long userId);
+
+    @Query("SELECT n FROM Notification n LEFT JOIN FETCH n.notifiedUser WHERE n.id = :notificationId")
+    Optional<Notification> findByIdWithNotifiedUser(@Param("notificationId") long notificationId);
 }
 

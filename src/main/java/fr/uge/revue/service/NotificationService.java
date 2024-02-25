@@ -6,9 +6,11 @@ import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class NotificationService {
@@ -60,7 +62,20 @@ public class NotificationService {
         reviewRepository.save(review);
     }
 
-    public Set<Notification> findAllUserNotifications(long userId) {
-        return notificationRepository.findAllUserNotifications(userId);
+    public List<Notification> findAllUserNotifications(long userId) {
+        return notificationRepository.findAllUserNotifications(userId)
+                .stream()
+                .filter(notification -> !notification.isAlreadyRead())
+                .toList();
+    }
+
+    public boolean markAsRead(User user, long notificationId) {
+        Objects.requireNonNull(user);
+        var notification = notificationRepository.findByIdWithNotifiedUser(notificationId)
+                .filter(n -> n.getNotifiedUser().equals(user));
+        if (notification.isEmpty()) return false;
+        notification.get().setAlreadyRead(true);
+        notificationRepository.save(notification.get());
+        return true;
     }
 }

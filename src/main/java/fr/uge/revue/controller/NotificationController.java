@@ -32,4 +32,11 @@ public class NotificationController {
         notificationService.deactivateNotifications(reviewId, user);
         return new RedirectView("/reviews/" + reviewId);
     }
+
+    @PostMapping("/notifications/{notificationId}/markAsRead")
+    public RedirectView markNotificationAsRead(@PathVariable long notificationId, Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        notificationService.markAsRead(user, notificationId);
+        return new RedirectView("/reviews");
+    }
 }
