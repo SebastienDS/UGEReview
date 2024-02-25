@@ -80,7 +80,7 @@
                                 </button>
                             </form>
                         </div>
-                        <form th:action="@{/deleteComment}" method="post">
+                        <form th:action="@{/deleteComment}" method="post" class="col-1">
                             <input type="hidden" name="id" th:value="${comment.id()}" />
                             <input type="hidden" name="reviewId" th:value="${reviewId}" />
                             <button class="col-0">
@@ -109,7 +109,14 @@
                                         </button>
                                     </form>
                                 </div>
-                                <p class="col-11" th:text="${response}" th:id = "'response_' + ${response.id}"/>
+                                <form th:action="@{/deleteResponse}" method="post" class="col-1">
+                                    <input type="hidden" name="id" th:value="${response.id()}" />
+                                    <input type="hidden" name="reviewId" th:value="${reviewId}" />
+                                    <button>
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                                <p class="col-10" th:text="${response}" th:id = "'response_' + ${response.id}"/>
                             </div>
                         </li>
                         <div class="col-12" >

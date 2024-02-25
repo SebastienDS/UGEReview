@@ -210,10 +210,21 @@ public class ReviewController {
             return new RedirectView("/reviews/" + reviewId);
         }
 
-        var success = commentService.delete(id);
-        if(!success){
+        commentService.delete(id);
+        return new RedirectView("/reviews/" + reviewId);
+    }
+
+    @PostMapping("/deleteResponse")
+    public RedirectView deleteResponse(Authentication authentication, @RequestParam("id") long id, @RequestParam("reviewId") long reviewId) {
+        if(authentication == null || (!authentication.isAuthenticated())){
             return new RedirectView("/reviews/" + reviewId);
         }
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            return new RedirectView("/reviews/" + reviewId);
+        }
+
+        responseService.delete(id);
         return new RedirectView("/reviews/" + reviewId);
     }
 }

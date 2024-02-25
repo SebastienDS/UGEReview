@@ -28,4 +28,12 @@ public class ResponseService {
         responseRepository.save(response);
         notificationService.notifyNewResponse(response);
     }
+
+    public void delete(long id) {
+        var response = getResponse(id);
+        if(response.isEmpty()){
+            return;
+        }
+        responseRepository.delete(response.get());
+    }
 }
