@@ -100,9 +100,9 @@
                             <button style="width: inherit;" onclick="answer(this)" th:if="${authenticated}">
                                 Répondre
                             </button>
-                            <div style="display: none;">
+                            <div style="display: none; width: inherit;;">
                                 <textarea style="width: inherit;"></textarea>
-                                <button th:attr="onclick=|sendResponse(this, '${comment.id}')|">
+                                <button th:attr="onclick=|sendResponse(this, '${reviewId}', '${comment.id}')|">
                                     Envoyer
                                 </button>
                             </div>
@@ -114,7 +114,7 @@
     </div>
     <div class="row>" th:if="${authenticated}">
         <textarea id="newComment" rows="4" cols="50"></textarea>
-        <button onclick="comment()">Commenter</button>
+        <button th:attr="onclick=|comment('${reviewId}')|">Commenter</button>
     </div>
 
     <script>
@@ -124,17 +124,16 @@
             button.style.display = "none";
         }
 
-        function sendResponse(button, id) {
-            console.log(id);
+        function sendResponse(button, reviewId, commentId) {
             var parentDiv = button.parentNode;
             var replyButton = parentDiv.parentNode.querySelector("button");
             var textarea = parentDiv.querySelector("textarea");
             var responseText = textarea.value;
             var data = {
-                "id": id,
+                "id": commentId,
                 "content": responseText
             };
-            const url = window.location.href + "/response";
+            const url = "/reviews/" + reviewId + "/response";
             console.log(url);
             fetch(url, {
                 method: 'POST',
@@ -161,9 +160,10 @@
             });
         }
 
-        function comment() {
+        function comment(reviewId) {
+            console.log(reviewId);
             var content = document.getElementById("newComment");
-            const url = window.location.href + "/comment";
+            const url = "/reviews/" + reviewId + "/comment";
             fetch(url, {
                 method: 'POST',
                 headers: {

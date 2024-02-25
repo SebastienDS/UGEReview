@@ -154,22 +154,17 @@ public class ReviewController {
         }
         var comment = new Comment(content, user, review.get());
         commentService.saveComment(comment);
-        reviewService.addComment(review.get(), comment);
-        userService.addComment(user.getId(), comment);
         return ResponseEntity.ok("");
     }
 
     @PostMapping("/reviews/{reviewId}/response")
     public ResponseEntity<String> createResponse(Model model, @PathVariable long reviewId, @RequestBody SendResponseDTO content, Authentication authentication) {
-        System.out.println("WOW");
         Objects.requireNonNull(content);
         if (authentication == null || !authentication.isAuthenticated()) {
-            System.out.println("here?");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
         }
         var user = (User) authentication.getPrincipal();
         if(user == null){
-            System.out.println("Here?????");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
         }
         var comment = commentService.getCommentWithResponse(content.id());
@@ -178,8 +173,6 @@ public class ReviewController {
         }
         var response = new Response(content.content(), user,comment.get());
         responseService.saveResponse(response);
-        commentService.addResponse(comment.get(), response);
-        userService.addResponse(user.getId(), response);
         return ResponseEntity.ok("");
     }
 
