@@ -23,8 +23,11 @@ public class Application {
     public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
         return args -> {
             var userDeleted = new User("UserDeleted", "", "", Role.USER);
+            var userBanned = new User("UserBanned", "", "", Role.USER);
             userDeleted.setId(1L);
+            userBanned.setId(2L);
             userRepository.save(userDeleted);
+            userRepository.save(userBanned);
             var user = new User("User1", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
             userRepository.save(user);
 
@@ -44,7 +47,7 @@ public class Application {
 
             var comment = new Comment("Kakukaku", user, review);
             var comment2 = new Comment("Kukakuka", user2, review);
-            var comment3 = new Comment("Quentin est nul", user, review2);
+            var comment3 = new Comment("UwU", user, review2);
             commentRepository.saveAll(List.of(comment, comment2, comment3));
             for (int i = 0; i < 100; i++) {
                 commentRepository.save(new Comment("test", user, review));

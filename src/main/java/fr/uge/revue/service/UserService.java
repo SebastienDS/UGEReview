@@ -20,6 +20,7 @@ import java.util.*;
 @Service
 public class UserService implements UserDetailsService {
     private static final long USER_DELETED_ID = 1L;
+    private static final long USER_BANNED_ID = 2L;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final CommentRepository commentRepository;
@@ -322,5 +323,20 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByIdWithContent(id).orElseThrow();
         user.addResponse(response);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void banUser(long id) {
+        var userBanned = userRepository.findById(USER_BANNED_ID).orElseThrow();
+        var user = userRepository.findByIdWithContent(id).orElseThrow();
+        user.getReviews().forEach(review -> review.setAuthor(userBanned));
+        user.getComments().forEach(comment -> comment.setAuthor(userBanned));
+        user.getResponses().forEach(response -> response.setAuthor(userBanned));
+        user.setReviews(new HashSet<>());
+        user.setComments(new HashSet<>());
+        user.setResponses(new HashSet<>());
+        user.setAccountNonLocked(false);
+        userRepository.save(user);
+        userRepository.save(userBanned);
     }
 }

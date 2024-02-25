@@ -3,6 +3,7 @@ package fr.uge.revue.controller;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.updatePassword.PasswordReceived;
 import fr.uge.revue.dto.user.UserProfileDTO;
+import fr.uge.revue.model.Role;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
@@ -38,11 +39,17 @@ public class UserController {
         if (user.isEmpty()) {
             return "notFound";
         }
+
+        if(user.get().getRole() == Role.ADMIN){
+            model.addAttribute("isUserPageAdmin", true);
+        }
         if (authentication != null && authentication.isAuthenticated()) {
             model.addAttribute("authenticated", true);
             var myId = ((User) authentication.getPrincipal()).getId();
             var me = userService.findByIdWithFollowers(myId).orElseThrow();
-
+            if(me.getRole() == Role.ADMIN){
+                model.addAttribute("isUserAdmin", true);
+            }
             if (me.equals(user.get())) {
                 model.addAttribute("isMyUserPage", true);
             } else if (me.getFollowers().contains(user.get())) {
@@ -78,6 +85,25 @@ public class UserController {
         var user = (User) authentication.getPrincipal();
         userService.deleteUser(user.getId());
         return new RedirectView("/logout");
+    }
+
+    @PostMapping("/banProfile")
+    public RedirectView banProfile(Authentication authentication, @RequestParam("id") long id) {
+        if(authentication == null || (!authentication.isAuthenticated())){
+            System.out.println("here 2 ?");
+            return new RedirectView("/users/" + id);
+        }
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            System.out.println("here?");
+            return new RedirectView("/users/" + id);
+        }
+        var userPage = userService.getUserById(id);
+        if(userPage.isEmpty() || userPage.get().getRole() == Role.ADMIN){
+            return new RedirectView("/users/" + id);
+        }
+        userService.banUser(id);
+        return new RedirectView("/reviews");
     }
 
     @GetMapping("/users/{userId}/comments")

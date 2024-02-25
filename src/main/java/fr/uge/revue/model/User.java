@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @ManyToMany
     private Set<Review> reviewsDislikes;
 
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked = true;
+
     public User() {
     }
 
@@ -205,7 +208,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override
@@ -234,5 +237,9 @@ public class User implements UserDetails {
 
     public void addResponse(Response response) {
         responses.add(response);
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 }

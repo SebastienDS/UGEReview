@@ -71,6 +71,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <span th:text="${user.dateCreation}"></span>
+                </div>
                 <div class="row" th:if="${isMyUserPage}">
                     <div id="rowNormalPassword" class="row">
                         <p>
@@ -93,8 +96,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="row">
-                    <span th:text="${user.dateCreation}"></span>
+                <div th:if="${isUserPageAdmin == null && isUserAdmin != null}">
+                    <form th:action="@{/banProfile}" method="post">
+                        <input type="hidden" name="id" th:value="${userId}" />
+                        <button type="submit">Bannir le compte</button>
+                    </form>
                 </div>
             </div>
         </div>
