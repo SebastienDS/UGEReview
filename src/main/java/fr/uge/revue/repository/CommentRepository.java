@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface CommentRepository extends CrudRepository<Comment, Long> {
     @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.review WHERE c.id = :id")
     Optional<Comment> findByIdWithReview(@Param("id") long id);
+
+    @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.responses WHERE c.id = :id")
+    Optional<Comment> findByIdWithResponses(long id);
 }

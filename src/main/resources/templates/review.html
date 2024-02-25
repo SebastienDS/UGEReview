@@ -96,6 +96,17 @@
                                 <p class="col-11" th:text="${response}" th:id = "'response_' + ${response.id}"/>
                             </div>
                         </li>
+                        <div class="col-11" >
+                            <button style="width: inherit;" onclick="answer(this)" th:if="${authenticated}">
+                                Répondre
+                            </button>
+                            <div style="display: none;">
+                                <textarea style="width: inherit;"></textarea>
+                                <button th:attr="onclick=|sendResponse(this, '${comment.id}')|">
+                                    Envoyer
+                                </button>
+                            </div>
+                        </div>
                     </ul>
                 </li>
             </ul>
@@ -107,6 +118,49 @@
     </div>
 
     <script>
+        function answer(button) {
+            var div = button.nextElementSibling;
+            div.style.display = "block";
+            button.style.display = "none";
+        }
+
+        function sendResponse(button, id) {
+            console.log(id);
+            var parentDiv = button.parentNode;
+            var replyButton = parentDiv.parentNode.querySelector("button");
+            var textarea = parentDiv.querySelector("textarea");
+            var responseText = textarea.value;
+            var data = {
+                "id": id,
+                "content": responseText
+            };
+            const url = window.location.href + "/response";
+            console.log(url);
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if(response.ok){
+                    console.log("OK");
+                    textarea.value = "";
+                    parentDiv.style.display = "none";
+                    replyButton.style.display = "block";
+                    var scrollPosition = window.scrollY;
+                    window.location.reload();
+                    window.scrollTo(0, scrollPosition);
+                } else {
+                    console.log(response);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête PUT :', error);
+            });
+        }
+
         function comment() {
             var content = document.getElementById("newComment");
             const url = window.location.href + "/comment";

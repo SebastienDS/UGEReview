@@ -231,4 +231,8 @@ public class User implements UserDetails {
     public void addComment(Comment comment) {
         comments.add(comment);
     }
+
+    public void addResponse(Response response) {
+        responses.add(response);
+    }
 }

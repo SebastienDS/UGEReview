@@ -110,4 +110,8 @@ public final class Comment implements Likeable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public void addResponse(Response response) {
+        responses.add(response);
+    }
 }

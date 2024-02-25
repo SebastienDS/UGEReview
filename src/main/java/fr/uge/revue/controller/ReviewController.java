@@ -1,9 +1,11 @@
 package fr.uge.revue.controller;
 
+import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
 import fr.uge.revue.model.Comment;
+import fr.uge.revue.model.Response;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
@@ -137,7 +139,7 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews/{reviewId}/comment")
-    public ResponseEntity<String> createComment(Model model, @PathVariable long reviewId, @RequestBody String content, Authentication authentication, @ModelAttribute CreateReviewDTO createReviewDTO) {
+    public ResponseEntity<String> createComment(Model model, @PathVariable long reviewId, @RequestBody String content, Authentication authentication) {
         Objects.requireNonNull(content);
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
@@ -145,7 +147,6 @@ public class ReviewController {
         var user = (User) authentication.getPrincipal();
         var review = reviewService.getReview(reviewId);
         if(user == null){
-            System.out.println("cc");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
         }
         if(review.isEmpty()){
@@ -155,6 +156,30 @@ public class ReviewController {
         commentService.saveComment(comment);
         reviewService.addComment(review.get(), comment);
         userService.addComment(user.getId(), comment);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/reviews/{reviewId}/response")
+    public ResponseEntity<String> createResponse(Model model, @PathVariable long reviewId, @RequestBody SendResponseDTO content, Authentication authentication) {
+        System.out.println("WOW");
+        Objects.requireNonNull(content);
+        if (authentication == null || !authentication.isAuthenticated()) {
+            System.out.println("here?");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
+        }
+        var user = (User) authentication.getPrincipal();
+        if(user == null){
+            System.out.println("Here?????");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
+        }
+        var comment = commentService.getCommentWithResponse(content.id());
+        if(comment.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment Not Found");
+        }
+        var response = new Response(content.content(), user,comment.get());
+        responseService.saveResponse(response);
+        commentService.addResponse(comment.get(), response);
+        userService.addResponse(user.getId(), response);
         return ResponseEntity.ok("");
     }
 

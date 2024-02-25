@@ -1,6 +1,7 @@
 package fr.uge.revue.service;
 
 import fr.uge.revue.model.Comment;
+import fr.uge.revue.model.Response;
 import fr.uge.revue.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +28,15 @@ public class CommentService {
         Objects.requireNonNull(comment);
         commentRepository.save(comment);
         notificationService.notifyNewComment(comment);
+    }
+
+    @Transactional
+    public void addResponse(Comment comment, Response response) {
+        comment.addResponse(response);
+        commentRepository.save(comment);
+    }
+
+    public Optional<Comment> getCommentWithResponse(long id) {
+        return commentRepository.findByIdWithResponses(id);
     }
 }

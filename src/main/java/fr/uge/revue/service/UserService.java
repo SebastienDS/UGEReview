@@ -317,4 +317,10 @@ public class UserService implements UserDetailsService {
         var user = userRepository.findByIdWithLikes(userId).orElseThrow();
         return UserAllLikesDTO.from(user);
     }
+
+    public void addResponse(long id, Response response) {
+        User user = userRepository.findByIdWithContent(id).orElseThrow();
+        user.addResponse(response);
+        userRepository.save(user);
+    }
 }
