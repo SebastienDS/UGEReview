@@ -148,14 +148,8 @@ public class ReviewController {
     @PostMapping("/reviews/{reviewId}/comment")
     public ResponseEntity<String> createComment(Model model, @PathVariable long reviewId, @RequestBody String content, Authentication authentication) {
         Objects.requireNonNull(content);
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
-        }
         var user = (User) authentication.getPrincipal();
         var review = reviewService.getReview(reviewId);
-        if(user == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
-        }
         if(review.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review Not Found");
         }
@@ -167,13 +161,7 @@ public class ReviewController {
     @PostMapping("/reviews/{reviewId}/response")
     public ResponseEntity<String> createResponse(Model model, @PathVariable long reviewId, @RequestBody SendResponseDTO content, Authentication authentication) {
         Objects.requireNonNull(content);
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
-        }
         var user = (User) authentication.getPrincipal();
-        if(user == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not connected");
-        }
         var comment = commentService.getCommentWithResponse(content.id());
         if(comment.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment Not Found");
@@ -185,14 +173,10 @@ public class ReviewController {
 
     @PostMapping("/deleteReview")
     public RedirectView deleteReview(Authentication authentication, @RequestParam("id") long id) {
-        if(authentication == null || (!authentication.isAuthenticated())){
-            return new RedirectView("/reviews/" + id);
-        }
         var user = (User) authentication.getPrincipal();
         if(user.getRole() != Role.ADMIN){
             return new RedirectView("/reviews/" + id);
         }
-
         var success = reviewService.delete(id);
         if(!success){
             return new RedirectView("/reviews/" + id);
@@ -202,9 +186,6 @@ public class ReviewController {
 
     @PostMapping("/deleteComment")
     public RedirectView deleteComment(Authentication authentication, @RequestParam("id") long id, @RequestParam("reviewId") long reviewId) {
-        if(authentication == null || (!authentication.isAuthenticated())){
-            return new RedirectView("/reviews/" + reviewId);
-        }
         var user = (User) authentication.getPrincipal();
         if(user.getRole() != Role.ADMIN){
             return new RedirectView("/reviews/" + reviewId);
@@ -216,9 +197,6 @@ public class ReviewController {
 
     @PostMapping("/deleteResponse")
     public RedirectView deleteResponse(Authentication authentication, @RequestParam("id") long id, @RequestParam("reviewId") long reviewId) {
-        if(authentication == null || (!authentication.isAuthenticated())){
-            return new RedirectView("/reviews/" + reviewId);
-        }
         var user = (User) authentication.getPrincipal();
         if(user.getRole() != Role.ADMIN){
             return new RedirectView("/reviews/" + reviewId);
