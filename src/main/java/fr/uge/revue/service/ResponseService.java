@@ -1,6 +1,5 @@
 package fr.uge.revue.service;
 
-import fr.uge.revue.model.Comment;
 import fr.uge.revue.model.Response;
 import fr.uge.revue.repository.ResponseRepository;
 import org.springframework.stereotype.Service;
@@ -12,9 +11,11 @@ import java.util.Optional;
 @Service
 public class ResponseService {
     private final ResponseRepository responseRepository;
+    private final NotificationService notificationService;
 
-    public ResponseService(ResponseRepository responseRepository) {
+    public ResponseService(ResponseRepository responseRepository, NotificationService notificationService) {
         this.responseRepository = Objects.requireNonNull(responseRepository);
+        this.notificationService = Objects.requireNonNull(notificationService);
     }
 
     public Optional<Response> getResponse(long responseId) {
@@ -25,5 +26,6 @@ public class ResponseService {
     public void saveResponse(Response response) {
         Objects.requireNonNull(response);
         responseRepository.save(response);
+        notificationService.notifyNewResponse(response);
     }
 }
