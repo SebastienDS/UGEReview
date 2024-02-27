@@ -1,6 +1,5 @@
 package fr.uge.revue.service;
 
-import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.user.UserAllLikesDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
