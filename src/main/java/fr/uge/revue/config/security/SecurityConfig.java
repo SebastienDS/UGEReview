@@ -41,7 +41,7 @@ public class SecurityConfig {
                     .antMatchers("/createReview").authenticated()
                     .antMatchers("/deleteProfile").authenticated()
                     .antMatchers("/reviews/{reviewId}/notifications/activate", "/reviews/{reviewId}/notifications/deactivate").authenticated()
-                    .antMatchers("/notifications/{notificationId}/markAsRead").authenticated()
+                    .antMatchers("/notifications/{notificationId}/markAsRead", "/notifications/{notificationId}/markAsRead/redirect").authenticated()
                     .antMatchers("/deleteResponse").authenticated()
                     .antMatchers("/deleteComment").authenticated()
                     .antMatchers("/deleteReview").authenticated()

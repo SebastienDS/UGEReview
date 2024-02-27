@@ -22,14 +22,13 @@
     </form>
 
     <ul th:if="${authenticated}" class="list-group mb-3">
-        <li th:each="notification : ${notifications}" class="list-group-item list-group-item-action list-group-item-info d-flex">
+        <li th:each="notification : ${notifications}" class="list-group-item list-group-item-action list-group-item-info d-flex align-items-center">
             <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead'}" method="post" class="me-3">
                 <button type="submit" class="btn-close" aria-label="Close"></button>
             </form>
-            <div th:switch="${notification.getType().name()}" class="position-relative">
-                <a th:case="'NEW_COMMENT'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#comment_' + ${notification.getCommentId()}}" th:text="${notification}" class="stretched-link"/>
-                <a th:case="'NEW_RESPONSE'" th:href="@{'/reviews/' + ${notification.getReviewId()} + '#response_' + ${notification.getResponseId()}}" th:text="${notification}" class="stretched-link"/>
-            </div>
+            <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead/redirect'}" method="post" class="position-relative">
+                <button type="submit" class="stretched-link btn btn-link" th:text="${notification}"/>
+            </form>
         </li>
     </ul>
 
