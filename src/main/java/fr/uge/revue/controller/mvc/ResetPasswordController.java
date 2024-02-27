@@ -1,4 +1,4 @@
-package fr.uge.revue.controller;
+package fr.uge.revue.controller.mvc;
 
 import fr.uge.revue.dto.resetpassword.AskEmailDTO;
 import fr.uge.revue.dto.resetpassword.ResetPasswordDTO;

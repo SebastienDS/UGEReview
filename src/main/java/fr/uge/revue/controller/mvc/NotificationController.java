@@ -1,4 +1,4 @@
-package fr.uge.revue.controller;
+package fr.uge.revue.controller.mvc;
 
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.NotificationService;
