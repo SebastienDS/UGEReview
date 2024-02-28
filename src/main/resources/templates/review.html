@@ -10,9 +10,9 @@
 <div th:replace="fragments/header :: navbar"></div>
 <div class="container">
     <div class="row">
-        <div class="col-11">
+        <div class="col-10">
             <div class="row">
-                <h1>REVIEW</h1>
+                <h1 th:text="${review.title}"></h1>
                 <form th:action="@{/deleteReview}" method="post" th:if="${isUserAdmin}">
                     <input type="hidden" name="id" th:value="${reviewId}" />
                     <button type="submit">
@@ -20,6 +20,10 @@
                     </button>
                 </form>
             </div>
+        </div>
+        <div class="col-1">
+            <span class="row-6" th:text="${review.author().username()}"></span>
+            <span class="row-6" th:text="${review.date()}"></span>
         </div>
         <div th:if="${authenticated}" class="col-1">
             <form th:action="@{'/reviews/' + ${reviewId} + '/notifications/activate'}" method="post" th:if="${!notificationActivated}">
@@ -56,7 +60,8 @@
                 </button>
             </form>
         </div>
-        <p th:text="${review}" class="col-11"/>
+        <p th:text="${review.commentary()}" class="col-11"></p>
+        <p th:text="${review.code()}" class="col-11"></p>
     </div>
 
     <div class="row">
@@ -80,14 +85,16 @@
                                 </button>
                             </form>
                         </div>
-                        <form th:action="@{/deleteComment}" method="post" class="col-1">
+                        <form th:action="@{/deleteComment}" method="post" class="col-1" th:if="${isUserAdmin}">
                             <input type="hidden" name="id" th:value="${comment.id()}" />
                             <input type="hidden" name="reviewId" th:value="${reviewId}" />
                             <button class="col-0">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
-                        <p class="col-10" th:text="${comment}" th:id = "'comment_' + ${comment.id}"></p>
+                        <p class="col-5" th:text="${comment.author().username()}"></p>
+                        <p class="col-5" th:text="${comment.date()}"  style="text-align:end;"></p>
+                        <p class="col-12" th:text="${comment.content()}"></p>
                     </div>
 
                     <ul class="list-group">
@@ -109,14 +116,16 @@
                                         </button>
                                     </form>
                                 </div>
-                                <form th:action="@{/deleteResponse}" method="post" class="col-1">
+                                <form th:action="@{/deleteResponse}" method="post" class="col-1" th:if="${isUserAdmin}">
                                     <input type="hidden" name="id" th:value="${response.id()}" />
                                     <input type="hidden" name="reviewId" th:value="${reviewId}" />
                                     <button>
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
-                                <p class="col-10" th:text="${response}" th:id = "'response_' + ${response.id}"/>
+                                <p class="col-5" th:text="${response.author().username()}"></p>
+                                <p class="col-5" th:text="${response.date()}" style="text-align:end;"></p>
+                                <p class="col-12" th:text="${response.content()}"></p>
                             </div>
                         </li>
                         <div class="col-12" >
