@@ -17,7 +17,10 @@ async function login() {
             },
             body: JSON.stringify({ username, password })
         });
-        if (!response.ok) return
+        if (!response.ok) {
+            error = true;
+            return
+        }
         const token = btoa(`${username}:${password}`)
         authToken.update(`Basic ${token}`);
 
