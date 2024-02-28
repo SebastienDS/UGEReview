@@ -13,11 +13,11 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
-public class RegistrationAPIController {
+public class RegistrationRestController {
 
     private final AuthenticationManager authenticationManager;
 
-    public RegistrationAPIController(AuthenticationManager authenticationManager) {
+    public RegistrationRestController(AuthenticationManager authenticationManager) {
         this.authenticationManager = Objects.requireNonNull(authenticationManager);
     }
 
