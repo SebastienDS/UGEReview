@@ -27,14 +27,29 @@
                 <button type="submit" class="btn-close" aria-label="Close"></button>
             </form>
             <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead/redirect'}" method="post" class="position-relative">
-                <button type="submit" class="stretched-link btn btn-link" th:text="${notification}"/>
+                <button type="submit" class="stretched-link btn btn-link" th:text="${notification}"></button>
             </form>
         </li>
     </ul>
 
     <ul class="list-group mb-3">
         <li th:each="review : ${reviews}" class="list-group-item position-relative">
-            <a th:href="@{'/reviews/' + ${review.id()}}" th:text="${review}" class="stretched-link"/>
+            <div class="row">
+                <a th:href="@{'/reviews/' + ${review.id()}}" class="col-9">
+                    <div>
+                        <p th:text="${review.title()}"></p>
+                    </div>
+                </a>
+
+
+                <div class="col-3" style="text-align:end;">
+                    <a th:href="@{'/users/' + ${review.author().id()}}">
+                        <p th:text="${review.author().username()}"></p>
+                    </a>
+                    <p th:text="${review.date()}"></p>
+                </div>
+            </div>
+
         </li>
     </ul>
 </div>
