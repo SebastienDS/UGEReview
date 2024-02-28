@@ -14,7 +14,6 @@ async function login(username, password) {
 
     const token = btoa(`${username}:${password}`)
     authToken.update(`Basic ${token}`);
-    console.log("token", $authToken)
   } catch (error) {
     console.error(error);
   }
@@ -24,11 +23,11 @@ login("test", "test")
 </script>
 
 <nav>
-  <a data-sveltekit-preload-data="tap" href="/front">Home</a>
-  <a data-sveltekit-preload-data="tap" href="/front/test">Test</a>
-  <a data-sveltekit-preload-data="tap" href="/front/reviews">Reviews</a>
-  <a data-sveltekit-preload-data="tap" href="/front/login">Login</a>
-  <a data-sveltekit-preload-data="tap" href="/front/logout">Logout</a>
+  <a href="/front">Home</a>
+  <a href="/front/test">Test</a>
+  <a href="/front/reviews">Reviews</a>
+  <a href="/front/login">Login</a>
+  <a href="/front/logout">Logout</a>
 </nav>
 
 
