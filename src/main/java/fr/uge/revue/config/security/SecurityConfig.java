@@ -50,10 +50,13 @@ public class SecurityConfig {
                     .antMatchers("/users/{userId}/updateUsername").authenticated()
                     .antMatchers("/users/{userId}/updateEmail").authenticated()
                     .antMatchers("/users/{userId}/updatePassword").authenticated()
-                    .anyRequest().permitAll()
-                .and().formLogin()
-                    .loginPage("/login")
-                .and().logout().logoutSuccessUrl("/");
+                .and().formLogin().loginPage("/login")
+                .and().logout().logoutSuccessUrl("/")
+                .and().authorizeRequests()
+                    .antMatchers("/api/v1/login").permitAll()
+                    .antMatchers("/api/v1/**").authenticated()
+                .and().authorizeRequests().anyRequest().permitAll()
+                .and().httpBasic();
         return http.build();
     }
 
