@@ -23,10 +23,10 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
         "OR LOWER(r.author.username) LIKE LOWER(CONCAT('%', :search, '%'))")
     List<Review> searchReview(@Param("search") String search);
 
-    @Query("SELECT r FROM Review r WHERE r.author.id = :userId")
+    @Query("SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id = :userId")
     List<Review> findAllUserReviews(@Param("userId") long userId);
 
-    @Query("SELECT r FROM Review r WHERE r.author.id = :userId AND LOWER(r.title) LIKE LOWER(CONCAT('%', :search, '%'))")
+    @Query("SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id = :userId AND LOWER(r.title) LIKE LOWER(CONCAT('%', :search, '%'))")
     List<Review> findAllUserReviewsMatching(@Param("userId") long userId, @Param("search") String search);
 
     @Query("SELECT r FROM Review r LEFT JOIN FETCH r.requestNotifications WHERE r.id = :reviewId")
