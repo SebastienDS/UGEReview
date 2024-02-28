@@ -1,9 +1,9 @@
-<nav>
-  <a href="/front">Home</a>
-  <a href="/front/test">Test</a>
-  <a href="/front/reviews">Reviews</a>
-  <a href="/front/login">Login</a>
-  <a href="/front/logout">Logout</a>
-</nav>
+<script>
+    import NavBar from '$lib/components/NavBar.svelte';
+</script>
 
-<h1>Home page</h1>
+<div class="container">
+	<NavBar/>
+
+	<h1>Home page</h1>
+</div>
