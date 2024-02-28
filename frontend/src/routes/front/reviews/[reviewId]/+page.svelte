@@ -1,5 +1,7 @@
 <script>
     import { authToken } from '$lib/auth';
+    import NavBar from '$lib/components/NavBar.svelte';
+
     export let data;
 
     const isAuthenticated = authToken.get() != null;
@@ -74,15 +76,10 @@
     }
 </script>
 
-<nav>
-  <a data-sveltekit-preload-data="tap" href="/front">Home</a>
-  <a data-sveltekit-preload-data="tap" href="/front/test">Test</a>
-  <a data-sveltekit-preload-data="tap" href="/front/reviews">Reviews</a>
-  <a data-sveltekit-preload-data="tap" href="/front/login">Login</a>
-  <a data-sveltekit-preload-data="tap" href="/front/logout">Logout</a>
-</nav>
 
 <div class="container">
+    <NavBar/>
+
     <div class="row">
         <div class="col-11">
             <div class="row">
