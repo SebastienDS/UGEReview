@@ -10,6 +10,7 @@
   <a data-sveltekit-preload-data="tap" href="/front/reviews">Reviews</a>
   <a data-sveltekit-preload-data="tap" href="/front/login">Login</a>
   <a data-sveltekit-preload-data="tap" href="/front/logout">Logout</a>
+  <a data-sveltekit-preload-data="tap" href="/front/reviews/4">Logout</a>
 </nav>
 
 
