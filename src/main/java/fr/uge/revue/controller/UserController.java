@@ -222,5 +222,11 @@ public class UserController {
         model.addAttribute("likedResponses", likedResponses);
         return "likes";
     }
+
+    @GetMapping("/profile")
+    public RedirectView profile(Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        return new RedirectView("/users/" + user.getId());
+    }
 }
 
