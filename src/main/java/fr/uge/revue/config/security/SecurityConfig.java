@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .and().formLogin().loginPage("/login")
                 .and().logout().logoutSuccessUrl("/")
                 .and().authorizeRequests()
+                    .antMatchers("/createReview").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();

@@ -2,6 +2,8 @@
     export let data;
 
     import { authToken } from '$lib/auth';
+    import NavBar from '$lib/components/NavBar.svelte';
+
 
     const isAuthenticated = authToken.get() != null;
 
@@ -23,13 +25,7 @@
 </script>
 
 <div class="container">
-    <nav>
-        <a href="/front">Home</a>
-        <a href="/front/test">Test</a>
-        <a href="/front/reviews">Reviews</a>
-        <a href="/front/login">Login</a>
-        <a href="/front/logout">Logout</a>
-    </nav>
+    <NavBar/>
 
     <h1>UGERevue</h1>
 

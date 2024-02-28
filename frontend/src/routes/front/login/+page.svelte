@@ -1,7 +1,8 @@
 <script>
-import { browser } from "$app/environment";
 import { goto } from '$app/navigation';
 import { authToken } from '$lib/auth';
+import NavBar from '$lib/components/NavBar.svelte';
+
 
 let username = '';
 let password = '';
@@ -24,9 +25,7 @@ async function login() {
         const token = btoa(`${username}:${password}`)
         authToken.update(`Basic ${token}`);
 
-        if (browser) {
-            goto('/front/reviews');
-        }
+        goto('/front/reviews');
         error = false;
     } catch (error) {
         console.error(error);
@@ -37,13 +36,7 @@ async function login() {
 </script>
 
 <div class="container">
-    <nav>
-    <a href="/front">Home</a>
-    <a href="/front/test">Test</a>
-    <a href="/front/reviews">Reviews</a>
-    <a href="/front/login">Login</a>
-    <a href="/front/logout">Logout</a>
-    </nav>
+    <NavBar/>
 
     <h1>UGERevue</h1>
 
