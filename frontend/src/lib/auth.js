@@ -1,21 +1,23 @@
 import { browser } from "$app/environment";
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 
 const createAuthTokenStore = (token) => {
-    const { subscribe, set, update } = writable(token);
+    const authToken = writable(token);
 
     const updateToken = (newToken) => {
         if (browser) localStorage.setItem("basicAuthToken", newToken)
-        update(() => newToken);
+        authToken.update(() => newToken);
     }
 
     const clearToken = () => {
         if (browser) localStorage.removeItem("basicAuthToken")
-        set(null);
+        authToken.set(null);
     }
 
-    return { subscribe, update: updateToken, clear: clearToken };
+    const getToken = () => get(authToken)
+
+    return { subscribe: authToken.subscribe, update: updateToken, clear: clearToken, get: getToken };
 };
 
 export const authToken = createAuthTokenStore(browser && localStorage.getItem("basicAuthToken"));
