@@ -36,13 +36,17 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/users/addFriend/{userId}").authenticated()
-                    .antMatchers("/reviews/{reviewID}/like").authenticated()
-                    .antMatchers("/reviews/{reviewID}/dislike").authenticated()
+                    .antMatchers("/reviews/{reviewId}/like").authenticated()
+                    .antMatchers("/reviews/{reviewId}/dislike").authenticated()
+                    .antMatchers("/comments/{commentId}/like").authenticated()
+                    .antMatchers("/comments/{commentId}/dislike").authenticated()
+                    .antMatchers("/responses/{responseId}/like").authenticated()
+                    .antMatchers("/responses/{responseId}/dislike").authenticated()
                     .antMatchers("/createReview").authenticated()
                     .antMatchers("/deleteProfile").authenticated()
                     .antMatchers("/profile").authenticated()
                     .antMatchers("/reviews/{reviewId}/notifications/activate", "/reviews/{reviewId}/notifications/deactivate").authenticated()
-                    .antMatchers("/notifications/{notificationId}/markAsRead").authenticated()
+                    .antMatchers("/notifications/{notificationId}/markAsRead", "/notifications/{notificationId}/markAsRead/redirect").authenticated()
                     .antMatchers("/deleteResponse").authenticated()
                     .antMatchers("/deleteComment").authenticated()
                     .antMatchers("/deleteReview").authenticated()
@@ -51,10 +55,12 @@ public class SecurityConfig {
                     .antMatchers("/users/{userId}/updateUsername").authenticated()
                     .antMatchers("/users/{userId}/updateEmail").authenticated()
                     .antMatchers("/users/{userId}/updatePassword").authenticated()
-                    .anyRequest().permitAll()
-                .and().formLogin()
-                    .loginPage("/login")
-                .and().logout().logoutSuccessUrl("/");
+                .and().formLogin().loginPage("/login")
+                .and().logout().logoutSuccessUrl("/")
+                .and().authorizeRequests()
+                    .antMatchers("/createReview").authenticated()
+                .and().authorizeRequests().anyRequest().permitAll()
+                .and().httpBasic();
         return http.build();
     }
 
