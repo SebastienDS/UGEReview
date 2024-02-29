@@ -74,7 +74,7 @@ async function login() {
             </div>
         </div>
         <div class="form-group mb-3">
-            <!-- <a href="/front/resetPassword">Mot de passe oublié</a> -->
+            <a href="/front/resetPassword">Mot de passe oublié</a>
         </div>
         <div class="form-group mb-3">
             <button type="submit" class="btn btn-primary">Se connecter</button>
