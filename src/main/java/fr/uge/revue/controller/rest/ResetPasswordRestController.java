@@ -2,13 +2,11 @@ package fr.uge.revue.controller.rest;
 
 import fr.uge.revue.dto.resetpassword.AskEmailDTO;
 import fr.uge.revue.dto.resetpassword.InvalidPasswordDTO;
-import fr.uge.revue.dto.resetpassword.NotFoundOrExpiredToken;
 import fr.uge.revue.dto.resetpassword.ResetPasswordDTO;
 import fr.uge.revue.service.EmailService;
 import fr.uge.revue.service.ResetPasswordService;
 import fr.uge.revue.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 

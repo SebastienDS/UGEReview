@@ -4,14 +4,11 @@ import fr.uge.revue.model.User;
 import fr.uge.revue.service.NotificationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 public class NotificationController {

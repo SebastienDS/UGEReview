@@ -58,7 +58,9 @@ public class SecurityConfig {
                 .and().formLogin().loginPage("/login")
                 .and().logout().logoutSuccessUrl("/")
                 .and().authorizeRequests()
-                    .antMatchers("/createReview").authenticated()
+                    .antMatchers("/api/v1/createReview").authenticated()
+                    .antMatchers("/api/v1/reviews/{reviewId}/notifications/state").authenticated()
+                    .antMatchers("/api/v1/reviews/{reviewId}/notifications/activate", "/api/v1/reviews/{reviewId}/notifications/deactivate").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();

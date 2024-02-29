@@ -30,12 +30,6 @@ public class CommentService {
         notificationService.notifyNewComment(comment);
     }
 
-    @Transactional
-    public void addResponse(Comment comment, Response response) {
-        comment.addResponse(response);
-        commentRepository.save(comment);
-    }
-
     public Optional<Comment> getCommentWithResponse(long id) {
         return commentRepository.findByIdWithResponses(id);
     }

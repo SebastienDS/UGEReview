@@ -307,22 +307,9 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    @Transactional
-    public void addComment(long userId, Comment comment) {
-        User user = userRepository.findByIdWithContent(userId).orElseThrow();
-        user.addComment(comment);
-        userRepository.save(user);
-    }
-
     public UserAllLikesDTO getUserWithLikes(long userId) {
         var user = userRepository.findByIdWithLikes(userId).orElseThrow();
         return UserAllLikesDTO.from(user);
-    }
-
-    public void addResponse(long id, Response response) {
-        User user = userRepository.findByIdWithContent(id).orElseThrow();
-        user.addResponse(response);
-        userRepository.save(user);
     }
 
     @Transactional
