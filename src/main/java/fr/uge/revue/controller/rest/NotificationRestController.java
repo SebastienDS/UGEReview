@@ -1,5 +1,6 @@
 package fr.uge.revue.controller.rest;
 
+import fr.uge.revue.dto.notification.NotificationDTO;
 import fr.uge.revue.dto.notification.NotificationStateDTO;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.NotificationService;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -16,6 +18,16 @@ public class NotificationRestController {
 
     public NotificationRestController(NotificationService notificationService) {
         this.notificationService = Objects.requireNonNull(notificationService);
+    }
+
+    @GetMapping("/notifications")
+    public ResponseEntity<List<NotificationDTO>> allNotifications(Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        var notifications = notificationService.findAllUserNotifications(user.getId())
+                .stream()
+                .map(NotificationDTO::from)
+                .toList();
+        return ResponseEntity.ok().body(notifications);
     }
 
     @GetMapping("/reviews/{reviewId}/notifications/state")

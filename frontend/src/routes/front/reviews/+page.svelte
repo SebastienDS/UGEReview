@@ -1,6 +1,7 @@
 <script>
     export let data;
 
+    import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
 
@@ -19,8 +20,28 @@
             var reviews = await response.json();
             data.reviews = reviews
         } catch (error) {
-            return { error: error }
+            console.log(error)
         }
+    }
+
+    async function markAsRead(notificationId) {
+        try {
+            const response = await fetch(`/api/v1/notifications/${notificationId}/markAsRead`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': authToken.get()
+                }
+            });
+            if (!response.ok) return
+            data.notifications = data.notifications.filter(n => n.id != notificationId)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function markAsReadAndRedirect(notificationId, link) {
+        markAsRead(notificationId)
+        goto(link)
     }
 </script>
 
@@ -46,20 +67,14 @@
         <ul class="list-group mb-3">
             {#each data.notifications as notification}
                 <li class="list-group-item list-group-item-action list-group-item-info d-flex align-items-center">
-                    <!-- <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead'}" method="post" class="me-3">
+                    <form on:submit|preventDefault={() => markAsRead(notification.id)} class="me-3">
                         <button type="submit" class="btn-close" aria-label="Close"></button>
                     </form>
-                    <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead/redirect'}" method="post" class="position-relative">
-                        <button type="submit" class="stretched-link btn btn-link" th:text="${notification}"/>
-                    </form> -->
-                    <div class="me-3">
-                        <button class="btn-close"></button>
-                    </div>
-                    <div class="position-relative">
+                    <form on:submit|preventDefault={() => markAsReadAndRedirect(notification.id, notification.link)} class="position-relative">
                         <button type="submit" class="stretched-link btn btn-link">
                             {JSON.stringify(notification)}
                         </button>
-                    </div>
+                    </form>
                 </li>
             {/each}
         </ul>

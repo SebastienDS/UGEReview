@@ -119,4 +119,15 @@ public class Notification {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public String getLink(String prefix) {
+        return switch (type) {
+            case NEW_COMMENT -> prefix + "/reviews/" + reviewId + "#comment_" + commentId;
+            case NEW_RESPONSE -> prefix + "/reviews/" + reviewId + "#response_" + responseId;
+        };
+    }
+
+    public String getLink() {
+        return getLink("");
+    }
 }

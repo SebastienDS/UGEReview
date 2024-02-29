@@ -43,13 +43,8 @@ public class NotificationController {
     public RedirectView markNotificationAsReadWithRedirection(@PathVariable long notificationId, Authentication authentication) {
         var user = (User) authentication.getPrincipal();
         notificationService.markAsRead(user, notificationId);
-        var notificationFound = notificationService.findById(notificationId);
-        if (notificationFound.isEmpty()) return new RedirectView("/reviews");
-        var notification = notificationFound.get();
-        var url = switch (notification.getType()) {
-            case NEW_COMMENT -> "/reviews/" + notification.getReviewId() + "#comment_" + notification.getCommentId();
-            case NEW_RESPONSE -> "/reviews/" + notification.getReviewId() + "#response_" + notification.getResponseId();
-        };
-        return new RedirectView(url);
+        var notification = notificationService.findById(notificationId);
+        if (notification.isEmpty()) return new RedirectView("/reviews");
+        return new RedirectView(notification.get().getLink());
     }
 }
