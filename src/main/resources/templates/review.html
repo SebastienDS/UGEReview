@@ -10,7 +10,7 @@
 <div th:replace="fragments/header :: navbar"></div>
 <div class="container">
     <div class="row">
-        <div class="col-10">
+        <div class="col-7">
             <div class="row">
                 <h1 th:text="${review.title}"></h1>
                 <form th:action="@{/deleteReview}" method="post" th:if="${isUserAdmin}">
@@ -21,7 +21,10 @@
                 </form>
             </div>
         </div>
-        <div class="col-1">
+        <div class="col-2">
+            <div th:text="${review.tests().getSucceededCount()} + ' / ' + ${review.tests().getTotalCount()}" class="alert d-flex justify-content-center align-items-center" th:classappend="${review.tests().getSucceededCount() == review.tests().getTotalCount()} ? 'alert-success' : 'alert-danger'"/>
+        </div>
+        <div class="col-2">
             <div class="row-6">
                 <a th:href="@{'/users/' + ${review.author().id()}}">
                     <span th:text="${review.author().username()}"></span>

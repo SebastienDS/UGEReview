@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0409a524-9659-45ce-918d-b7b1fdfdb8c6" name="Changes" comment="" />
+    <list default="true" id="0409a524-9659-45ce-918d-b7b1fdfdb8c6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/TestsReview.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/TestsReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewOneReviewDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewOneReviewDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/TestRunnerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/TestRunnerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/createReview.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/createReview.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/review.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/review.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +50,7 @@
     "Maven.UGERevue [compile].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Rebasing test-service",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/romai/OneDrive/Documents/GitHub/projet-backend-uwu"
   }

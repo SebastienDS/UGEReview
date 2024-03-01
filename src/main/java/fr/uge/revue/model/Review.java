@@ -13,7 +13,9 @@ public final class Review implements Likeable {
     private String title;
     private Date date;
     private String commentary;
+    @Column(columnDefinition = "text")
     private String code;
+    @Column(columnDefinition = "text")
     private String test;
     private int likes;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,10 +24,12 @@ public final class Review implements Likeable {
     private Set<Comment> comments;
     @ManyToMany
     private Set<User> requestNotifications;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "review")
+    private TestsReview tests;
+
 
     public Review() {
     }
-
 
     public Review(String title, String commentary, String code, String test, User author) {
         this.title = Objects.requireNonNull(title);
@@ -114,6 +118,14 @@ public final class Review implements Likeable {
 
     public void setRequestNotifications(Set<User> requestNotifications) {
         this.requestNotifications = Objects.requireNonNull(requestNotifications);
+    }
+
+    public TestsReview getTests() {
+        return tests;
+    }
+
+    public void setTests(TestsReview tests) {
+        this.tests = Objects.requireNonNull(tests);
     }
 
     @Override

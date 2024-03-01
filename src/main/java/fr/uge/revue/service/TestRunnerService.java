@@ -5,6 +5,7 @@ import org.junit.platform.engine.discovery.DiscoverySelectors;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.springframework.stereotype.Service;
 
 import javax.tools.*;
@@ -14,9 +15,41 @@ import java.net.URLClassLoader;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class TestRunnerService {
+    private static final String CLASS_NAME_REGEX = "class (\\w+)";
+    private static final Pattern CLASS_NAME_PATTERN = Pattern.compile(CLASS_NAME_REGEX);
+
+    public record Result(TestExecutionSummary summary) {}
+
+    public Result launchTests(String classToTest, String testClass) throws IOException, ClassNotFoundException {
+        var source = new JavaSourceFromString(findClassname(classToTest).orElseThrow(ClassNotFoundException::new), classToTest);
+        var test = new JavaSourceFromString(findClassname(testClass).orElseThrow(ClassNotFoundException::new), testClass);
+
+        var clazz = compileAndLoadTestClass(source, test).orElseThrow();
+        return launchTests(clazz);
+    }
+
+    private static Optional<String> findClassname(String sourceCode) {
+        var matcher = CLASS_NAME_PATTERN.matcher(sourceCode);
+        if (!matcher.find()) return Optional.empty();
+        return Optional.of(matcher.group(1));
+    }
+
+    private static Result launchTests(Class<?> clazz) {
+        var request = LauncherDiscoveryRequestBuilder.request()
+                .selectors(DiscoverySelectors.selectClass(clazz))
+                .build();
+        var launcher = LauncherFactory.create();
+        var listener = new SummaryGeneratingListener();
+
+        launcher.registerTestExecutionListeners(listener);
+        launcher.execute(request);
+        return new Result(listener.getSummary());
+    }
+
     public static void main(String[] args) throws ClassNotFoundException, IOException, NoSuchMethodException {
         // Code source de la classe à tester en tant que chaîne de caractères
         String classToTestCode = """
@@ -45,47 +78,27 @@ public class TestRunnerService {
                     }
                 }""";
 
-        // Compiler les classes au runtime
-        var source = new JavaSourceFromString("ClassToTest", classToTestCode);
-        var test = new JavaSourceFromString("DynamicTest", testClassCode);
-        var dynamicTestClass = compileAndLoadTestClass(source, test).orElseThrow();
+        var testRunnerService = new TestRunnerService();
+        var result = testRunnerService.launchTests(classToTestCode, testClassCode);
 
-        System.out.println(dynamicTestClass.getName());
-
-        var request = LauncherDiscoveryRequestBuilder.request()
-                        .selectors(DiscoverySelectors.selectClass(dynamicTestClass))
-                        .build();
-
-        var launcher = LauncherFactory.create();
-        var listener = new SummaryGeneratingListener();
-
-        launcher.registerTestExecutionListeners(listener);
-        launcher.execute(request);
-
-        var summary = listener.getSummary();
-        long testFoundCount = summary.getTestsFoundCount();
-        System.out.println("testFoundCount = " + testFoundCount);
-        var failures = summary.getFailures();
-        System.out.println("getTestsSucceededCount() = " + summary.getTestsSucceededCount());
-        failures.forEach(failure -> System.out.println("failure = " + failure.getTestIdentifier() + " " + failure.getException()));
+//        var summary = result.summary;
+//        long testFoundCount = summary.getTestsFoundCount();
+//        System.out.println("testFoundCount = " + testFoundCount);
+//        var failures = summary.getFailures();
+//        System.out.println("getTestsSucceededCount() = " + summary.getTestsSucceededCount());
+//        failures.forEach(failure -> System.out.println("failure = " + failure.getTestIdentifier() + " " + failure.getException()));
     }
 
     private static Optional<Class<?>> compileAndLoadTestClass(JavaFileObject source, JavaFileObject test) throws IOException, ClassNotFoundException {
-        // Compilateur Java
         var compiler = ToolProvider.getSystemJavaCompiler();
         var diagnostics = new DiagnosticCollector<JavaFileObject>();
 
-        // Liste des classes à compiler
         var compilationUnits = List.of(source, test);
+        var options = List.of("-d", "./target/testRunner");
 
-        // Options de compilation
-        var options = List.of("-d", "./target/testRunner"); // Spécifiez le répertoire de sortie si nécessaire
-
-        // Compiler la classe en mémoire
         var task = compiler.getTask(null, null, diagnostics, options, null, compilationUnits);
         var success = task.call();
 
-        // Afficher les diagnostics en cas d'échec de la compilation
         if (!success) {
             for (var diagnostic : diagnostics.getDiagnostics()) {
                 System.err.println(diagnostic.toString());
@@ -93,7 +106,6 @@ public class TestRunnerService {
             return Optional.empty();
         }
 
-        // Charger la classe compilée à partir du bytecode
         var clazz = URLClassLoader.newInstance(new URL[]  {
                 Paths.get("target", "testRunner").toUri().toURL()
         }).loadClass("DynamicTest");
