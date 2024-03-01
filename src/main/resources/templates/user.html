@@ -23,10 +23,10 @@
                 <a th:href="@{'/users/' + ${userId} + '/reviews'}">Revues</a>
             </div>
             <div class="row">
-                <p>Réponses</p>
+                <a th:href="@{'/users/' + ${userId} + '/comments'}">Commentaires</a>
             </div>
             <div class="row">
-                <a th:href="@{'/users/' + ${userId} + '/comments'}">Commentaires</a>
+                <a th:href="@{'/users/' + ${userId} + '/responses'}">Réponses</a>
             </div>
             <div class="row">
                 <a th:href="@{'/users/' + ${userId} + '/likes'}">Likes</a>

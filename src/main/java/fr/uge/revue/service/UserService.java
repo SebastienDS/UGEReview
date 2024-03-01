@@ -275,6 +275,11 @@ public class UserService implements UserDetailsService {
         return user.getComments();
     }
 
+    public Set<Response> getResponses(long userId) {
+        var user = userRepository.findByIdWithResponses(userId).orElseThrow();
+        return user.getResponses();
+    }
+
     public List<Review> findAllUserReviews(long userId) {
         return reviewRepository.findAllUserReviews(userId);
     }

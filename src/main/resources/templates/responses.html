@@ -11,8 +11,8 @@
     <h1>UGERevue</h1>
 
     <ul class="list-group">
-        <li th:each="comment : ${comments}" class="list-group-item position-relative">
-            <a th:href="@{'/reviews/' + ${comment.getReview().getId()} + '#comment_' + ${comment.getId()}}" class="stretched-link" th:text="${comment}"/>
+        <li th:each="response : ${responses}" class="list-group-item position-relative">
+            <a th:href="@{'/reviews/' + ${response.getComment().getReview().getId()} + '#response_' + ${response.getId()}}" class="stretched-link" th:text="${response}"/>
         </li>
     </ul>
 </div>

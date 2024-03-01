@@ -5,7 +5,6 @@ import fr.uge.revue.dto.updatePassword.PasswordReceived;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.model.Role;
 import fr.uge.revue.model.User;
-import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +25,8 @@ import java.util.regex.Pattern;
 @Controller
 public class UserController {
     private final UserService userService;
-    private final ReviewService reviewService;
 
-    public UserController(UserService userService, ReviewService reviewService) {
-        this.reviewService = Objects.requireNonNull(reviewService);
+    public UserController(UserService userService) {
         this.userService = Objects.requireNonNull(userService);
     }
 
@@ -109,6 +106,13 @@ public class UserController {
         var comments = userService.getComments(userId);
         model.addAttribute("comments", comments);
         return "comments";
+    }
+
+    @GetMapping("/users/{userId}/responses")
+    public String getUserResponses(@PathVariable long userId, Model model) {
+        var responses = userService.getResponses(userId);
+        model.addAttribute("responses", responses);
+        return "responses";
     }
 
     @GetMapping("/users/{userId}/reviews")
