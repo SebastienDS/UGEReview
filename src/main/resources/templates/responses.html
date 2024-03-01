@@ -13,14 +13,14 @@
     <ul class="list-group">
         <li th:each="response : ${responses}" class="list-group-item position-relative">
             <div class="row">
-                <div class="col 9">
+                <div class="col-9">
                     <a th:href="@{'/reviews/' + ${response.getComment().getReview().getId()} + '#response_' + ${response.getId()}}" th:text="${response.getContent()}"></a>
                 </div>
-                <div class="col 3">
-                    <div class="row 6" style="text-align:end;">
+                <div class="col-3">
+                    <div class="row-6" style="text-align:end;">
                         <a th:href="@{'/users/' + ${response.getAuthor().getId()}}" th:text="${response.getAuthor().getUsername()}"></a>
                     </div>
-                    <div class="row 6" style="text-align:end;">
+                    <div class="row-6" style="text-align:end;">
                         <span th:text="${response.getDate()}"></span>
                     </div>
                 </div>
