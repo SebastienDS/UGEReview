@@ -4,6 +4,7 @@
     import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
+    import Notification from '$lib/components/Notification.svelte';
 
 
     const isAuthenticated = authToken.get() != null;
@@ -24,24 +25,13 @@
         }
     }
 
-    async function markAsRead(notificationId) {
-        try {
-            const response = await fetch(`/api/v1/notifications/${notificationId}/markAsRead`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': authToken.get()
-                }
-            });
-            if (!response.ok) return
-            data.notifications = data.notifications.filter(n => n.id != notificationId)
-        } catch (error) {
-            console.log(error)
-        }
+    async function markNotificationAsRead(e) {
+        const notificationId = e.detail.notificationId
+        data.notifications = data.notifications.filter(n => n.id != notificationId)
     }
 
-    async function markAsReadAndRedirect(notificationId, link) {
-        markAsRead(notificationId)
-        goto(link)
+    async function redirectToNotification(e) {
+        goto(e.detail.link)
     }
 </script>
 
@@ -66,15 +56,8 @@
     {#if isAuthenticated}
         <ul class="list-group mb-3">
             {#each data.notifications as notification}
-                <li class="list-group-item list-group-item-action list-group-item-info d-flex align-items-center">
-                    <form on:submit|preventDefault={() => markAsRead(notification.id)} class="me-3">
-                        <button type="submit" class="btn-close" aria-label="Close"></button>
-                    </form>
-                    <form on:submit|preventDefault={() => markAsReadAndRedirect(notification.id, notification.link)} class="position-relative">
-                        <button type="submit" class="stretched-link btn btn-link">
-                            {JSON.stringify(notification)}
-                        </button>
-                    </form>
+                <li class="list-group-item list-group-item-action list-group-item-info">
+                    <Notification notification={notification} on:markAsRead={markNotificationAsRead} on:redirect={redirectToNotification}/>
                 </li>
             {/each}
         </ul>
