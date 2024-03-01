@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-xs-12">
             <ul class="list-group">
-                <li th:each="comment : ${review.comments()}" class="list-group-item">
+                <li th:each="comment : ${review.comments()}" class="list-group-item" th:id="'comment_' + ${comment.id}">
                     <div class="row">
                         <div th:if="${authenticated}" class="col-1">
                             <form th:action="@{'/comments/' + ${comment.id()} + '/like'}" method="post">
@@ -98,7 +98,7 @@
                     </div>
 
                     <ul class="list-group">
-                        <li th:each="response : ${comment.responses()}" class="list-group-item">
+                        <li th:each="response : ${comment.responses()}" class="list-group-item" th:id="'response_' + ${response.id}">
                             <div class="row">
                                 <div th:if="${authenticated}" class="col-1">
                                     <form th:action="@{'/responses/' + ${response.id()} + '/like'}" method="post">
