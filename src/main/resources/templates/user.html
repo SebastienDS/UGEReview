@@ -91,6 +91,11 @@
                             <i id="validateIconPassword" class="fas fa-check"></i>
                         </div>
                     </div>
+                    <div th:if="${authenticated != null && isMyUserPage != null}" class="mb-3">
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit">Se déconnecter</button>
+                        </form>
+                    </div>
                     <div th:if="${authenticated != null && isMyUserPage != null}">
                         <form th:action="@{/deleteProfile}" method="post">
                             <button type="submit">Supprimer mon compte</button>

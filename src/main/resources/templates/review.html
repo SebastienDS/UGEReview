@@ -22,7 +22,11 @@
             </div>
         </div>
         <div class="col-1">
-            <span class="row-6" th:text="${review.author().username()}"></span>
+            <div class="row-6">
+                <a th:href="@{'/users/' + ${review.author().id()}}">
+                    <span th:text="${review.author().username()}"></span>
+                </a>
+            </div>
             <span class="row-6" th:text="${review.date()}"></span>
         </div>
         <div th:if="${authenticated}" class="col-1">
@@ -92,7 +96,11 @@
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
-                        <p class="col-5" th:text="${comment.author().username()}"></p>
+                        <div class="col-5">
+                            <a th:href="@{'/users/' + ${comment.author().id()}}">
+                                <p th:text="${comment.author().username()}"></p>
+                            </a>
+                        </div>
                         <p class="col-5" th:text="${comment.date()}"  style="text-align:end;"></p>
                         <p class="col-12" th:text="${comment.content()}"></p>
                     </div>
@@ -123,7 +131,11 @@
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
-                                <p class="col-5" th:text="${response.author().username()}"></p>
+                                <div class="col-5">
+                                    <a th:href="@{'/users/' + ${response.author().id()}}">
+                                        <p th:text="${response.author().username()}"></p>
+                                    </a>
+                                </div>
                                 <p class="col-5" th:text="${response.date()}" style="text-align:end;"></p>
                                 <p class="col-12" th:text="${response.content()}"></p>
                             </div>
