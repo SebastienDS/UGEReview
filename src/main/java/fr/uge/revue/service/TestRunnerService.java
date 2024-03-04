@@ -10,7 +10,6 @@ import org.junit.platform.launcher.listeners.TestExecutionSummary;
 import org.springframework.stereotype.Service;
 
 import javax.tools.*;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -67,7 +66,7 @@ public class TestRunnerService {
         return listener.getSummary();
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, IOException, NoSuchMethodException {
+    public static void main(String[] args) {
         // Code source de la classe à tester en tant que chaîne de caractères
         String classToTestCode = """
 public class ClassToTest {
