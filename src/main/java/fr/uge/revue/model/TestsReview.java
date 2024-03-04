@@ -11,7 +11,8 @@ public class TestsReview {
     private long id;
     private long succeededCount;
     private long totalCount;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn
     private Review review;
     @ElementCollection
     @CollectionTable

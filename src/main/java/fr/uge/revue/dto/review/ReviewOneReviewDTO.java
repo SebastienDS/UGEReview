@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public record ReviewOneReviewDTO(long id, String title, String commentary, String code, String test, int likes, UserDTO author, Date date, List<CommentDTO> comments, TestsReview tests) {
+public record ReviewOneReviewDTO(long id, String title, String commentary, String code, String test, int likes, UserDTO author, Date date, List<CommentDTO> comments, TestsReview unitTests) {
     public static ReviewOneReviewDTO from(Review review) {
         var comments = review.getComments()
                 .stream()
@@ -19,6 +19,6 @@ public record ReviewOneReviewDTO(long id, String title, String commentary, Strin
                 .map(CommentDTO::from)
                 .toList();
         return new ReviewOneReviewDTO(review.getId(), review.getTitle(), review.getCommentary(), review.getCode(), review.getTest(), review.getLikes(),
-                UserDTO.from(review.getAuthor()), review.getDate(), comments, review.getTests());
+                UserDTO.from(review.getAuthor()), review.getDate(), comments, review.getUnitTests());
     }
 }

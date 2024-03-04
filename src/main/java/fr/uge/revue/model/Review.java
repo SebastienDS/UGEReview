@@ -25,7 +25,7 @@ public final class Review implements Likeable {
     @ManyToMany
     private Set<User> requestNotifications;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "review")
-    private TestsReview tests;
+    private TestsReview unitTests;
 
 
     public Review() {
@@ -120,12 +120,12 @@ public final class Review implements Likeable {
         this.requestNotifications = Objects.requireNonNull(requestNotifications);
     }
 
-    public TestsReview getTests() {
-        return tests;
+    public TestsReview getUnitTests() {
+        return unitTests;
     }
 
-    public void setTests(TestsReview tests) {
-        this.tests = Objects.requireNonNull(tests);
+    public void setUnitTests(TestsReview unitTests) {
+        this.unitTests = Objects.requireNonNull(unitTests);
     }
 
     @Override
@@ -148,9 +148,5 @@ public final class Review implements Likeable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
     }
 }
