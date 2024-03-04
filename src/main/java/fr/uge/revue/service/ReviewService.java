@@ -51,14 +51,15 @@ public class ReviewService {
         launchTests(createReviewDTO.code(), createReviewDTO.test())
                 .subscribe(
                     response -> {
-                        var testsReview = new TestsReview(review);
+                        var testsReview = new TestsReview();
                         if (response.compilationError()) {
                             testsReview.setErrors(response.errors());
                         } else {
                             testsReview.setSucceededCount(response.result().succeededCount());
                             testsReview.setTotalCount(response.result().totalCount());
                         }
-                        testsReviewRepository.save(testsReview);
+                        review.setUnitTests(testsReview);
+                        reviewRepository.save(review);
                     }
                 );
         return review;

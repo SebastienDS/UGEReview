@@ -24,7 +24,8 @@ public final class Review implements Likeable {
     private Set<Comment> comments;
     @ManyToMany
     private Set<User> requestNotifications;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "review")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn
     private TestsReview unitTests;
 
 

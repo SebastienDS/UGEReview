@@ -11,9 +11,6 @@ public class TestsReview {
     private long id;
     private long succeededCount;
     private long totalCount;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private Review review;
     @ElementCollection
     @CollectionTable
     private List<String> errors;
@@ -21,12 +18,7 @@ public class TestsReview {
     public TestsReview() {
     }
 
-    public TestsReview(Review review) {
-        this.review = Objects.requireNonNull(review);
-    }
-
-    public TestsReview(Review review, long succeededCount, long totalCount) {
-        this.review = Objects.requireNonNull(review);
+    public TestsReview(long succeededCount, long totalCount) {
         this.succeededCount = succeededCount;
         this.totalCount = totalCount;
     }
@@ -53,14 +45,6 @@ public class TestsReview {
 
     public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public Review getReview() {
-        return review;
-    }
-
-    public void setReview(Review review) {
-        this.review = Objects.requireNonNull(review);
     }
 
     public List<String> getErrors() {

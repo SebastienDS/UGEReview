@@ -32,12 +32,16 @@ public class Application {
             userRepository.save(user);
 
             var review = new Review("Review1", "commentary", "code", "test", user);
+            review.setUnitTests(new TestsReview(0, 0));
             reviewRepository.save(review);
             var review2 = new Review("Review2", "commentary","code", "test", user);
+            review2.setUnitTests(new TestsReview(0, 0));
             reviewRepository.save(review2);
             var review3 = new Review("Rom le bg mysterieux", "commentary","code", "test", user);
+            review3.setUnitTests(new TestsReview(0, 0));
             reviewRepository.save(review3);
             var review4 = new Review("Quentin le brigand", "commentary","code", "test", user);
+            review4.setUnitTests(new TestsReview(0, 0));
             reviewRepository.save(review4);
 
             var user2 = new User("test", "test@gmail.com", passwordEncoder.encode("test"), Role.USER);
