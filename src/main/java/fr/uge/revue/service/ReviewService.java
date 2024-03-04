@@ -46,13 +46,21 @@ public class ReviewService {
         Objects.requireNonNull(user);
         var review = new Review(createReviewDTO.title(), createReviewDTO.commentary(), createReviewDTO.code(), createReviewDTO.test(), user);
         review.setRequestNotifications(Set.of(user));
+        reviewRepository.save(review);
 
         launchTests(createReviewDTO.code(), createReviewDTO.test())
                 .subscribe(
-                    response -> testsReviewRepository.save(new TestsReview(review, response.succeededCount(), response.totalCount()))
+                    response -> {
+                        var testsReview = new TestsReview(review);
+                        if (response.compilationError()) {
+                            testsReview.setErrors(response.errors());
+                        } else {
+                            testsReview.setSucceededCount(response.result().succeededCount());
+                            testsReview.setTotalCount(response.result().totalCount());
+                        }
+                        testsReviewRepository.save(testsReview);
+                    }
                 );
-
-        reviewRepository.save(review);
         return review;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -24,11 +24,13 @@ public class TestRunnerRestController {
 
     @PostMapping("/launchTests")
     public ResponseEntity<TestResponseDTO> launchTests(@RequestBody TestRequestDTO testRequestDTO) {
-        try {
-            var result = testRunnerService.launchTests(testRequestDTO.classToTest(), testRequestDTO.testClass());
-            return ResponseEntity.ok().body(new TestResponseDTO(result.summary().getTestsSucceededCount(), result.summary().getTestsFoundCount()));
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        var result = testRunnerService.launchTests(testRequestDTO.classToTest(), testRequestDTO.testClass());
+        TestResponseDTO response;
+        if (result.compilationError()) {
+            response = new TestResponseDTO(true, null, result.errors());
+        } else {
+            response = new TestResponseDTO(false, new TestResponseDTO.Result(result.summary().getTestsSucceededCount(), result.summary().getTestsFoundCount()), List.of());
         }
+        return ResponseEntity.ok().body(response);
     }
 }

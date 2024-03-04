@@ -1,6 +1,7 @@
 package fr.uge.revue.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,8 +13,15 @@ public class TestsReview {
     private long totalCount;
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
+    @ElementCollection
+    @CollectionTable
+    private List<String> errors;
 
     public TestsReview() {
+    }
+
+    public TestsReview(Review review) {
+        this.review = Objects.requireNonNull(review);
     }
 
     public TestsReview(Review review, long succeededCount, long totalCount) {
@@ -52,6 +60,14 @@ public class TestsReview {
 
     public void setReview(Review review) {
         this.review = Objects.requireNonNull(review);
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = Objects.requireNonNull(errors);
     }
 
     @Override

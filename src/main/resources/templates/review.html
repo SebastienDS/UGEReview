@@ -23,7 +23,8 @@
         </div>
         <div class="col-2">
             <div th:if="${review.tests() == null}" class="alert alert-info d-flex justify-content-center align-items-center">Test en cours</div>
-            <div th:if="${review.tests() != null}" th:text="${review.tests().getSucceededCount()} + ' / ' + ${review.tests().getTotalCount()}" class="alert d-flex justify-content-center align-items-center" th:classappend="${review.tests().getSucceededCount() == review.tests().getTotalCount()} ? 'alert-success' : 'alert-danger'"/>
+            <div th:if="${review.tests() != null && review.tests().getErrors().isEmpty()}" th:text="${review.tests().getSucceededCount()} + ' / ' + ${review.tests().getTotalCount()}" class="alert d-flex justify-content-center align-items-center" th:classappend="${review.tests().getSucceededCount() == review.tests().getTotalCount()} ? 'alert-success' : 'alert-warning'"/>
+            <div th:if="${review.tests() != null && !review.tests().getErrors().isEmpty()}" class="alert alert-danger d-flex justify-content-center align-items-center">Compilation Error</div>
         </div>
         <div class="col-2">
             <span class="row-6" th:text="${review.author().username()}"></span>
