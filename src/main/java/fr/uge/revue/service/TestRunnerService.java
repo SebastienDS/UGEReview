@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -25,6 +26,8 @@ public class TestRunnerService {
     public record Result(TestExecutionSummary summary) {}
 
     public Result launchTests(String classToTest, String testClass) throws IOException, ClassNotFoundException {
+        Objects.requireNonNull(classToTest);
+        Objects.requireNonNull(testClass);
         var source = new JavaSourceFromString(findClassname(classToTest).orElseThrow(ClassNotFoundException::new), classToTest);
         var test = new JavaSourceFromString(findClassname(testClass).orElseThrow(ClassNotFoundException::new), testClass);
 
