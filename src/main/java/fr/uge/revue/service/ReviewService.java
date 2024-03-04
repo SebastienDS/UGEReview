@@ -1,14 +1,18 @@
 package fr.uge.revue.service;
 
+import fr.uge.revue.dto.microservice.TestRequestDTO;
+import fr.uge.revue.dto.microservice.TestResponseDTO;
 import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.model.Review;
 import fr.uge.revue.model.TestsReview;
 import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
+import fr.uge.revue.repository.TestsReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,11 +21,13 @@ import java.util.Set;
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private final TestRunnerService testRunnerService;
+    private final TestsReviewRepository testsReviewRepository;
+    private final WebClient webClient;
 
-    public ReviewService(ReviewRepository reviewRepository, TestRunnerService testRunnerService) {
+    public ReviewService(ReviewRepository reviewRepository, TestsReviewRepository testsReviewRepository, WebClient webClient) {
         this.reviewRepository = Objects.requireNonNull(reviewRepository);
-        this.testRunnerService = Objects.requireNonNull(testRunnerService);
+        this.testsReviewRepository = Objects.requireNonNull(testsReviewRepository);
+        this.webClient = Objects.requireNonNull(webClient);
     }
 
     public List<Review> allReviews() {
@@ -36,16 +42,26 @@ public class ReviewService {
 
     @Transactional
     public Review createReview(CreateReviewDTO createReviewDTO, User user) {
+        Objects.requireNonNull(createReviewDTO);
+        Objects.requireNonNull(user);
         var review = new Review(createReviewDTO.title(), createReviewDTO.commentary(), createReviewDTO.code(), createReviewDTO.test(), user);
         review.setRequestNotifications(Set.of(user));
-        try {
-            var result = testRunnerService.launchTests(createReviewDTO.code(), createReviewDTO.test());
-            review.setTests(new TestsReview(review, result.summary().getTestsSucceededCount(), result.summary().getTestsFoundCount()));
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+
+        launchTests(createReviewDTO.code(), createReviewDTO.test())
+                .subscribe(
+                    response -> testsReviewRepository.save(new TestsReview(review, response.succeededCount(), response.totalCount()))
+                );
+
         reviewRepository.save(review);
         return review;
+    }
+
+    private Mono<TestResponseDTO> launchTests(String code, String test) {
+        return webClient.post()
+                .uri("/microservice/api/v1/launchTests")
+                .bodyValue(new TestRequestDTO(code, test))
+                .retrieve()
+                .bodyToMono(TestResponseDTO.class);
     }
 
     @Transactional
