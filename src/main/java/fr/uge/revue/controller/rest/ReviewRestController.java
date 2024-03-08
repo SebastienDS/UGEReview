@@ -1,11 +1,9 @@
 package fr.uge.revue.controller.rest;
 
 import fr.uge.revue.dto.comment.CommentDTO;
-import fr.uge.revue.dto.review.CreateReviewDTO;
-import fr.uge.revue.dto.review.ReviewAllReviewDTO;
-import fr.uge.revue.dto.review.ReviewCreatedDTO;
-import fr.uge.revue.dto.review.ReviewOneReviewDTO;
+import fr.uge.revue.dto.review.*;
 import fr.uge.revue.model.Comment;
+import fr.uge.revue.model.TestsReview;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ReviewService;
@@ -37,6 +35,13 @@ public class ReviewRestController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(ReviewOneReviewDTO.from(review.get()));
+    }
+
+    @GetMapping("/reviews/{reviewId}/unitTests")
+    public ResponseEntity<TestsReviewResponseDTO> getUnitTests(@PathVariable long reviewId) {
+        var review = reviewService.getReview(reviewId);
+        return review.map(value -> ResponseEntity.ok().body(new TestsReviewResponseDTO(value.getUnitTests())))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/reviews")

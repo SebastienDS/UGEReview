@@ -3,11 +3,7 @@ import { authToken } from '$lib/auth';
 
 async function fetchData(reviewId) {
 	try {
-		const response = await fetch("/api/v1/reviews/" + reviewId, {
-			headers: {
-				'Authorization': authToken.get()
-			}
-		});
+		const response = await fetch("/api/v1/reviews/" + reviewId);
 		return response.json();
 	} catch (error) {
 		return { error: error }

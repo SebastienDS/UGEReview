@@ -112,6 +112,31 @@
             console.error(error);
         }
     }
+
+    async function fetchUnitTests() {
+        let delay = 1000;
+
+        while (!data.review.unitTests) {
+            try {
+                const response = await fetch(`/api/v1/reviews/${data.reviewId}/unitTests`);
+                console.log(response)
+                if (response.ok) {
+                    const body = await response.json();
+                    if (body.unitTests) {
+                        data.review.unitTests = body.unitTests;
+                        return;
+                    }
+                }
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            } catch (error) {
+                console.error(error);
+                return;
+            }
+        }
+    }
+
+    fetchUnitTests()
 </script>
 
 
@@ -119,7 +144,7 @@
     <NavBar/>
 
     <div class="row">
-        <div class="col-10">
+        <div class="col-7">
             <div class="row">
                 <h1>{data.review.title}</h1>
 
@@ -133,8 +158,25 @@
                 {/if}
             </div>
         </div>
-        <div class="col-1">
-            <span class="row-6">{data.review.author.username}</span>
+        <div class="col-2">
+            {#if data.review.unitTests}
+                {#if data.review.unitTests.errors.length != 0}
+                    <div class="alert alert-danger d-flex justify-content-center align-items-center">Compilation Error</div>
+                {:else}
+                    <div class="alert d-flex justify-content-center align-items-center {data.review.unitTests.succeededCount == data.review.unitTests.totalCount ? 'alert-success' : 'alert-warning'}">
+                        {data.review.unitTests.succeededCount} / {data.review.unitTests.totalCount}
+                    </div>
+                {/if}
+            {:else}
+                <div class="alert alert-info d-flex justify-content-center align-items-center">Test en cours</div>
+            {/if}
+        </div>
+        <div class="col-2">
+            <div class="row-6">
+                <a href="/front/users/{data.review.author.id}">
+                    {data.review.author.username}
+                </a>
+            </div>
             <span class="row-6">{data.review.date}</span>
         </div>
         <div class="col-1">
