@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .and().authorizeRequests()
                     .antMatchers("/api/v1/createReview").authenticated()
                     .antMatchers("/api/v1/notifications").authenticated()
+                    .antMatchers("/api/v1/reviews/{reviewId}/comment").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/notifications/state").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/notifications/activate", "/api/v1/reviews/{reviewId}/notifications/deactivate").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
