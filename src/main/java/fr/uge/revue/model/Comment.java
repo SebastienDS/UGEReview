@@ -2,6 +2,7 @@ package fr.uge.revue.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ public final class Comment implements Likeable {
         this.author = author;
         this.review = review;
         this.date = new Date();
+        this.responses = new HashSet<>();
     }
 
     public long getId() {

@@ -68,8 +68,12 @@
                 console.log("OK");
                 const dataPromise = response.json(); // Parse response body as JSON
                 dataPromise.then(dataResponse => {
-                    console.log('Comment submitted successfully:', data);
-                    window.location.href = `/front/reviews/${data.reviewId}#comment_${dataResponse}`;
+                    console.log('Comment submitted successfully:', dataResponse);
+                    //window.location.href = `/front/reviews/${data.reviewId}#comment_${dataResponse}`;
+                    console.log(data.review.comments)
+                    data.review.comments = [...data.review.comments, dataResponse]
+                    console.log(data.review.comments)
+
                 })
             } else {
                 console.log(response);

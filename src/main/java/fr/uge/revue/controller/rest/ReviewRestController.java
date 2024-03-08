@@ -1,5 +1,6 @@
 package fr.uge.revue.controller.rest;
 
+import fr.uge.revue.dto.comment.CommentDTO;
 import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewCreatedDTO;
@@ -54,15 +55,15 @@ public class ReviewRestController {
     }
 
     @PostMapping("/reviews/{reviewId}/comment")
-    public ResponseEntity<String> createComment(@PathVariable long reviewId, @RequestBody String content, Authentication authentication) {
+    public ResponseEntity<CommentDTO> createComment(@PathVariable long reviewId, @RequestBody String content, Authentication authentication) {
         Objects.requireNonNull(content);
         var user = (User) authentication.getPrincipal();
         var review = reviewService.getReview(reviewId);
         if(review.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review Not Found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         var comment = new Comment(content, user, review.get());
         commentService.saveComment(comment);
-        return ResponseEntity.ok(comment.getId() + "");
+        return ResponseEntity.ok(CommentDTO.from(comment));
     }
 }
