@@ -29,10 +29,15 @@ async function fetchNotifications() {
     }
 }
 
+async function fetchNotificationsIfAuthenticated() {
+	if (authToken.get() === null) return false;
+	return fetchNotifications
+}
+
 export async function load({ params }) {
     const [reviews, notifications] = await Promise.all([
 		fetchReviews(),
-		fetchNotifications()
+		fetchNotificationsIfAuthenticated()
 	]);
     return {
         reviews,
