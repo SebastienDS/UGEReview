@@ -7,6 +7,8 @@
     const isAuthenticated = authToken.get() != null;
     const isUserAdmin = false // TODO
 
+    let commentValue = "";
+
     function answer(button) {
         var div = button.nextElementSibling;
         div.style.display = "block";
@@ -34,12 +36,11 @@
         .then(response => {
             if(response.ok){
                 console.log("OK");
+
                 textarea.value = "";
                 parentDiv.style.display = "none";
                 replyButton.style.display = "block";
-                var scrollPosition = window.scrollY;
-                window.location.reload();
-                window.scrollTo(0, scrollPosition);
+
             } else {
                 console.log(response);
             }
@@ -49,24 +50,27 @@
         });
     }
 
-    function comment(reviewId) {
-        console.log(reviewId);
-        var content = document.getElementById("newComment");
-        const url = "/reviews/" + reviewId + "/comment";
+    function comment() {
+        if (!commentValue) {
+          return;
+        }
+        const url = "/api/v1/reviews/" + data.reviewId + "/comment";
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: content.value
+            body: commentValue
         })
         .then(response => {
             if(response.ok){
+                commentValue = "";
                 console.log("OK");
-                content.value = "";
-                var scrollPosition = window.scrollY;
-                window.location.reload();
-                window.scrollTo(0, scrollPosition);
+                const dataPromise = response.json(); // Parse response body as JSON
+                dataPromise.then(data => {
+                    console.log('Comment submitted successfully:', data);
+                    window.location.href = window.location.href + `#comment_${data}`;
+                })
             } else {
                 console.log(response);
             }
@@ -221,6 +225,12 @@
                     {/each}
                 {/if}
             </ul>
+            {#if isAuthenticated}
+               <div class="comment-form row">
+                   <textarea id="comment" bind:value={commentValue} />
+                   <button type="submit" on:click={comment}>Commenter</button>
+               </div>
+            {/if}
         </div>
     </div>
 </div>

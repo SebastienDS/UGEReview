@@ -210,7 +210,6 @@
         }
 
         function comment(reviewId) {
-            console.log(reviewId);
             var content = document.getElementById("newComment");
             const url = "/reviews/" + reviewId + "/comment";
             fetch(url, {
