@@ -68,6 +68,8 @@ public class SecurityConfig {
                     .antMatchers("/api/v1/users/{userId}/follow/state").authenticated()
                     .antMatchers("/api/v1/users/{userId}/follow").authenticated()
                     .antMatchers("/api/v1/users/{userId}/unfollow").authenticated()
+                    .antMatchers("/api/v1/reviews/{reviewId}/like").authenticated()
+                    .antMatchers("/api/v1/reviews/{reviewId}/dislike").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();

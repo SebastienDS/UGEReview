@@ -44,4 +44,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.reviewsLikes LEFT JOIN FETCH u.commentsLikes c LEFT JOIN FETCH u.responsesLikes r LEFT JOIN FETCH c.review LEFT JOIN FETCH r.comment r2 LEFT JOIN FETCH r2.review WHERE u.id = :userId")
     Optional<User> findByIdWithLikes(@Param("userId") long userId);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.reviewsLikes LEFT JOIN FETCH u.commentsLikes c LEFT JOIN FETCH u.responsesLikes r LEFT JOIN FETCH u.reviewsDislikes LEFT JOIN FETCH u.commentsDislikes LEFT JOIN FETCH u.responsesDislikes WHERE u.id = :userId")
+    Optional<User> findByIdWithLikesAndDislikes(@Param("userId") long userId);
 }

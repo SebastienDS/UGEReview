@@ -123,10 +123,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean toggleLikeResponse(long userId, Response response) {
+    public Integer toggleLikeResponse(long userId, Response response) {
         var user = userRepository.findByIdWithResponseLikes(userId);
+        System.out.println(user);
         if (user.isEmpty()) {
-            return false;
+            return null;
         }
         var likes = user.get().getResponsesLikes();
         var dislikes = user.get().getResponsesDislikes();
@@ -145,7 +146,7 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         responseRepository.save(response);
-        return true;
+        return response.getLikes();
     }
 
     public Optional<User> findByIdWithFollowers(long userId) {
@@ -230,10 +231,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean toggleDislikeResponse(long userId, Response response) {
+    public Integer toggleDislikeResponse(long userId, Response response) {
         var user = userRepository.findByIdWithResponseLikes(userId);
         if (user.isEmpty()) {
-            return false;
+            return -1;
         }
         var likes = user.get().getResponsesLikes();
         var dislikes = user.get().getResponsesDislikes();
@@ -252,7 +253,7 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         responseRepository.save(response);
-        return true;
+        return response.getLikes();
     }
 
     @Transactional
@@ -314,6 +315,10 @@ public class UserService implements UserDetailsService {
     public UserAllLikesDTO getUserWithLikes(long userId) {
         var user = userRepository.findByIdWithLikes(userId).orElseThrow();
         return UserAllLikesDTO.from(user);
+    }
+
+    public Optional<User> findUserWithLikesAndDislikes(long userId) {
+        return userRepository.findByIdWithLikesAndDislikes(userId);
     }
 
     @Transactional
