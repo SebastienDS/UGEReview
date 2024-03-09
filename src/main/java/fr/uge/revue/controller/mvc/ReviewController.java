@@ -159,7 +159,7 @@ public class ReviewController {
     }
 
     @PostMapping("/reviews/{reviewId}/response")
-    public ResponseEntity<String> createResponse(Model model, @PathVariable long reviewId, @RequestBody SendResponseDTO content, Authentication authentication) {
+    public ResponseEntity<String> createResponse(@RequestBody SendResponseDTO content, Authentication authentication) {
         Objects.requireNonNull(content);
         var user = (User) authentication.getPrincipal();
         var comment = commentService.getCommentWithResponse(content.id());
