@@ -14,7 +14,9 @@ import fr.uge.revue.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +30,8 @@ public class ReviewRestController {
     private final ResponseService responseService;
     private final UserService userService;
 
-    public ReviewRestController(ReviewService reviewService, CommentService commentService, ResponseService responseService, UserService userService) {
+    public ReviewRestController(ReviewService reviewService, CommentService commentService,
+                                ResponseService responseService, UserService userService) {
         this.reviewService = Objects.requireNonNull(reviewService);
         this.commentService = Objects.requireNonNull(commentService);
         this.responseService = Objects.requireNonNull(responseService);
@@ -95,5 +98,29 @@ public class ReviewRestController {
         var response = new Response(content.content(), user,comment.get());
         responseService.saveResponse(response);
         return ResponseEntity.ok(ResponseDTO.from(response));
+    }
+
+    @PostMapping("/responses/{responseId}/like")
+    public ResponseEntity<Integer> toggleResponseLikeButton(@PathVariable long responseId, Authentication authentication) {
+        var response = responseService.getResponse(responseId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        System.out.println(responseId);
+        System.out.println(userId);
+        var like = userService.toggleLikeResponse(userId, response);
+        if(like == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(like);
+        }
+        return ResponseEntity.ok(like);
+    }
+
+    @PostMapping("/responses/{responseId}/dislike")
+    public ResponseEntity<Integer> toggleResponseDisLikeButton(@PathVariable long responseId, Authentication authentication) {
+        var response = responseService.getResponse(responseId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        var like = userService.toggleDislikeResponse(userId, response);
+        if(like == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(like);
     }
 }

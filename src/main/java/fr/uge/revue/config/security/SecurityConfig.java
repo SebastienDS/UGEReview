@@ -63,7 +63,8 @@ public class SecurityConfig {
                     .antMatchers("/api/v1/reviews/{reviewId}/comment").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/notifications/state").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/notifications/activate", "/api/v1/reviews/{reviewId}/notifications/deactivate").authenticated()
-                    .antMatchers("/api/v1/reviews/{reviewId}/response").authenticated()
+                    .antMatchers("/api/v1/reviews/{reviewId}/like").authenticated()
+                    .antMatchers("/api/v1/reviews/{reviewId}/dislike").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();
