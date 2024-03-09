@@ -50,7 +50,7 @@
     {/if}
     {#if isVisible}
       <div>
-          <textarea style="width: inherit;" bind:value={$textareaValue}></textarea>
+          <textarea style="width: inherit;" bind:value={textareaValue}></textarea>
           <button on:click={sendResponse}>
               Envoyer
           </button>

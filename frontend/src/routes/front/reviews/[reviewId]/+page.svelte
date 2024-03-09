@@ -218,11 +218,12 @@
                                                 {JSON.stringify(response)}
                                             </p>
                                         </div>
-                                        {#if isAuthenticated}
-                                            <ReplyForm reviewId={data.review.id} comment={comment} responses={comment.responses}/>
-                                        {/if}
+
                                     </li>
                                     {/each}
+                                    {#if isAuthenticated}
+                                       <ReplyForm reviewId={data.review.id} comment={comment} responses={comment.responses}/>
+                                    {/if}
                                 {/if}
                             </ul>
                         </li>
