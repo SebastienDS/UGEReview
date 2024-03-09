@@ -1,16 +1,18 @@
 package fr.uge.revue.controller.rest;
 
 import fr.uge.revue.dto.comment.CommentDTO;
+import fr.uge.revue.dto.response.ResponseDTO;
+import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.*;
 import fr.uge.revue.model.Comment;
-import fr.uge.revue.model.TestsReview;
+import fr.uge.revue.model.Response;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
+import fr.uge.revue.service.ResponseService;
 import fr.uge.revue.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,10 +24,12 @@ import java.util.Optional;
 public class ReviewRestController {
     private final ReviewService reviewService;
     private final CommentService commentService;
+    private final ResponseService responseService;
 
-    public ReviewRestController(ReviewService reviewService, CommentService commentService) {
+    public ReviewRestController(ReviewService reviewService, CommentService commentService, ResponseService responseService) {
         this.reviewService = Objects.requireNonNull(reviewService);
-        this.commentService = commentService;
+        this.commentService = Objects.requireNonNull(commentService);
+        this.responseService = Objects.requireNonNull(responseService);
     }
 
     @GetMapping("/reviews/{reviewId}")
@@ -70,5 +74,18 @@ public class ReviewRestController {
         var comment = new Comment(content, user, review.get());
         commentService.saveComment(comment);
         return ResponseEntity.ok(CommentDTO.from(comment));
+    }
+
+    @PostMapping("/reviews/{reviewId}/response")
+    public ResponseEntity<ResponseDTO> createResponse(@RequestBody SendResponseDTO content, Authentication authentication) {
+        Objects.requireNonNull(content);
+        var user = (User) authentication.getPrincipal();
+        var comment = commentService.getCommentWithResponse(content.id());
+        if(comment.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        var response = new Response(content.content(), user,comment.get());
+        responseService.saveResponse(response);
+        return ResponseEntity.ok(ResponseDTO.from(response));
     }
 }
