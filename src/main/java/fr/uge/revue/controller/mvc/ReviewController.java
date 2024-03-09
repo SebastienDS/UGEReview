@@ -70,17 +70,23 @@ public class ReviewController {
 
     @GetMapping("/reviews/{reviewId}")
     public String oneReview(@PathVariable long reviewId, Model model, Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            var user = (User) authentication.getPrincipal();
-            model.addAttribute("authenticated", true);
-            model.addAttribute("isUserAdmin", user.getRole() == Role.ADMIN);
-            model.addAttribute("notificationActivated", notificationService.isUserRequestingNotification(reviewId, user.getId()));
-        }
         var review = reviewService.getReview(reviewId);
         if (review.isEmpty()) {
             return "notFound";
         }
-        model.addAttribute("review", ReviewOneReviewDTO.from(review.get()));
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            var userId = ((User) authentication.getPrincipal()).getId();
+            var user = userService.findUserWithLikesAndDislikes(userId).orElseThrow();
+
+            model.addAttribute("authenticated", true);
+            model.addAttribute("isUserAdmin", user.getRole() == Role.ADMIN);
+            model.addAttribute("notificationActivated", notificationService.isUserRequestingNotification(reviewId, user.getId()));
+            model.addAttribute("review", ReviewOneReviewDTO.from(review.get(), user));
+        } else {
+            model.addAttribute("review", ReviewOneReviewDTO.from(review.get()));
+        }
+
         model.addAttribute("reviewId", reviewId);
         return "review";
     }

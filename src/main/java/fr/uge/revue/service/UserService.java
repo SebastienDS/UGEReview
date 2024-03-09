@@ -316,6 +316,10 @@ public class UserService implements UserDetailsService {
         return UserAllLikesDTO.from(user);
     }
 
+    public Optional<User> findUserWithLikesAndDislikes(long userId) {
+        return userRepository.findByIdWithLikesAndDislikes(userId);
+    }
+
     @Transactional
     public void banUser(long id) {
         var userBanned = userRepository.findById(USER_BANNED_ID).orElseThrow();

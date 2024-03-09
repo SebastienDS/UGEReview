@@ -10,6 +10,7 @@ import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
 import fr.uge.revue.service.ReviewService;
+import fr.uge.revue.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,18 +26,25 @@ public class ReviewRestController {
     private final ReviewService reviewService;
     private final CommentService commentService;
     private final ResponseService responseService;
+    private final UserService userService;
 
-    public ReviewRestController(ReviewService reviewService, CommentService commentService, ResponseService responseService) {
+    public ReviewRestController(ReviewService reviewService, CommentService commentService, ResponseService responseService, UserService userService) {
         this.reviewService = Objects.requireNonNull(reviewService);
         this.commentService = Objects.requireNonNull(commentService);
         this.responseService = Objects.requireNonNull(responseService);
+        this.userService = Objects.requireNonNull(userService);
     }
 
     @GetMapping("/reviews/{reviewId}")
-    public ResponseEntity<ReviewOneReviewDTO> oneReview(@PathVariable long reviewId) {
+    public ResponseEntity<ReviewOneReviewDTO> oneReview(@PathVariable long reviewId, Authentication authentication) {
         var review = reviewService.getReview(reviewId);
         if (review.isEmpty()) {
             return ResponseEntity.notFound().build();
+        }
+        if (authentication != null && authentication.isAuthenticated()) {
+            var userId = ((User) authentication.getPrincipal()).getId();
+            var user = userService.findUserWithLikesAndDislikes(userId).orElseThrow();
+            return ResponseEntity.ok().body(ReviewOneReviewDTO.from(review.get(), user));
         }
         return ResponseEntity.ok().body(ReviewOneReviewDTO.from(review.get()));
     }
