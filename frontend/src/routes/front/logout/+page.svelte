@@ -1,5 +1,7 @@
 <script>
 import { authToken } from '$lib/auth';
+import { userData } from '$lib/userData';
+
 
 async function logout() {
   try {
@@ -11,6 +13,7 @@ async function logout() {
     if (!response.ok) return
 
     authToken.clear();
+    userData.clear();
     console.log("token", $authToken)
   } catch (error) {
     console.error(error);

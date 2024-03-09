@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Objects;
 
@@ -64,6 +65,9 @@ public class SecurityConfig {
                     .antMatchers("/api/v1/reviews/{reviewId}/notifications/state").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/notifications/activate", "/api/v1/reviews/{reviewId}/notifications/deactivate").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/response").authenticated()
+                    .antMatchers("/api/v1/users/{userId}/follow/state").authenticated()
+                    .antMatchers("/api/v1/users/{userId}/follow").authenticated()
+                    .antMatchers("/api/v1/users/{userId}/unfollow").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();

@@ -2,7 +2,7 @@
 import { goto } from '$app/navigation';
 import { authToken } from '$lib/auth';
 import NavBar from '$lib/components/NavBar.svelte';
-
+import { userData } from '$lib/userData';
 
 let username = '';
 let password = '';
@@ -22,9 +22,11 @@ async function login() {
             error = true;
             return
         }
+        var user = await response.json();
         const token = btoa(`${username}:${password}`)
         authToken.update(`Basic ${token}`);
-
+        userData.update(user);
+        
         goto('/front/reviews');
         error = false;
     } catch (error) {
