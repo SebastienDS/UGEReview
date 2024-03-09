@@ -70,6 +70,10 @@ public class SecurityConfig {
                     .antMatchers("/api/v1/users/{userId}/unfollow").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/like").authenticated()
                     .antMatchers("/api/v1/reviews/{reviewId}/dislike").authenticated()
+                    .antMatchers("/api/v1/comments/{commentId}/like").authenticated()
+                    .antMatchers("/api/v1/comments/{commentId}/dislike").authenticated()
+                    .antMatchers("/api/v1/responses/{responseId}/like").authenticated()
+                    .antMatchers("/api/v1/responses/{responseId}/dislike").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();

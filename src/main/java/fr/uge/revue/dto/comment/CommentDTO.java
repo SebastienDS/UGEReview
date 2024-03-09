@@ -1,7 +1,7 @@
 package fr.uge.revue.dto.comment;
 
 import fr.uge.revue.dto.response.ResponseDTO;
-import fr.uge.revue.dto.review.LikeState;
+import fr.uge.revue.model.LikeState;
 import fr.uge.revue.dto.user.UserDTO;
 import fr.uge.revue.model.Comment;
 import fr.uge.revue.model.Response;

@@ -2,10 +2,7 @@ package fr.uge.revue.dto.review;
 
 import fr.uge.revue.dto.comment.CommentDTO;
 import fr.uge.revue.dto.user.UserDTO;
-import fr.uge.revue.model.Comment;
-import fr.uge.revue.model.Review;
-import fr.uge.revue.model.TestsReview;
-import fr.uge.revue.model.User;
+import fr.uge.revue.model.*;
 
 import java.util.Comparator;
 import java.util.Date;

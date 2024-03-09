@@ -185,15 +185,17 @@
                                 </div>
                             </div>
                         </li>
-                        <div class="col-12">
-                            <button style="width: inherit;" onclick="answer(this)" th:if="${authenticated}">
-                                Répondre
-                            </button>
-                            <div style="display: none; width: inherit;" class="row form-group">
-                                <textarea style="width: inherit;" class="form-control"></textarea>
-                                <button th:attr="onclick=|sendResponse(this, '${reviewId}', '${comment.id}')|">
-                                    Envoyer
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <button style="width: inherit;" onclick="answer(this)" th:if="${authenticated}">
+                                    Répondre
                                 </button>
+                                <div style="display: none; width: inherit;" class="row form-group">
+                                    <textarea style="width: inherit;" class="form-control"></textarea>
+                                    <button th:attr="onclick=|sendResponse(this, '${reviewId}', '${comment.id}')|">
+                                        Envoyer
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </ul>

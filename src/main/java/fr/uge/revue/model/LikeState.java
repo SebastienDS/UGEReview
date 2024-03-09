@@ -1,4 +1,4 @@
-package fr.uge.revue.dto.review;
+package fr.uge.revue.model;
 
 public enum LikeState {
     LIKE, DISLIKE, NONE

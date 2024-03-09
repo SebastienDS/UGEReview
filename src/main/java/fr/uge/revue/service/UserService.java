@@ -1,5 +1,6 @@
 package fr.uge.revue.service;
 
+import fr.uge.revue.dto.review.LikeStateDTO;
 import fr.uge.revue.dto.user.UserAllLikesDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
@@ -71,10 +72,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean toggleLikeReview(long userId, Review review) {
+    public LikeStateDTO toggleLikeReview(long userId, Review review) {
         var user = userRepository.findByIdWithReviewLikes(userId);
         if (user.isEmpty()) {
-            return false;
+            return null;
         }
         var likes = user.get().getReviewsLikes();
         var dislikes = user.get().getReviewsDislikes();
@@ -93,14 +94,15 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         reviewRepository.save(review);
-        return true;
+        return new LikeStateDTO(review.getLikes(),
+                getLikeState(user.get(), user.get().getReviewsLikes(), user.get().getReviewsDislikes(), review));
     }
 
     @Transactional
-    public boolean toggleLikeComment(long userId, Comment comment) {
+    public LikeStateDTO toggleLikeComment(long userId, Comment comment) {
         var user = userRepository.findByIdWithCommentLikes(userId);
         if (user.isEmpty()) {
-            return false;
+            return null;
         }
         var likes = user.get().getCommentsLikes();
         var dislikes = user.get().getCommentsDislikes();
@@ -119,13 +121,13 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         commentRepository.save(comment);
-        return true;
+        return new LikeStateDTO(comment.getLikes(),
+                getLikeState(user.get(), user.get().getCommentsLikes(), user.get().getCommentsDislikes(), comment));
     }
 
     @Transactional
-    public Integer toggleLikeResponse(long userId, Response response) {
+    public LikeStateDTO toggleLikeResponse(long userId, Response response) {
         var user = userRepository.findByIdWithResponseLikes(userId);
-        System.out.println(user);
         if (user.isEmpty()) {
             return null;
         }
@@ -146,7 +148,15 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         responseRepository.save(response);
-        return response.getLikes();
+        return new LikeStateDTO(response.getLikes(),
+                getLikeState(user.get(), user.get().getResponsesLikes(), user.get().getResponsesDislikes(), response));
+    }
+
+    private static <T> LikeState getLikeState(User user, Set<T> likes, Set<T> dislikes, T entity) {
+        if (user == null) return LikeState.NONE;
+        if (likes.contains(entity)) return LikeState.LIKE;
+        if (dislikes.contains(entity)) return LikeState.DISLIKE;
+        return LikeState.NONE;
     }
 
     public Optional<User> findByIdWithFollowers(long userId) {
@@ -179,10 +189,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public boolean toggleDislikeReview(long userId, Review review) {
+    public LikeStateDTO toggleDislikeReview(long userId, Review review) {
         var user = userRepository.findByIdWithReviewLikes(userId);
         if (user.isEmpty()) {
-            return false;
+            return null;
         }
         var likes = user.get().getReviewsLikes();
         var dislikes = user.get().getReviewsDislikes();
@@ -201,14 +211,15 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         reviewRepository.save(review);
-        return true;
+        return new LikeStateDTO(review.getLikes(),
+                getLikeState(user.get(), user.get().getReviewsLikes(), user.get().getReviewsDislikes(), review));
     }
 
     @Transactional
-    public boolean toggleDislikeComment(long userId, Comment comment) {
+    public LikeStateDTO toggleDislikeComment(long userId, Comment comment) {
         var user = userRepository.findByIdWithCommentLikes(userId);
         if (user.isEmpty()) {
-            return false;
+            return null;
         }
         var likes = user.get().getCommentsLikes();
         var dislikes = user.get().getCommentsDislikes();
@@ -227,14 +238,15 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         commentRepository.save(comment);
-        return true;
+        return  new LikeStateDTO(comment.getLikes(),
+                getLikeState(user.get(), user.get().getCommentsLikes(), user.get().getCommentsDislikes(), comment));
     }
 
     @Transactional
-    public Integer toggleDislikeResponse(long userId, Response response) {
+    public LikeStateDTO toggleDislikeResponse(long userId, Response response) {
         var user = userRepository.findByIdWithResponseLikes(userId);
         if (user.isEmpty()) {
-            return -1;
+            return null;
         }
         var likes = user.get().getResponsesLikes();
         var dislikes = user.get().getResponsesDislikes();
@@ -253,7 +265,8 @@ public class UserService implements UserDetailsService {
         }
         userRepository.save(user.get());
         responseRepository.save(response);
-        return response.getLikes();
+        return new LikeStateDTO(response.getLikes(),
+                getLikeState(user.get(), user.get().getResponsesLikes(), user.get().getResponsesDislikes(), response));
     }
 
     @Transactional
