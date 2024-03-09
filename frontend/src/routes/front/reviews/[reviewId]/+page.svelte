@@ -1,6 +1,7 @@
 <script>
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
+    import ReplyForm from '$lib/components/ReplyForm.svelte';
 
     export let data;
 
@@ -8,47 +9,6 @@
     const isUserAdmin = false // TODO
 
     let commentValue = "";
-
-    function answer(button) {
-        var div = button.nextElementSibling;
-        div.style.display = "block";
-        button.style.display = "none";
-    }
-
-    function sendResponse(button, reviewId, commentId) {
-        var parentDiv = button.parentNode;
-        var replyButton = parentDiv.parentNode.querySelector("button");
-        var textarea = parentDiv.querySelector("textarea");
-        var responseText = textarea.value;
-        var data = {
-            "id": commentId,
-            "content": responseText
-        };
-        const url = "/reviews/" + reviewId + "/response";
-        console.log(url);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if(response.ok){
-                console.log("OK");
-
-                textarea.value = "";
-                parentDiv.style.display = "none";
-                replyButton.style.display = "block";
-
-            } else {
-                console.log(response);
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête PUT :', error);
-        });
-    }
 
     function comment() {
         if (!commentValue) {
@@ -66,7 +26,7 @@
             if(response.ok){
                 commentValue = "";
                 console.log("OK");
-                const dataPromise = response.json(); // Parse response body as JSON
+                const dataPromise = response.json();
                 dataPromise.then(dataResponse => {
                     data.review.comments = [...data.review.comments, dataResponse]
                 })
@@ -258,8 +218,12 @@
                                                 {JSON.stringify(response)}
                                             </p>
                                         </div>
+
                                     </li>
                                     {/each}
+                                    {#if isAuthenticated}
+                                       <ReplyForm reviewId={data.review.id} comment={comment} responses={comment.responses}/>
+                                    {/if}
                                 {/if}
                             </ul>
                         </li>
