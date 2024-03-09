@@ -69,8 +69,15 @@
                 </button>
             </form>
         </div>
-        <p th:text="${review.commentary()}" class="col-11"></p>
-        <p th:text="${review.code()}" class="col-11"></p>
+        <div class="col-11">
+            <p th:text="${review.commentary()}" class="row" style="white-space: pre-wrap;"></p>
+            <div class="row form-group">
+                <textarea readonly th:text="${review.code()}" class="form-control" cols="86" rows="10"></textarea>
+            </div>
+            <div class="row form-group">
+                <textarea readonly th:text="${review.test()}" class="form-control" cols="86" rows="10"></textarea>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -106,8 +113,8 @@
                                 <p th:text="${comment.author().username()}"></p>
                             </a>
                         </div>
-                        <p class="col-5" th:text="${comment.date()}"  style="text-align:end;"></p>
-                        <p class="col-12" th:text="${comment.content()}"></p>
+                        <p class="col-5" th:text="${comment.date()}" style="text-align:end;"></p>
+                        <p class="col-12" th:utext="${comment.content()}" style="white-space: pre-wrap;"></p>
                     </div>
 
                     <ul class="list-group">
@@ -142,7 +149,7 @@
                                     </a>
                                 </div>
                                 <p class="col-5" th:text="${response.date()}" style="text-align:end;"></p>
-                                <p class="col-12" th:text="${response.content()}"></p>
+                                <p class="col-12" th:utext="${response.content()}" style="white-space: pre-wrap;"></p>
                             </div>
                         </li>
                         <div class="col-12" >
@@ -161,8 +168,8 @@
             </ul>
         </div>
     </div>
-    <div class="row>" th:if="${authenticated}">
-        <textarea id="newComment" rows="4" cols="50"></textarea>
+    <div class="row form-group my-3" th:if="${authenticated}">
+        <textarea id="newComment" rows="4" cols="80" class="form-control"></textarea>
         <button th:attr="onclick=|comment('${reviewId}')|">Commenter</button>
     </div>
 
