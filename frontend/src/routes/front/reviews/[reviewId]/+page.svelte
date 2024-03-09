@@ -222,7 +222,7 @@
                                     </li>
                                     {/each}
                                     {#if isAuthenticated}
-                                       <ReplyForm reviewId={data.review.id} comment={comment} responses={comment.responses}/>
+                                       <ReplyForm reviewId={data.review.id} comment={comment} bind:responses={comment.responses}/>
                                     {/if}
                                 {/if}
                             </ul>
