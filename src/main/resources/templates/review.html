@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-7">
             <div class="row">
-                <h1 th:text="${review.title}"></h1>
+                <h1 th:text="${review.title}" class="text-break text-justify text-wrap"></h1>
                 <form th:action="@{/deleteReview}" method="post" th:if="${isUserAdmin}">
                     <input type="hidden" name="id" th:value="${reviewId}" />
                     <button type="submit">
@@ -77,7 +77,7 @@
             </form>
         </div>
         <div class="col-11">
-            <p th:text="${review.commentary()}" class="row" style="white-space: pre-wrap;"></p>
+            <p th:text="${review.commentary()}" class="row text-break text-justify text-wrap" style="white-space: pre-wrap;"></p>
             <div class="row form-group">
                 <textarea readonly th:text="${review.code()}" class="form-control" cols="86" rows="10"></textarea>
             </div>
@@ -132,7 +132,7 @@
                                 <p class="col" th:text="${comment.date()}" style="text-align:end;"></p>
                             </div>
                             <div class="row">
-                                <p class="col-12" th:utext="${comment.content()}" style="white-space: pre-wrap;"></p>
+                                <p class="col-12 text-break text-justify text-wrap" th:utext="${comment.content()}" style="white-space: pre-wrap;"></p>
                             </div>
                         </div>
                     </div>
@@ -180,7 +180,7 @@
                                         <p class="col" th:text="${comment.date()}" style="text-align:end;"></p>
                                     </div>
                                     <div class="row">
-                                        <p class="col-12" th:utext="${response.content()}" style="white-space: pre-wrap;"></p>
+                                        <p class="col-12 text-break text-justify text-wrap" th:utext="${response.content()}" style="white-space: pre-wrap;"></p>
                                     </div>
                                 </div>
                             </div>

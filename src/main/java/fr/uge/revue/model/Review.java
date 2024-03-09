@@ -10,6 +10,7 @@ public final class Review implements Likeable {
     @Id
     @GeneratedValue
     private long id;
+    @Column(columnDefinition = "text")
     private String title;
     private Date date;
     @Column(columnDefinition = "text")
