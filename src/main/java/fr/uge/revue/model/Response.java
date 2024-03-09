@@ -10,6 +10,7 @@ public final class Response implements Likeable {
     @Id
     @GeneratedValue
     private long id;
+    @Column(columnDefinition = "text")
     private String content;
     private Date date;
     private int likes;

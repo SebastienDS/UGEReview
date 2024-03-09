@@ -12,6 +12,7 @@ public final class Review implements Likeable {
     private long id;
     private String title;
     private Date date;
+    @Column(columnDefinition = "text")
     private String commentary;
     @Column(columnDefinition = "text")
     private String code;

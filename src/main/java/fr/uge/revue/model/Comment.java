@@ -11,6 +11,7 @@ public final class Comment implements Likeable {
     @Id
     @GeneratedValue
     private long id;
+    @Column(columnDefinition = "text")
     private String content;
     private Date date;
     private int likes;
