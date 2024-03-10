@@ -3,6 +3,8 @@
     import NavBar from '$lib/components/NavBar.svelte';
     import ReplyForm from '$lib/components/ReplyForm.svelte';
     import { userData } from '$lib/userData';
+    import { goto } from '$app/navigation';
+
 
     export let data;
 
@@ -41,15 +43,55 @@
     }
 
     async function deleteReview() {
-        // TODO
+        try {
+            const res = await fetch(`/api/v1/deleteReview`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': authToken.get(),
+                    'Content-Type': 'application/json'
+                },
+                body: data.review.id
+            });
+            if (!res.ok) return
+            goto('/front/reviews');
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     async function deleteComment(comment) {
-        // TODO
+        try {
+            const res = await fetch(`/api/v1/deleteComment?reviewId=${data.reviewId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': authToken.get(),
+                    'Content-Type': 'application/json'
+                },
+                body: comment.id
+            });
+            if (!res.ok) return
+            data.review.comments = data.review.comments.filter(c => c.id != comment.id);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    async function deleteResponse(response) {
-        // TODO
+    async function deleteResponse(response, comment) {
+        try {
+            const res = await fetch(`/api/v1/deleteResponse?reviewId=${data.reviewId}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': authToken.get(),
+                    'Content-Type': 'application/json'
+                },
+                body: response.id
+            });
+            if (!res.ok) return
+            comment.responses = comment.responses.filter(r => r.id != response.id);
+            data.review.comments = [...data.review.comments]
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     async function activateNotification() {
@@ -57,7 +99,7 @@
             const response = await fetch(`/api/v1/reviews/${data.reviewId}/notifications/activate`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': authToken.get()
+                    'Authorization': authToken.get(),
                 }
             });
             if (!response.ok) return
@@ -450,7 +492,7 @@
                                                     {/if}
                                                 </div>
                                                 {#if isUserAdmin}
-                                                    <form on:submit|preventDefault={() => deleteResponse(response)} class="col-1">
+                                                    <form on:submit|preventDefault={() => deleteResponse(response, comment)} class="col-1">
                                                         <input type="hidden" name="id" value={response.id} />
                                                         <input type="hidden" name="reviewId" value={data.review.id} />
                                                         <button>

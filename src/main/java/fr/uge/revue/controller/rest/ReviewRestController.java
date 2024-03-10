@@ -4,10 +4,7 @@ import fr.uge.revue.dto.comment.CommentDTO;
 import fr.uge.revue.dto.response.ResponseDTO;
 import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.*;
-import fr.uge.revue.model.Comment;
-import fr.uge.revue.model.LikeState;
-import fr.uge.revue.model.Response;
-import fr.uge.revue.model.User;
+import fr.uge.revue.model.*;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
 import fr.uge.revue.service.ReviewService;
@@ -165,5 +162,44 @@ public class ReviewRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(like);
+    }
+
+    @PostMapping("/deleteReview")
+    public ResponseEntity<?> deleteReview(Authentication authentication, @RequestBody long id) {
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        var success = reviewService.delete(id);
+        if(!success){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok("Ok");
+    }
+
+    @PostMapping("/deleteComment")
+    public ResponseEntity<?> deleteComment(Authentication authentication, @RequestBody long id, @RequestParam("reviewId") long reviewId) {
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        var success = commentService.delete(id);
+        if(!success){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok("Ok");
+    }
+
+    @PostMapping("/deleteResponse")
+    public ResponseEntity<?> deleteResponse(Authentication authentication, @RequestBody long id, @RequestParam("reviewId") long reviewId) {
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        var success = responseService.delete(id);
+        if(!success){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok("Ok");
     }
 }
