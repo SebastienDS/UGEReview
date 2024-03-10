@@ -70,7 +70,7 @@
                 <div class="row">
                     <a href="/front/reviews/{review.id}" class="col-9">{review.title}</a>
                     <div class="col-3" style="text-align:end;">
-                        <a href="/front/users/review.author.id}">{review.author.username}</a>
+                        <a href="/front/users/{review.author.id}">{review.author.username}</a>
                         <p>{review.date}</p>
                     </div>
                 </div>
