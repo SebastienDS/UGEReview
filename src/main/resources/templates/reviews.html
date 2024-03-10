@@ -36,20 +36,13 @@
         <li th:each="review : ${reviews}" class="list-group-item position-relative">
             <div class="row">
                 <a th:href="@{'/reviews/' + ${review.id()}}" class="col-9">
-                    <div>
-                        <p th:text="${review.title()}"></p>
-                    </div>
+                    <div th:text="${review.title()}"></div>
                 </a>
-
-
                 <div class="col-3" style="text-align:end;">
-                    <a th:href="@{'/users/' + ${review.author().id()}}">
-                        <p th:text="${review.author().username()}"></p>
-                    </a>
+                    <a th:href="@{'/users/' + ${review.author().id()}}" th:text="${review.author().username()}"></a>
                     <p th:text="${review.date()}"></p>
                 </div>
             </div>
-
         </li>
     </ul>
 </div>

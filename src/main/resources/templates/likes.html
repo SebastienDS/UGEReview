@@ -14,16 +14,12 @@
         <li th:each="review : ${likedReviews}" class="list-group-item position-relative">
             <div class="row">
                 <a th:href="@{'/reviews/' + ${review.getId()}}" class="col-9">
-                    <div>
-                        <p th:text="${review.getTitle()}"></p>
-                    </div>
+                    <div th:text="${review.getTitle()}"/>
                 </a>
 
 
                 <div class="col-3" style="text-align:end;">
-                    <a th:href="@{'/users/' + ${review.getAuthor().getId()}}">
-                        <p th:text="${review.getAuthor().getUsername()}"></p>
-                    </a>
+                    <a th:href="@{'/users/' + ${review.getAuthor().getId()}}" th:text="${review.getAuthor().getUsername()}"/>
                     <p th:text="${review.getDate()}"></p>
                 </div>
             </div>
