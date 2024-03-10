@@ -5,6 +5,7 @@ import fr.uge.revue.dto.response.ResponseDTO;
 import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.*;
 import fr.uge.revue.model.Comment;
+import fr.uge.revue.model.LikeState;
 import fr.uge.revue.model.Response;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
@@ -100,26 +101,68 @@ public class ReviewRestController {
         return ResponseEntity.ok(ResponseDTO.from(response));
     }
 
+    @PostMapping("/reviews/{reviewId}/like")
+    public ResponseEntity<LikeStateDTO> toggleReviewLikeButton(@PathVariable long reviewId, Authentication authentication) {
+        var review = reviewService.getReview(reviewId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        var like = userService.toggleLikeReview(userId, review);
+        if (like == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(like);
+    }
+
+    @PostMapping("/reviews/{reviewId}/dislike")
+    public ResponseEntity<LikeStateDTO> toggleReviewDislikeButton(@PathVariable long reviewId, Authentication authentication) {
+        var review = reviewService.getReview(reviewId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        var like = userService.toggleDislikeReview(userId, review);
+        if (like == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(like);
+    }
+
+    @PostMapping("/comments/{commentId}/like")
+    public ResponseEntity<LikeStateDTO> toggleCommentLikeButton(@PathVariable long commentId, Authentication authentication) {
+        var comment = commentService.getComment(commentId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        var like = userService.toggleLikeComment(userId, comment);
+        if (like == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(like);
+    }
+
+    @PostMapping("/comments/{commentId}/dislike")
+    public ResponseEntity<LikeStateDTO> toggleCommentDislikeButton(@PathVariable long commentId, Authentication authentication) {
+        var comment = commentService.getComment(commentId).orElseThrow();
+        var userId = ((User) authentication.getPrincipal()).getId();
+        var like = userService.toggleDislikeComment(userId, comment);
+        if (like == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(like);
+    }
+
     @PostMapping("/responses/{responseId}/like")
-    public ResponseEntity<Integer> toggleResponseLikeButton(@PathVariable long responseId, Authentication authentication) {
+    public ResponseEntity<LikeStateDTO> toggleResponseLikeButton(@PathVariable long responseId, Authentication authentication) {
         var response = responseService.getResponse(responseId).orElseThrow();
         var userId = ((User) authentication.getPrincipal()).getId();
-        System.out.println(responseId);
-        System.out.println(userId);
         var like = userService.toggleLikeResponse(userId, response);
-        if(like == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(like);
+        if (like == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(like);
     }
 
     @PostMapping("/responses/{responseId}/dislike")
-    public ResponseEntity<Integer> toggleResponseDisLikeButton(@PathVariable long responseId, Authentication authentication) {
+    public ResponseEntity<LikeStateDTO> toggleResponseDisLikeButton(@PathVariable long responseId, Authentication authentication) {
         var response = responseService.getResponse(responseId).orElseThrow();
         var userId = ((User) authentication.getPrincipal()).getId();
         var like = userService.toggleDislikeResponse(userId, response);
-        if(like == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        if (like == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(like);
     }

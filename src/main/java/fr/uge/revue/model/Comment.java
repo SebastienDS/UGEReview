@@ -117,4 +117,8 @@ public final class Comment implements Likeable {
     public void addResponse(Response response) {
         responses.add(response);
     }
+
+    public long getReviewId() {
+        return review.getId();
+    }
 }

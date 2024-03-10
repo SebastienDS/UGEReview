@@ -42,18 +42,20 @@
       });
   }
 </script>
-<div class="col-12" >
-    {#if !isVisible}
-      <button style="width: inherit;" on:click={answer}>
-          Répondre
-      </button>
-    {/if}
-    {#if isVisible}
-      <div>
-          <textarea style="width: inherit;" bind:value={textareaValue}></textarea>
-          <button on:click={sendResponse}>
-              Envoyer
+<div class="row">
+    <div class="col-12 d-flex justify-content-center">
+        {#if !isVisible}
+          <button style="width: inherit;" on:click={answer}>
+              Répondre
           </button>
-      </div>
-    {/if}
+        {/if}
+        {#if isVisible}
+          <div class="row form-group" style="width: inherit;">
+              <textarea style="width: inherit;" bind:value={textareaValue} cols="80" class="form-control"></textarea>
+              <button on:click={sendResponse}>
+                  Envoyer
+              </button>
+          </div>
+        {/if}
+    </div>
 </div>
