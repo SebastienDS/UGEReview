@@ -1,21 +1,19 @@
 <script>
-    import NavBar from '$lib/components/NavBar.svelte';
     import { authToken } from '$lib/auth';
+    import NavBar from '$lib/components/NavBar.svelte';
 
     export let data;
 
     async function followFunction() {
         try {
-            const url = data.checkFollow ? `/api/v1/users/${data.user.id}/unfollow` : `/api/v1/users/${data.user.id}/follow`;
+            const url = data.checkFollow ? `/api/v1/users/${data.userId}/unfollow` : `/api/v1/users/${data.userId}/follow`;
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Authorization': authToken.get()
                 },
             });
-            if (!response.ok) {
-                return
-            }
+            if (!response.ok) return;
             data.checkFollow = !data.checkFollow;
         } catch (error) {
             console.error(error);
@@ -129,21 +127,23 @@
     });
 
 </script>
-<NavBar/>
+<div class="container">
+    <NavBar/>
 
-{#if data.isAuthenticated && data.isMyUserPage}
-    <div>
-        <form on:submit|preventDefault={followFunction} class="mb-5">
-            <div class="form-group mb-3">
-                {#if data.checkFollow}
-                    <button type="submit" class="btn btn-primary">Unfollow</button>
-                {:else}
-                    <button type="submit" class="btn btn-primary">Follow</button>
-                {/if}
-            </div>
-        </form>
-    </div>
-{/if}
+    {#if data.isAuthenticated && !data.isMyUserPage}
+        <div>
+            <form on:submit|preventDefault={followFunction} class="mb-5">
+                <div class="form-group mb-3">
+                    {#if data.checkFollow}
+                        <button type="submit" class="btn btn-primary">Unfollow</button>
+                    {:else}
+                        <button type="submit" class="btn btn-primary">Follow</button>
+                    {/if}
+                </div>
+            </form>
+        </div>
+    {/if}
+</div>
 
 <div class="container text-center">
     <div class="col">
