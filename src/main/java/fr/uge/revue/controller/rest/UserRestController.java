@@ -9,9 +9,7 @@ import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.user.UserFollowStateDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
-import fr.uge.revue.model.Likeable;
-import fr.uge.revue.model.Role;
-import fr.uge.revue.model.User;
+import fr.uge.revue.model.*;
 import fr.uge.revue.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -87,19 +85,19 @@ public class UserRestController {
 
     @GetMapping("/users/{userId}/reviews")
     public ResponseEntity<List<ReviewAllReviewDTO>> showUserReviews(@PathVariable long userId, Model model) {
-        var reviews = userService.findAllUserReviews(userId).stream().map(ReviewAllReviewDTO::from).toList();
+        var reviews = userService.findAllUserReviews(userId).stream().sorted(Comparator.comparing(Review::getDate).reversed()).map(ReviewAllReviewDTO::from).toList();
         return ResponseEntity.ok().body(reviews);
     }
 
     @GetMapping("/users/{userId}/comments")
     public ResponseEntity<List<CommentUserDTO>> getUserComments(@PathVariable long userId, Model model) {
-        var comments = userService.getComments(userId).stream().map(CommentUserDTO::from).toList();
+        var comments = userService.getComments(userId).stream().sorted(Comparator.comparing(Comment::getDate).reversed()).map(CommentUserDTO::from).toList();
         return ResponseEntity.ok().body(comments);
     }
 
     @GetMapping("/users/{userId}/responses")
     public ResponseEntity<List<ResponseUserDTO>> getUserResponses(@PathVariable long userId, Model model) {
-        var responses = userService.getResponses(userId).stream().map(ResponseUserDTO::from).toList();
+        var responses = userService.getResponses(userId).stream().sorted(Comparator.comparing(Response::getDate).reversed()).map(ResponseUserDTO::from).toList();
         return ResponseEntity.ok().body(responses);
     }
 
