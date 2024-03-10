@@ -43,9 +43,7 @@
                 <div id="rowNormalUsername" class="row">
                     <p>
                         <span id="username" th:text="${user.username}" class="me-2"></span>
-                        <div th:if="${isMyUserPage}">
-                            <i id="editIconUsername" class="fas fa-edit"></i>
-                        </div>
+                        <i id="editIconUsername" class="fas fa-edit" th:if="${isMyUserPage}"></i>
                     </p>
                </div>
                <div id="rowEditUsername" class="row" style="display: none";>

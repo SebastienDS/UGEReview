@@ -1,8 +1,19 @@
 <script>
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
+    import { formatDate } from '$lib/utils';
+
 
     export let data;
+
+    let newUsername = data.user.username;
+    let newEmail = data.user.email;
+    let oldPassword = '';
+    let newPassword = '';
+
+    let editUsername = false;
+    let editEmail = false;
+    let editPassword = false;
 
     async function followFunction() {
         try {
@@ -20,113 +31,72 @@
         }
     }
 
-    function edit(normalRow, editRow, editIcon, validateIcon, url, input, field, span) {
-        editIcon.addEventListener('click', function () {
-                normalRow.style.display = 'none';
-                editRow.style.display = 'block';
-        });
-
-        validateIcon.addEventListener('click', function () {
-                normalRow.style.display = 'block';
-                editRow.style.display = 'none';
-                const newData = input.value
-                fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: newData
-                })
-                .then(response => {
-                    if(response.ok){
-                        span.textContent = input.value
-                        console.log("OK");
-                    } else {
-                        input.value = span.textContent
-                        console.log(response);
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la requête PUT :', error);
-                });
+    async function updateUsername() {
+        try {
+            const response = await fetch(`/users/${data.userId}/updateUsername`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': authToken.get()
+                },
+                body: newUsername
             });
-    }
-
-    function editUser(){
-        const editIconUser = document.getElementById('editIconUsername');
-        const normalUsername = document.getElementById('rowNormalUsername');
-        const editUsername = document.getElementById('rowEditUsername');
-        const span = document.getElementById('username');
-        const input = document.getElementById('usernameInput');
-        const validateIconUser = document.getElementById('validateIconUsername');
-        const url = window.location.href + "/updateUsername";
-        edit(normalUsername, editUsername, editIconUser, validateIconUser, url, input, 'username', span);
-    }
-
-    function editEmail(){
-        const editIconEmail = document.getElementById('editIconEmail');
-        const normalEmailRow = document.getElementById('rowNormalEmail');
-        const editEmailRow = document.getElementById('rowEditEmail');
-        const span = document.getElementById('email');
-        const input = document.getElementById('emailInput');
-        const validateIconEmail = document.getElementById('validateIconEmail');
-        const url = window.location.href + "/updateEmail";
-        edit(normalEmailRow, editEmailRow, editIconEmail, validateIconEmail, url, input, 'email', span);
-    }
-
-    function manageEditPassword(normalRow, editRow, editIcon, validateIcon, url, inputOldPassword, inputNewPassword, span){
-        editIcon.addEventListener('click', function () {
-                normalRow.style.display = 'none';
-                editRow.style.display = 'block';
-        });
-
-        validateIcon.addEventListener('click', function () {
-                normalRow.style.display = 'block';
-                editRow.style.display = 'none';
-                const newData = JSON.stringify({ oldPassword: inputOldPassword.value, newPassword: inputNewPassword.value })
-                fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: newData
-                })
-                .then(response => {
-                    if(response.ok){
-                        console.log("OK");
-                    } else {
-                        console.log(response);
-                    }
-                    inputOldPassword.value = ""
-                    inputNewPassword.value = ""
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la requête PUT :', error);
-                });
-            });
-    }
-
-    function editPassword(){
-        const editIconPassword = document.getElementById('editIconPassword');
-        const normalPasswordRow = document.getElementById('rowNormalPassword');
-        const editPasswordRow = document.getElementById('rowEditPassword');
-        const span = document.getElementById('password');
-        const inputOldPassword = document.getElementById('oldPasswordInput');
-        const inputNewPassword = document.getElementById('newPasswordInput');
-        const validateIconPassword = document.getElementById('validateIconPassword');
-        const url = window.location.href + "/updatePassword";
-        manageEditPassword(normalPasswordRow, editPasswordRow, editIconPassword, validateIconPassword, url, inputOldPassword, inputNewPassword, span);
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        if(data.isMyUserPage){
-            editUser();
-            editEmail();
-            editPassword();
+            if (response.ok) {
+                data.user.username = newUsername
+                authToken.updateUsername(newUsername);
+            } else {
+                newUsername = data.user.username
+            }
+        } catch (error) {
+            console.error(error)
         }
-    });
+        editUsername = false
+    }
 
+    async function updateEmail() {
+        try {
+            const response = await fetch(`/users/${data.userId}/updateEmail`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': authToken.get()
+                },
+                body: newEmail
+            });
+            if (response.ok) {
+                data.user.email = newEmail
+            } else {
+                newEmail = data.user.email
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        editEmail = false
+    }
+
+    async function updatePassword() {
+        try {
+            const response = await fetch(`/users/${data.userId}/updatePassword`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': authToken.get()
+                },
+                body: JSON.stringify({ oldPassword, newPassword })
+            });
+            if (response.ok) {
+                authToken.updatePassword(newPassword)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+        editPassword = false
+        oldPassword = ''
+        newPassword = ''
+    }
+    
 </script>
+
 <div class="container">
     <NavBar/>
 
@@ -161,68 +131,83 @@
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container my-3">
     <div class="row">
         <div class="col text-end">
             <p>image</p>
         </div>
         <div class="col">
-            <div id="rowNormalUsername" class="row">
-                <div>
-                    <span id="username" class="me-2">{data.user.username}</span>
+            <div class="row">
+                {#if !editUsername}
+                    <p>
+                        <span id="username" class="me-2">{data.user.username}</span>
                         {#if data.isMyUserPage}
-                            <div>
-                                <i id="editIconUsername" class="fas fa-edit"></i>
-                            </div>
+                            <button class="btn btn-light" on:click|preventDefault={() => editUsername = true}>
+                                <i class="fas fa-edit"></i>
+                            </button>
                         {/if}
-                </div>
-            </div>
-            <div id="rowEditUsername" class="row" style="display: none">
-                <div class="col">
-                    <input id="usernameInput" maxlength="30" style="width: 250px;" class="form-control me-2" value={data.user.username}> 
-                </div>
-                <div class = "col">
-                    <i id="validateIconUsername" class="fas fa-check"></i>
-                </div>
+                    </p>
+                {:else}
+                    <form on:submit|preventDefault={updateUsername}>
+                        <div class="col">
+                            <input maxlength="30" style="width: 250px;" class="form-control me-2" bind:value={newUsername}> 
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-light" type="submit">
+                                <i id="validateIconUsername" class="fas fa-check"></i>
+                            </button>
+                        </div>
+                    </form>
+                {/if}
             </div>
             {#if data.isMyUserPage}
                 <div class="row">
-                    <div id="rowNormalEmail" class="row">
+                    {#if !editEmail}
                         <p>
                             <span id="email" class="me-2">{data.user.email}</span>
-                            <i id="editIconEmail" class="fas fa-edit"></i>
+                            <button class="btn btn-light" on:click|preventDefault={() => editEmail = true}>
+                                <i class="fas fa-edit"></i>
+                            </button>
                         </p>
-                    </div>
-                    <div id="rowEditEmail" class="row" style="display: none">
-                        <div class="col">
-                            <input id="emailInput" maxlength="30" style="width: 250px;" class="form-control me-2" value={data.user.email}>
-                        </div>
-                        <div class = "col">
-                            <i id="validateIconEmail" class="fas fa-check"></i>
-                        </div>
-                    </div>
+                    {:else}
+                        <form on:submit|preventDefault={updateEmail}>
+                            <div class="col">
+                                <input id="emailInput" maxlength="30" style="width: 250px;" class="form-control me-2" bind:value={newEmail}>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-light" type="submit">
+                                    <i id="validateIconEmail" class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </form>
+                    {/if}
                 </div>
             {/if}
             <div class="row">
-                <span>{data.user.dateCreation}</span>
+                <span>{formatDate(new Date(data.user.dateCreation))}</span>
             </div>
             {#if data.isMyUserPage}
                 <div class="row">
-                    <div id="rowNormalPassword" class="row">
+                    {#if !editPassword}
                         <p>
                             <span id="password" class="me-2">********</span>
-                            <i id="editIconPassword" class="fas fa-edit"></i>
+                            <button class="btn btn-light" on:click|preventDefault={() => editPassword = true}>
+                                <i class="fas fa-edit"></i>
+                            </button>
                         </p>
-                    </div>
-                    <div id="rowEditPassword" class="row" style="display: none">
-                        <div class="col">
-                            <input id="oldPasswordInput" placeholder="Old Password" maxlength="30" style="width: 250px;" class="form-control me-2">
-                            <input id="newPasswordInput" placeholder="New Password" maxlength="30" style="width: 250px;" class="form-control me-2">
-                        </div>
-                        <div class = "col">
-                            <i id="validateIconPassword" class="fas fa-check"></i>
-                        </div>
-                    </div>
+                    {:else}
+                        <form on:submit|preventDefault={updatePassword}>
+                            <div class="col">
+                                <input id="oldPasswordInput" placeholder="Old Password" maxlength="30" style="width: 250px;" class="form-control me-2" bind:value={oldPassword}>
+                                <input id="newPasswordInput" placeholder="New Password" maxlength="30" style="width: 250px;" class="form-control me-2" bind:value={newPassword}>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-light" type="submit">
+                                    <i id="validateIconPassword" class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </form>
+                    {/if}
                     {#if data.isAuthenticated && data.isMyUserPage}
                         <div class="mb-3">
                             <a href="/front/logout">Se déconnecter</a>

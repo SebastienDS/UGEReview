@@ -23,8 +23,7 @@ async function login() {
             return
         }
         var user = await response.json();
-        const token = btoa(`${username}:${password}`)
-        authToken.update(`Basic ${token}`);
+        authToken.update(username, password);
         userData.update(user);
         
         goto('/front/reviews');

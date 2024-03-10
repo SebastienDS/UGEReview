@@ -6,13 +6,18 @@ import fr.uge.revue.dto.likeable.LikeableDTO;
 import fr.uge.revue.dto.response.ResponseDTO;
 import fr.uge.revue.dto.response.ResponseUserDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
+import fr.uge.revue.dto.updatePassword.PasswordReceived;
 import fr.uge.revue.dto.user.UserFollowStateDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +25,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @RestController
@@ -110,5 +116,88 @@ public class UserRestController {
                 .map(LikeableDTO::from)
                 .toList();
         return ResponseEntity.ok().body(likedList);
+    }
+
+    @PutMapping("/users/{userId}/updateUsername")
+    public ResponseEntity<String> updateUsername(@PathVariable long userId, @RequestBody String newUsername, Authentication authentication){
+        Objects.requireNonNull(newUsername);
+        var user = (User) authentication.getPrincipal();
+        var userProfile = userService.getUserById(userId);
+        if(userProfile.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if(!user.getUsername().equals(userProfile.get().getUsername())){
+            //WTF le hacker
+            System.out.println(user.getUsername() + " " + userProfile.get().getUsername());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Users doesn't match");
+        }
+        if(userService.getUsernames().contains(newUsername) || newUsername.equals("")){
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Username already taken");
+        }
+        userService.setUsername(userId, newUsername);
+        var newData = userService.getUserById(userId).orElseThrow();
+        var authenticationToken =
+                new UsernamePasswordAuthenticationToken(newData, newData.getPassword(), newData.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return ResponseEntity.ok("Ok");
+    }
+
+    @PutMapping("/users/{userId}/updateEmail")
+    public ResponseEntity<String> updateEmail(@PathVariable long userId, @RequestBody String newEmail, Authentication authentication){
+        Objects.requireNonNull(newEmail);
+        var user = (User) authentication.getPrincipal();
+        var userProfile = userService.getUserById(userId);
+        if(userProfile.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if(!user.getUsername().equals(userProfile.get().getUsername())){
+            //WTF le hacker
+            System.out.println(user.getUsername() + " " + userProfile.get().getUsername());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Users doesn't match");
+        }
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        var pattern = Pattern.compile(regex);
+        var matcher = pattern.matcher(newEmail);
+        if(!matcher.matches()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email Not Valid");
+        }
+        if(userService.getEmails().contains(newEmail)){
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Username already taken");
+        }
+        userService.setEmail(userId, newEmail);
+        var newData = userService.getUserById(userId).orElseThrow();
+        var authenticationToken =
+                new UsernamePasswordAuthenticationToken(newData, newData.getPassword(), newData.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return ResponseEntity.ok("Ok");
+    }
+
+    @PutMapping("/users/{userId}/updatePassword")
+    public ResponseEntity<String> updatePassword(@PathVariable long userId, @Valid @RequestBody PasswordReceived passwords,
+                                                 Authentication authentication, BCryptPasswordEncoder passwordEncoder,
+                                                 BindingResult bindingResult){
+        Objects.requireNonNull(passwords);
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password not valid");
+        }
+        var user = (User) authentication.getPrincipal();
+        var userProfile = userService.getUserById(userId);
+        if(userProfile.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        if(!user.getUsername().equals(userProfile.get().getUsername())){
+            //WTF le hacker
+            System.out.println(user.getUsername() + " " + userProfile.get().getUsername());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Users doesn't match");
+        }
+        if(!passwordEncoder.matches(passwords.oldPassword(), user.getPassword())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong Password");
+        }
+        userService.updateUserPassword(user, passwords.newPassword());
+        var newData = userService.getUserById(userId).orElseThrow();
+        var authenticationToken =
+                new UsernamePasswordAuthenticationToken(newData, newData.getPassword(), newData.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        return ResponseEntity.ok("Ok");
     }
 }
