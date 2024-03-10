@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -105,14 +106,11 @@ public class UserRestController {
     @GetMapping("/users/{userId}/likes")
     public ResponseEntity<List<LikeableDTO>> getLikedContents(@PathVariable long userId, Model model) {
         var user = userService.getUserWithLikes(userId);
-        var likedList = new ArrayList<Likeable>();
-        var likedReviews = user.reviews();
-        var likedComments = user.comments();
-        var likedResponses = user.responses();
-        likedList.addAll(likedReviews);
-        likedList.addAll(likedComments);
-        likedList.addAll(likedResponses);
-        var newList = likedList.stream().sorted(Comparator.comparing(Likeable::getDate).reversed()).map(LikeableDTO::from).toList();
-        return ResponseEntity.ok().body(newList);
+        var likedList = Stream.of(user.reviews(), user.comments(), user.responses())
+                .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(Likeable::getDate).reversed())
+                .map(LikeableDTO::from)
+                .toList();
+        return ResponseEntity.ok().body(likedList);
     }
 }

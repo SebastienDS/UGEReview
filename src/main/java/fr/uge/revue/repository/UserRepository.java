@@ -42,7 +42,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("SELECT u.email FROM User u")
     List<String> findAllEmails();
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.reviewsLikes LEFT JOIN FETCH u.commentsLikes c LEFT JOIN FETCH u.responsesLikes r LEFT JOIN FETCH c.review LEFT JOIN FETCH r.comment r2 LEFT JOIN FETCH r2.review WHERE u.id = :userId")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.reviewsLikes r LEFT JOIN FETCH r.author LEFT JOIN FETCH u.commentsLikes c LEFT JOIN FETCH c.author LEFT JOIN FETCH u.responsesLikes r2 LEFT JOIN FETCH r2.author LEFT JOIN FETCH c.review LEFT JOIN FETCH r2.comment r3 LEFT JOIN FETCH r3.review WHERE u.id = :userId")
     Optional<User> findByIdWithLikes(@Param("userId") long userId);
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.reviewsLikes LEFT JOIN FETCH u.commentsLikes c LEFT JOIN FETCH u.responsesLikes r LEFT JOIN FETCH u.reviewsDislikes LEFT JOIN FETCH u.commentsDislikes LEFT JOIN FETCH u.responsesDislikes WHERE u.id = :userId")

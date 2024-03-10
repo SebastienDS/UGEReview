@@ -218,9 +218,6 @@ public class UserController {
         var likedReviews = user.reviews();
         var likedComments = user.comments();
         var likedResponses = user.responses();
-        System.out.println(likedReviews);
-        System.out.println(likedResponses);
-        System.out.println(likedComments);
         model.addAttribute("likedReviews", likedReviews);
         model.addAttribute("likedComments", likedComments);
         model.addAttribute("likedResponses", likedResponses);
