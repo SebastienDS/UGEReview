@@ -74,6 +74,9 @@ public class SecurityConfig {
                     .antMatchers("/api/v1/comments/{commentId}/dislike").authenticated()
                     .antMatchers("/api/v1/responses/{responseId}/like").authenticated()
                     .antMatchers("/api/v1/responses/{responseId}/dislike").authenticated()
+                    .antMatchers("/users/{userId}/updateUsername").authenticated()
+                    .antMatchers("/users/{userId}/updateEmail").authenticated()
+                    .antMatchers("/users/{userId}/updatePassword").authenticated()
                 .and().authorizeRequests().anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();

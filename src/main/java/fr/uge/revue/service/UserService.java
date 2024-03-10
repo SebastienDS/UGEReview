@@ -321,7 +321,7 @@ public class UserService implements UserDetailsService {
     public void setEmail(long userId, String email) {
         Objects.requireNonNull(email);
         User user = userRepository.findById(userId).orElseThrow();
-        user.setUsername(email);
+        user.setEmail(email);
         userRepository.save(user);
     }
 
