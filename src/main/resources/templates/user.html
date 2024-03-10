@@ -9,7 +9,7 @@
 </head>
 <body>
 <div th:replace="fragments/header :: navbar"></div>
-    <div th:if="${authenticated != null && isMyUserPage == null}">
+    <div class="container" th:if="${authenticated != null && isMyUserPage == null}">
         <form th:action="@{${followUrl}}" method="post" class="mb-5">
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary" th:text="${follow != null && follow ? 'Follow' : 'Unfollow'}"/>
