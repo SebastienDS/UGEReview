@@ -5,6 +5,7 @@
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
     import Notification from '$lib/components/Notification.svelte';
+    import { formatDate } from '$lib/utils';
 
 
     const isAuthenticated = authToken.get() != null;
@@ -71,7 +72,7 @@
                     <a href="/front/reviews/{review.id}" class="col-9">{review.title}</a>
                     <div class="col-3" style="text-align:end;">
                         <a href="/front/users/{review.author.id}">{review.author.username}</a>
-                        <p>{review.date}</p>
+                        <p>{formatDate(new Date(review.date))}</p>
                     </div>
                 </div>
             </li>

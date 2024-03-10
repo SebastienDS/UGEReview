@@ -3,6 +3,8 @@
     import NavBar from '$lib/components/NavBar.svelte';
     import ReplyForm from '$lib/components/ReplyForm.svelte';
     import { userData } from '$lib/userData';
+    import { formatDate } from '$lib/utils';
+
 
     export let data;
 
@@ -255,7 +257,7 @@
                     {data.review.author.username}
                 </a>
             </div>
-            <span class="row-6">{data.review.date}</span>
+            <span class="row-6">{formatDate(new Date(data.review.date))}</span>
         </div>
         <div class="col-1">
             {#if isAuthenticated}
@@ -396,7 +398,7 @@
                                             </a>
                                         </div>
                                         <p class="col" style="text-align:end;">
-                                            {comment.date}
+                                            {formatDate(new Date(comment.date))}
                                         </p>
                                     </div>
                                     <div class="row">
@@ -466,7 +468,7 @@
                                                             </a>
                                                         </div>
                                                         <p class="col" style="text-align:end;">
-                                                            {comment.date}
+                                                            {formatDate(new Date(comment.date))}
                                                         </p>
                                                     </div>
                                                     <div class="row">
