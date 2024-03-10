@@ -228,11 +228,13 @@
                             <a href="/front/logout">Se déconnecter</a>
                         </div>
                     {/if}
-                    <!-- <div th:if="${authenticated != null && isMyUserPage != null}">
-                        <form th:action="@{/deleteProfile}" method="post">
-                            <button type="submit">Supprimer mon compte</button>
-                        </form>
-                    </div> -->
+                    <div>
+                        {#if data.isAuthenticated && data.isMyUserPage}
+                        <div class="mb-3">
+                            <a href="/front/deleteProfile">Supprimer mon compte</a>
+                        </div>
+                        {/if}
+                    </div>
                 </div>
             {/if}
             <!-- <div th:if="${isUserPageAdmin == null && isUserAdmin != null}">

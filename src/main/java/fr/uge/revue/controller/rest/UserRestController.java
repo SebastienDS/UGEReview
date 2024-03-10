@@ -70,4 +70,11 @@ public class UserRestController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/deleteProfile")
+    public ResponseEntity<?> deleteUser(Authentication authentication) {
+        var user = (User) authentication.getPrincipal();
+        userService.deleteUser(user.getId());
+        return ResponseEntity.ok().build();
+    }
+
 }
