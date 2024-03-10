@@ -100,4 +100,9 @@ public final class Response implements Likeable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public long getReviewId(){
+        return comment.getReviewId();
+    }
 }

@@ -47,6 +47,11 @@ public final class Review implements Likeable {
         return id;
     }
 
+    @Override
+    public String getContent() {
+        return title;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -151,5 +156,10 @@ public final class Review implements Likeable {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public long getReviewId(){
+        return id;
     }
 }
