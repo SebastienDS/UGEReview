@@ -322,7 +322,7 @@
         </div>
         <div class="col-11">
             <p class="row text-break text-justify text-wrap" style="white-space: pre-wrap;">
-               {data.review.commentary} 
+               {@html data.review.commentary} 
             </p>
             <div class="row form-group">
                 <textarea readonly class="form-control" cols="86" rows="10">
@@ -403,7 +403,7 @@
                                     </div>
                                     <div class="row">
                                         <p class="col-12 text-break text-justify text-wrap" style="white-space: pre-wrap;">
-                                            {comment.content}
+                                            {@html comment.content}
                                         </p>
                                     </div>
                                 </div>
