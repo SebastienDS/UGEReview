@@ -214,13 +214,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/likes")
     public String getLikedContents(@PathVariable long userId, Model model) {
-        var user = userService.getUserWithLikes(userId);
-        var likedReviews = user.reviews();
-        var likedComments = user.comments();
-        var likedResponses = user.responses();
-        model.addAttribute("likedReviews", likedReviews);
-        model.addAttribute("likedComments", likedComments);
-        model.addAttribute("likedResponses", likedResponses);
+        model.addAttribute("likedList",  userService.getLikedListFromUser(userId));
         return "likes";
     }
 

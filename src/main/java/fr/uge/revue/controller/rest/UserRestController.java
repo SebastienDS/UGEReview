@@ -109,13 +109,7 @@ public class UserRestController {
 
     @GetMapping("/users/{userId}/likes")
     public ResponseEntity<List<LikeableDTO>> getLikedContents(@PathVariable long userId, Model model) {
-        var user = userService.getUserWithLikes(userId);
-        var likedList = Stream.of(user.reviews(), user.comments(), user.responses())
-                .flatMap(Collection::stream)
-                .sorted(Comparator.comparing(Likeable::getDate).reversed())
-                .map(LikeableDTO::from)
-                .toList();
-        return ResponseEntity.ok().body(likedList);
+        return ResponseEntity.ok().body(userService.getLikedListFromUser(userId));
     }
 
     @PutMapping("/users/{userId}/updateUsername")
