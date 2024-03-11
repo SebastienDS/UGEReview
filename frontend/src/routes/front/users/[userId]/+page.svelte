@@ -2,9 +2,15 @@
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
     import { formatDate } from '$lib/utils';
+    import { userData } from '$lib/userData';
 
 
     export let data;
+
+
+    const isUserAdmin = userData.get() != null && userData.get().role === 'ADMIN';
+    const isUserPageAdmin = data.user.role == 'ADMIN';
+
 
     let newUsername = data.user.username;
     let newEmail = data.user.email;
@@ -93,6 +99,22 @@
         editPassword = false
         oldPassword = ''
         newPassword = ''
+    }
+
+    async function banProfile() {
+        try {
+            const response = await fetch(`/api/v1/banProfile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': authToken.get()
+                },
+                body: data.userId
+            });
+            if (!response.ok) return 
+        } catch (error) {
+            console.error(error)
+        }
     }
     
 </script>
@@ -221,13 +243,12 @@
                         {/if}
                     </div>
                 </div>
-            {/if}
-            <!-- <div th:if="${isUserPageAdmin == null && isUserAdmin != null}">
-                <form th:action="@{/banProfile}" method="post">
-                    <input type="hidden" name="id" th:value="${userId}" />
+            {/if}      
+            {#if !isUserPageAdmin && isUserAdmin}
+                <form on:submit|preventDefault={banProfile}>
                     <button type="submit">Bannir le compte</button>
                 </form>
-            </div> -->
+            {/if}
         </div>
     </div>
 </div>

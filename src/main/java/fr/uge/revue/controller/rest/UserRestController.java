@@ -200,4 +200,21 @@ public class UserRestController {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return ResponseEntity.ok("Ok");
     }
+
+    @PostMapping("/banProfile")
+    public ResponseEntity<String> banProfile(Authentication authentication, @RequestBody long id) {
+        if(authentication == null || (!authentication.isAuthenticated())){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        var user = (User) authentication.getPrincipal();
+        if(user.getRole() != Role.ADMIN){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        var userPage = userService.getUserById(id);
+        if(userPage.isEmpty() || userPage.get().getRole() == Role.ADMIN){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        userService.banUser(id);
+        return ResponseEntity.ok("Ok");
+    }
 }

@@ -34,11 +34,12 @@ public class CommentService {
         return commentRepository.findByIdWithResponses(id);
     }
 
-    public void delete(long id) {
+    public boolean delete(long id) {
         var comment = getComment(id);
         if(comment.isEmpty()){
-            return;
+            return false;
         }
         commentRepository.delete(comment.get());
+        return true;
     }
 }

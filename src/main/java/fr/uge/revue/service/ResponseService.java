@@ -29,11 +29,12 @@ public class ResponseService {
         notificationService.notifyNewResponse(response);
     }
 
-    public void delete(long id) {
+    public boolean delete(long id) {
         var response = getResponse(id);
         if(response.isEmpty()){
-            return;
+            return false;
         }
         responseRepository.delete(response.get());
+        return true;
     }
 }
