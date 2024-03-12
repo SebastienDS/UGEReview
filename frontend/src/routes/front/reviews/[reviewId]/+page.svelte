@@ -1,9 +1,9 @@
 <script>
+    import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
     import ReplyForm from '$lib/components/ReplyForm.svelte';
     import { userData } from '$lib/userData';
-    import { goto } from '$app/navigation';
     import { formatDate } from '$lib/utils';
 
     export let data;
@@ -239,7 +239,6 @@
         while (!data.review.unitTests) {
             try {
                 const response = await fetch(`/api/v1/reviews/${data.reviewId}/unitTests`);
-                console.log(response)
                 if (response.ok) {
                     const body = await response.json();
                     if (body.unitTests) {
@@ -365,14 +364,10 @@
                {@html data.review.commentary} 
             </p>
             <div class="row form-group">
-                <textarea readonly class="form-control" cols="86" rows="10">
-                    {data.review.code}
-                </textarea>
+                <textarea readonly class="form-control" cols="86" rows="10">{data.review.code}</textarea>
             </div>
             <div class="row form-group">
-                <textarea readonly class="form-control" cols="86" rows="10">
-                    {data.review.test}
-                </textarea>
+                <textarea readonly class="form-control" cols="86" rows="10">{data.review.test}</textarea>
             </div>
         </div>
     </div>
