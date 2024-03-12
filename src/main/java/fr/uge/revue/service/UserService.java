@@ -1,5 +1,6 @@
 package fr.uge.revue.service;
 
+import fr.uge.revue.dto.likeable.LikeableDTO;
 import fr.uge.revue.dto.review.LikeStateDTO;
 import fr.uge.revue.dto.user.UserAllLikesDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -325,9 +327,13 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public UserAllLikesDTO getUserWithLikes(long userId) {
+    public List<LikeableDTO> getLikedListFromUser(long userId) {
         var user = userRepository.findByIdWithLikes(userId).orElseThrow();
-        return UserAllLikesDTO.from(user);
+        return Stream.of(user.getReviewsLikes(), user.getCommentsLikes(), user.getResponsesLikes())
+                .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(Likeable::getDate).reversed())
+                .map(LikeableDTO::from)
+                .toList();
     }
 
     public Optional<User> findUserWithLikesAndDislikes(long userId) {
