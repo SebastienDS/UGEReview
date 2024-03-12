@@ -1,10 +1,8 @@
 <script>
     export let data;
 
-    import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
     import NavBar from '$lib/components/NavBar.svelte';
-    import Notification from '$lib/components/Notification.svelte';
     import { formatDate } from '$lib/utils';
 
 
@@ -25,15 +23,6 @@
             console.log(error)
         }
     }
-
-    async function markNotificationAsRead(e) {
-        const notificationId = e.detail.notificationId
-        data.notifications = data.notifications.filter(n => n.id != notificationId)
-    }
-
-    async function redirectToNotification(e) {
-        goto(e.detail.link)
-    }
 </script>
 
 <div class="container">
@@ -53,17 +42,6 @@
             </div>
         </div>
     </form>
-
-    {#if isAuthenticated}
-        <ul class="list-group mb-3">
-            {#each data.notifications as notification}
-                <li class="list-group-item list-group-item-action list-group-item-info">
-                    <Notification notification={notification} on:markAsRead={markNotificationAsRead} on:redirect={redirectToNotification}/>
-                </li>
-            {/each}
-        </ul>
-    {/if}
-
 
     <ul class="list-group mb-3">
         {#each data.reviews as review}

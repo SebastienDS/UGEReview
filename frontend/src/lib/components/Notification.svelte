@@ -35,7 +35,7 @@
     </form>
     <form on:submit|preventDefault={markAsReadAndRedirect} class="position-relative">
         <button type="submit" class="stretched-link btn btn-link">
-            {JSON.stringify(notification)}
+            {notification.message}
         </button>
     </form>
 </div>
