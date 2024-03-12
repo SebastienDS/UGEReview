@@ -1,6 +1,7 @@
 <script>
 import { goto } from '$app/navigation';
 import { authToken } from '$lib/auth';
+import { onMount } from 'svelte';
 import NavBar from '$lib/components/NavBar.svelte';
 
 const form = {
@@ -12,6 +13,24 @@ const form = {
 let codeFiles = [];
 let testFiles = [];
 
+let editorId;
+let editor;
+
+onMount(() => {
+    let width = editorId.offsetWidth;
+    let height = editorId.offsetHeight;
+    editor = CodeMirror.fromTextArea(
+        editorId, {
+            mode:"text/x-java",
+            theme: "dracula",
+            lineNumbers: true
+        }
+    );
+    editor.setSize(width, height);
+})
+
+
+
 async function createReview() {
     const formData = new FormData();
     for(const name in form) {
@@ -21,6 +40,7 @@ async function createReview() {
     if (testFiles.length != 0) formData.append("testFile", testFiles[0])
     
     try {
+        form.code = editor.getValue();
         const response = await fetch("/api/v1/createReview", {
             method: 'POST',
             headers: {
@@ -87,7 +107,7 @@ async function createReview() {
                                 </svg>
                             </span>
                         </div>
-                        <textarea name="code" class="form-control" placeholder="Code :" cols="86" rows="10" bind:value={form.code}></textarea>
+                        <textarea name="code" class="form-control" placeholder="Code :" cols="86" rows="10" bind:this={editorId}></textarea>
                     </div>
                 </div>
             </div>
