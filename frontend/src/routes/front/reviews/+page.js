@@ -31,7 +31,7 @@ async function fetchNotifications() {
 
 async function fetchNotificationsIfAuthenticated() {
 	if (authToken.get() === null) return false;
-	return fetchNotifications
+	return fetchNotifications()
 }
 
 export async function load({ params }) {
