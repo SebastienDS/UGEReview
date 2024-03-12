@@ -10,13 +10,19 @@ import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.TestsReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -44,11 +50,13 @@ public class ReviewService {
     public Review createReview(CreateReviewDTO createReviewDTO, User user) {
         Objects.requireNonNull(createReviewDTO);
         Objects.requireNonNull(user);
-        var review = new Review(createReviewDTO.title(), createReviewDTO.commentary(), createReviewDTO.code(), createReviewDTO.test(), user);
+        var code = getContent(createReviewDTO.code(), createReviewDTO.codeFile());
+        var test = getContent(createReviewDTO.test(), createReviewDTO.testFile());
+        var review = new Review(createReviewDTO.title(), createReviewDTO.commentary(), code, test, user);
         review.setRequestNotifications(Set.of(user));
         reviewRepository.save(review);
 
-        launchTests(createReviewDTO.code(), createReviewDTO.test())
+        launchTests(code, test)
                 .subscribe(
                     response -> {
                         var testsReview = new TestsReview();
@@ -63,6 +71,24 @@ public class ReviewService {
                     }
                 );
         return review;
+    }
+
+    private static String getContent(String text, MultipartFile file) {
+        if (text.isEmpty()) {
+            return getFileContent(file);
+        }
+        return text;
+    }
+
+    private static String getFileContent(MultipartFile file) {
+        InputStream inputStream;
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            return "";
+        }
+        return new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining("\n"));
     }
 
     private Mono<TestResponseDTO> launchTests(String code, String test) {
