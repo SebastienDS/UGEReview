@@ -32,6 +32,7 @@ onMount(() => {
 
 
 async function createReview() {
+    form.code = editor.getValue();
     const formData = new FormData();
     for(const name in form) {
         formData.append(name, form[name]);
@@ -40,7 +41,6 @@ async function createReview() {
     if (testFiles.length != 0) formData.append("testFile", testFiles[0])
     
     try {
-        form.code = editor.getValue();
         const response = await fetch("/api/v1/createReview", {
             method: 'POST',
             headers: {
