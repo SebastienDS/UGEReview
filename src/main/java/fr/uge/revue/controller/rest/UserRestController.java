@@ -1,9 +1,7 @@
 package fr.uge.revue.controller.rest;
 
-import fr.uge.revue.dto.comment.CommentDTO;
 import fr.uge.revue.dto.comment.CommentUserDTO;
 import fr.uge.revue.dto.likeable.LikeableDTO;
-import fr.uge.revue.dto.response.ResponseDTO;
 import fr.uge.revue.dto.response.ResponseUserDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.updatePassword.PasswordReceived;
@@ -21,12 +19,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/v1")
