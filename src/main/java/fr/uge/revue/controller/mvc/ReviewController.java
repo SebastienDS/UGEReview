@@ -1,13 +1,11 @@
 package fr.uge.revue.controller.mvc;
 
+import fr.uge.revue.dto.notification.NotificationDTO;
 import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.review.ReviewOneReviewDTO;
-import fr.uge.revue.model.Comment;
-import fr.uge.revue.model.Response;
-import fr.uge.revue.model.Role;
-import fr.uge.revue.model.User;
+import fr.uge.revue.model.*;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
 import fr.uge.revue.service.NotificationService;
@@ -21,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -49,11 +48,18 @@ public class ReviewController {
         if (authentication != null && authentication.isAuthenticated()) {
             var user = (User) authentication.getPrincipal();
             model.addAttribute("authenticated", true);
-            model.addAttribute("notifications", notificationService.findAllUserNotifications(user.getId()));
+            model.addAttribute("notifications", getNotifications(user));
         }
         var reviews = reviewService.allReviews().stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
         return "reviews";
+    }
+
+    private List<NotificationDTO> getNotifications(User user) {
+        return notificationService.findAllUserNotifications(user.getId())
+                .stream()
+                .map(NotificationDTO::from)
+                .toList();
     }
 
     @PostMapping("/reviews")
@@ -61,7 +67,7 @@ public class ReviewController {
         if (authentication != null && authentication.isAuthenticated()) {
             var user = (User) authentication.getPrincipal();
             model.addAttribute("authenticated", true);
-            model.addAttribute("notifications", notificationService.findAllUserNotifications(user.getId()));
+            model.addAttribute("notifications", getNotifications(user));
         }
         var reviews = reviewService.searchReview(search).stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
@@ -80,6 +86,7 @@ public class ReviewController {
             var user = userService.findUserWithLikesAndDislikes(userId).orElseThrow();
 
             model.addAttribute("authenticated", true);
+            model.addAttribute("notifications", getNotifications(user));
             model.addAttribute("isUserAdmin", user.getRole() == Role.ADMIN);
             model.addAttribute("notificationActivated", notificationService.isUserRequestingNotification(reviewId, user.getId()));
             model.addAttribute("review", ReviewOneReviewDTO.from(review.get(), user));

@@ -21,17 +21,6 @@
         </div>
     </form>
 
-    <ul th:if="${authenticated}" class="list-group mb-3">
-        <li th:each="notification : ${notifications}" class="list-group-item list-group-item-action list-group-item-info d-flex align-items-center">
-            <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead'}" method="post" class="me-3">
-                <button type="submit" class="btn-close" aria-label="Close"></button>
-            </form>
-            <form th:action="@{'/notifications/' + ${notification.getId()} + '/markAsRead/redirect'}" method="post" class="position-relative">
-                <button type="submit" class="stretched-link btn btn-link" th:text="${notification}"></button>
-            </form>
-        </li>
-    </ul>
-
     <ul class="list-group mb-3">
         <li th:each="review : ${reviews}" class="list-group-item position-relative">
             <div class="row">
