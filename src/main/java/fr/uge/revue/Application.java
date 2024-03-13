@@ -1,10 +1,12 @@
 package fr.uge.revue;
 
+import fr.uge.revue.dto.review.CreateReviewDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.CommentRepository;
 import fr.uge.revue.repository.ResponseRepository;
 import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.UserRepository;
+import fr.uge.revue.service.ReviewService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +24,7 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner test(UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
+    public CommandLineRunner test(ReviewService reviewService, UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
         return args -> {
             var userDeleted = new User("UserDeleted", "", "", Role.USER);
             var userBanned = new User("UserBanned", "", "", Role.USER);
@@ -93,6 +95,33 @@ public class Application {
             responseRepository.save(new Response("response1", user, comment));
             responseRepository.save(new Response("response2", userTest, comment));
             responseRepository.save(new Response("response3", user, comment2));
+
+            reviewService.createReview(new CreateReviewDTO("Review", "Commentaire",
+                        """
+                        public class ClassToTest {
+                            public int add(int a, int b) {
+                                return a + b;
+                            }
+                        }
+                        """,
+                        """
+                        import org.junit.jupiter.api.Test;
+                        import static org.junit.jupiter.api.Assertions.*;
+                        
+                        public class DynamicTest {
+                            @Test
+                            public void testAddition() {
+                                ClassToTest instance = new ClassToTest();
+                                assertEquals(4, instance.add(2, 2));
+                            }
+                            
+                            @Test
+                            public void failTest() {
+                                ClassToTest instance = new ClassToTest();
+                                assertEquals(5, instance.add(2, 2));
+                            }
+                        }
+                        """, null, null), user2);
         };
     }
 }
