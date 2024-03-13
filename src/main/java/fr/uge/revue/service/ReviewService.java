@@ -8,6 +8,8 @@ import fr.uge.revue.model.TestsReview;
 import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.TestsReviewRepository;
+import fr.uge.revue.repository.UserRepository;
+import org.hibernate.Hibernate;
 import org.hibernate.query.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,20 +23,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
     private final TestsReviewRepository testsReviewRepository;
     private final WebClient webClient;
 
-    public ReviewService(ReviewRepository reviewRepository, TestsReviewRepository testsReviewRepository, WebClient webClient) {
+    public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository, TestsReviewRepository testsReviewRepository, WebClient webClient) {
         this.reviewRepository = Objects.requireNonNull(reviewRepository);
+        this.userRepository = Objects.requireNonNull(userRepository);
         this.testsReviewRepository = Objects.requireNonNull(testsReviewRepository);
         this.webClient = Objects.requireNonNull(webClient);
     }
@@ -114,5 +115,33 @@ public class ReviewService {
 
     public Page<Review> getReviews(int page, int pageSize) {
         return reviewRepository.findReviewPage(PageRequest.of(page, pageSize));//, pageSize);
+    }
+
+    public List<Review> getFriendsReview(User user, int pageNumber, int pageSize) {
+        Objects.requireNonNull(user);
+        var listReview = new ArrayList<Review>();
+        var follows = userRepository.findByIdWithFollowers(user.getId()).get().getFollowers().stream().toList();
+        var idSet = new HashSet<Long>();
+        var numberToSkip = (long) pageNumber * pageSize;
+        while(listReview.size() < pageSize && !follows.isEmpty() ){
+            var friends = follows.stream().map(User::getId).toList();
+            var reviews = reviewRepository.findUsersPageReviewsOrderDesc(friends,
+                    PageRequest.of(0, pageSize - listReview.size()));
+            listReview.addAll(reviews.stream().skip(numberToSkip).limit(pageSize).toList());
+            numberToSkip = Math.max(0, numberToSkip - reviews.getTotalElements());
+
+            idSet.addAll(friends);
+            follows = follows.stream()
+                    .map(user1 -> userRepository.findByIdWithFollowers(user1.getId()).get().getFollowers())
+                    .flatMap(Collection::stream)
+                    .filter(follow -> !idSet.contains(follow.getId()))
+                    .toList();
+        }
+        if(listReview.size() < pageSize){
+            var reviews = reviewRepository.findReviewPageWithoutUserIds(idSet.stream().toList(),
+                    PageRequest.of(0, pageNumber * pageSize + (pageSize - listReview.size())));
+            listReview.addAll(reviews.stream().skip(numberToSkip).limit(pageSize).toList());
+        }
+        return listReview;
     }
 }
