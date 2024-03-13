@@ -151,6 +151,9 @@
         <div class="row">
             <a href="/front/users/{data.userId}/likes">Likes</a>
         </div>
+        <div class="row">
+            <a href="/front/users/{data.userId}/follows">Follows</a>
+        </div>
     </div>
 </div>
 <div class="container my-3">

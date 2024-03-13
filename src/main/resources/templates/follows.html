@@ -18,7 +18,7 @@
                 </a>
 
                 <div th:if="${authenticated != null && authenticated && isMyUserPage != null && isMyUserPage}">
-                    <form th:action="@{'/users/' + ${myFollow.id()} + '/unfollow'}" method="post" class="mb-5">
+                    <form th:action="@{'/users/' + ${myFollow.id()} + '/unfollow'}" method="post" class="mb-3">
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary" th:text='Unfollow'/>
                         </div>
