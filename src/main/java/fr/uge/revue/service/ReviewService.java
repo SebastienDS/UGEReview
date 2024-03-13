@@ -8,6 +8,9 @@ import fr.uge.revue.model.TestsReview;
 import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.TestsReviewRepository;
+import org.hibernate.query.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,5 +110,9 @@ public class ReviewService {
         }
         reviewRepository.delete(review.get());
         return true;
+    }
+
+    public Page<Review> getReviews(int page, int pageSize) {
+        return reviewRepository.findReviewPage(PageRequest.of(page, pageSize));//, pageSize);
     }
 }

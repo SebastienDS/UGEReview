@@ -2,6 +2,8 @@ package fr.uge.revue.repository;
 
 import fr.uge.revue.model.Review;
 import fr.uge.revue.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -37,4 +39,8 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
 
     @Query("SELECT r FROM Review r LEFT JOIN FETCH r.requestNotifications WHERE r.id = :reviewId")
     Optional<Review> findByIdWithNotifications(@Param("reviewId") long reviewId);
+
+    @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author",
+            countQuery = "SELECT count(r) FROM Review r")
+    Page<Review> findReviewPage(Pageable pageable);
 }
