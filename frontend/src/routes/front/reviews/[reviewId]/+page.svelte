@@ -5,6 +5,7 @@
     import ReplyForm from '$lib/components/ReplyForm.svelte';
     import { userData } from '$lib/userData';
     import { formatDate } from '$lib/utils';
+    import { onMount } from 'svelte';
 
     export let data;
 
@@ -12,6 +13,39 @@
     const isUserAdmin = userData.get() != null && userData.get().role === 'ADMIN'
 
     let commentValue = "";
+
+    let editorId;
+    let editor;
+    let testEditorId;
+    let testEditor;
+
+    onMount(() => {
+        let width = editorId.offsetWidth;
+        let height = editorId.offsetHeight;
+        let testWidth = testEditorId.offsetWidth;
+        let testHeight = testEditorId.offsetHeight;
+
+        editor = CodeMirror.fromTextArea(
+            editorId, {
+                mode:"text/x-java",
+                theme: "dracula",
+                lineNumbers: true,
+                readOnly: true
+            }
+        );
+
+        testEditor = CodeMirror.fromTextArea(
+            testEditorId, {
+                mode:"text/x-java",
+                theme: "dracula",
+                lineNumbers: true,
+                readOnly: true
+            }
+        );
+
+        editor.setSize(width, height);
+        testEditor.setSize(testWidth, testHeight);
+    });
 
     function comment() {
         if (!commentValue) {
@@ -364,10 +398,10 @@
                {@html data.review.commentary} 
             </p>
             <div class="row form-group">
-                <textarea readonly class="form-control" cols="86" rows="10">{data.review.code}</textarea>
+                <textarea readonly class="form-control" cols="86" rows="10" bind:this={editorId}>{data.review.code}</textarea>
             </div>
             <div class="row form-group">
-                <textarea readonly class="form-control" cols="86" rows="10">{data.review.test}</textarea>
+                <textarea readonly class="form-control" cols="86" rows="10" bind:this={testEditorId}>{data.review.test}</textarea>
             </div>
         </div>
     </div>

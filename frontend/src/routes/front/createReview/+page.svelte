@@ -15,10 +15,15 @@ let testFiles = [];
 
 let editorId;
 let editor;
+let testEditorId;
+let testEditor;
 
 onMount(() => {
     let width = editorId.offsetWidth;
     let height = editorId.offsetHeight;
+    let testWidth = testEditorId.offsetWidth;
+    let testHeight = testEditorId.offsetHeight;
+
     editor = CodeMirror.fromTextArea(
         editorId, {
             mode:"text/x-java",
@@ -26,13 +31,22 @@ onMount(() => {
             lineNumbers: true
         }
     );
+    testEditor = CodeMirror.fromTextArea(
+        testEditorId, {
+            mode:"text/x-java",
+            theme: "dracula",
+            lineNumbers: true
+        }
+    );
     editor.setSize(width, height);
+    testEditor.setSize(testWidth, testHeight);
 })
 
 
 
 async function createReview() {
     form.code = editor.getValue();
+    form.test = testEditor.getValue();
     const formData = new FormData();
     for(const name in form) {
         formData.append(name, form[name]);
@@ -141,7 +155,7 @@ async function createReview() {
                                 </svg>
                             </span>
                         </div>
-                        <textarea name="test" class="form-control" placeholder="Test :" cols="86" rows="10" bind:value={form.test}></textarea>
+                        <textarea name="test" class="form-control" placeholder="Test :" cols="86" rows="10" bind:this={testEditorId}></textarea>
                     </div>
                 </div>
             </div>

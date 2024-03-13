@@ -5,6 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="/codemirror/lib/codemirror.js"></script>
+    <link href="/codemirror/lib/codemirror.css" rel="stylesheet"/>
+    <script src="/codemirror/mode/clike/clike.js"></script>
+    <link href="/codemirror/theme/dracula.css" rel="stylesheet"/>
 </head>
 <body>
 <div th:replace="fragments/header :: navbar"></div>
@@ -79,10 +83,10 @@
         <div class="col-11">
             <p th:text="${review.commentary()}" class="row text-break text-justify text-wrap" style="white-space: pre-wrap;"></p>
             <div class="row form-group">
-                <textarea readonly th:text="${review.code()}" class="form-control" cols="86" rows="10"></textarea>
+                <textarea id="editor" readonly th:text="${review.code()}" class="form-control" cols="86" rows="10"></textarea>
             </div>
             <div class="row form-group">
-                <textarea readonly th:text="${review.test()}" class="form-control" cols="86" rows="10"></textarea>
+                <textarea id="testEditor" readonly th:text="${review.test()}" class="form-control" cols="86" rows="10"></textarea>
             </div>
         </div>
     </div>
@@ -209,6 +213,34 @@
     </div>
 
     <script>
+        const doc = document.getElementById('editor');
+        const testDoc = document.getElementById('testEditor');
+        let width = doc.offsetWidth;
+        let height = doc.offsetHeight;
+        let testWidth = testDoc.offsetWidth;
+        let testHeight = testDoc.offsetHeight;
+
+        const editor = CodeMirror.fromTextArea(
+            document.getElementById('editor'), {
+                mode:"text/x-java",
+                theme: "dracula",
+                lineNumbers: true,
+                readOnly: true
+            }
+        );
+
+        const testEditor = CodeMirror.fromTextArea(
+            document.getElementById('testEditor'), {
+                mode:"text/x-java",
+                theme: "dracula",
+                lineNumbers: true,
+                readOnly: true
+            }
+        );
+
+        editor.setSize(width, height);
+        testEditor.setSize(testWidth, testHeight);
+
         function answer(button) {
             var div = button.nextElementSibling;
             div.style.display = "block";
