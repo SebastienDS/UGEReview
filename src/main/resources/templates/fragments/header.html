@@ -27,14 +27,31 @@
         </li>
       </ul>
     </div>
+
+    <div class="dropdown mx-3" th:if="${authenticated != null && notifications != null}">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownNotifications" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+        Notifications <span th:if="${notifications.size() > 0}" th:text="${'(' + notifications.size() + ')'}"></span>
+      </button>
+
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownNotifications" style="min-height: 100px;">
+        <li th:each="notification : ${notifications}" class="dropdown-item d-flex align-items-center">
+          <form th:action="@{'/notifications/' + ${notification.id()} + '/markAsRead'}" method="post" class="me-3">
+            <button type="submit" class="btn-close" aria-label="Close"></button>
+          </form>
+          <form th:action="@{'/notifications/' + ${notification.id()} + '/markAsRead/redirect'}" method="post" class="position-relative">
+            <button type="submit" class="stretched-link btn btn-link" th:text="${notification.message()}"></button>
+          </form>
+        </li>
+      </ul>
+    </div>
+
     <a class="navbar-brand" th:href="@{/profile}">
       <img width="60px" height="60px" th:src="@{/images/user.png}" >
     </a>
   </div>
-  </div>
-</nav>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" defer></script>
+</nav>
 
 </body>
 </html>

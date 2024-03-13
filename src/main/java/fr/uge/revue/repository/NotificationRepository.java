@@ -15,7 +15,7 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
             "WHERE r.id = :reviewId AND n.id = :userId")
     boolean isUserRequestingNotification(@Param("reviewId") long reviewId, @Param("userId") long userId);
 
-    @Query("SELECT n FROM Notification n WHERE n.notifiedUser.id = :userId")
+    @Query("SELECT n FROM Notification n LEFT JOIN FETCH n.userWhoNotify WHERE n.notifiedUser.id = :userId")
     Set<Notification> findAllUserNotifications(@Param("userId") long userId);
 
     @Query("SELECT n FROM Notification n LEFT JOIN FETCH n.notifiedUser WHERE n.id = :notificationId")

@@ -14,6 +14,8 @@ public class Notification {
     private boolean alreadyRead;
     @ManyToOne
     private User notifiedUser;
+    @ManyToOne
+    private User userWhoNotify;
     @Enumerated
     private NotificationType type;
 
@@ -24,20 +26,21 @@ public class Notification {
     public Notification() {
     }
 
-    private Notification(User notifiedUser, NotificationType type, long reviewId) {
+    private Notification(User notifiedUser, User userWhoNotify,  NotificationType type, long reviewId) {
         this.notifiedUser = Objects.requireNonNull(notifiedUser);
+        this.userWhoNotify = Objects.requireNonNull(userWhoNotify);
         this.type = Objects.requireNonNull(type);
         this.reviewId = reviewId;
     }
 
-    public static Notification newComment(User notifiedUser, long reviewId, long commentId) {
-        var notification = new Notification(notifiedUser, NotificationType.NEW_COMMENT, reviewId);
+    public static Notification newComment(User notifiedUser, User userWhoNotify, long reviewId, long commentId) {
+        var notification = new Notification(notifiedUser, userWhoNotify, NotificationType.NEW_COMMENT, reviewId);
         notification.commentId = commentId;
         return notification;
     }
 
-    public static Notification newResponse(User notifiedUser, long reviewId, long responseId) {
-        var notification = new Notification(notifiedUser, NotificationType.NEW_RESPONSE, reviewId);
+    public static Notification newResponse(User notifiedUser, User userWhoNotify, long reviewId, long responseId) {
+        var notification = new Notification(notifiedUser, userWhoNotify, NotificationType.NEW_RESPONSE, reviewId);
         notification.responseId = responseId;
         return notification;
     }
@@ -64,6 +67,14 @@ public class Notification {
 
     public void setNotifiedUser(User notifiedUser) {
         this.notifiedUser = notifiedUser;
+    }
+
+    public User getUserWhoNotify() {
+        return userWhoNotify;
+    }
+
+    public void setUserWhoNotify(User userWhoNotify) {
+        this.userWhoNotify = Objects.requireNonNull(userWhoNotify);
     }
 
     public NotificationType getType() {
@@ -129,5 +140,12 @@ public class Notification {
 
     public String getLink() {
         return getLink("");
+    }
+
+    public String getMessage() {
+        return switch (type) {
+            case NEW_COMMENT -> "L'utilisateur " + userWhoNotify.getUsername() + " a commenté une revue que vous suivez";
+            case NEW_RESPONSE -> "L'utilisateur " + userWhoNotify.getUsername() + " a ajouté un commentaire à une revue que vous suivez";
+        };
     }
 }

@@ -1,9 +1,5 @@
 <script>
-    import NavBar from '$lib/components/NavBar.svelte';
+import { goto } from '$app/navigation';
+
+goto("/front/reviews")
 </script>
-
-<div class="container">
-	<NavBar/>
-
-	<h1>Home page</h1>
-</div>

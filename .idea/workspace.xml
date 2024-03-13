@@ -4,7 +4,158 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488e798b-6166-40bb-90b2-865bd3aac8e4" name="Changes" comment="" />
+    <list default="true" id="488e798b-6166-40bb-90b2-865bd3aac8e4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.npmrc" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.npmrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/components/NavBar.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/components/NavBar.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/components/Notification.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/components/Notification.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/components/ReplyForm.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/components/ReplyForm.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/requireAuth.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/requireAuth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/userData.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/userData.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/lib/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/lib/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/createReview/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/createReview/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/createReview/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/createReview/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/deleteProfile/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/deleteProfile/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/login/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/login/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/logout/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/logout/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/resetPassword/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/resetPassword/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/resetPassword/[token]/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/resetPassword/[token]/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/resetPassword/[token]/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/resetPassword/[token]/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/reviews/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/reviews/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/reviews/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/reviews/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/reviews/[reviewId]/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/reviews/[reviewId]/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/reviews/[reviewId]/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/reviews/[reviewId]/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/signup/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/signup/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/comments/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/comments/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/comments/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/comments/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/likes/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/likes/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/likes/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/likes/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/responses/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/responses/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/responses/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/responses/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/reviews/+page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/reviews/+page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/reviews/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/front/users/[userId]/reviews/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/.gitattributes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/AUTHORS" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/AUTHORS" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/bin/authors.sh" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/bin/authors.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/bin/lint" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/bin/lint" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/bin/release" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/bin/release" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/codemirror/bin/source-highlight" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/codemirror/bin/source-highlight" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/css/bootstrap.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/svelte.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/svelte.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/EmailConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/EmailConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/WebClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/WebClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/security/PasswordEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/security/PasswordEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/config/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/FrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/RegistrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/RegistrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/ResetPasswordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/ResetPasswordController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/NotificationRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/NotificationRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/RegistrationRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/RegistrationRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ResetPasswordRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ResetPasswordRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ReviewRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ReviewRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/UserRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/microservice/TestRunnerRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/microservice/TestRunnerRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/comment/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/comment/CommentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/comment/CommentUserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/comment/CommentUserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/likeable/LikeableDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/likeable/LikeableDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/microservice/TestRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/microservice/TestRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/microservice/TestResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/microservice/TestResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/notification/NotificationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/notification/NotificationDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/notification/NotificationStateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/notification/NotificationStateDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/AskEmailDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/AskEmailDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/InvalidPasswordDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/InvalidPasswordDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/NotFoundOrExpiredToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/NotFoundOrExpiredToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/ResetPasswordDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/resetpassword/ResetPasswordDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/response/ResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/response/ResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/response/ResponseUserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/response/ResponseUserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/response/SendResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/response/SendResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/CreateReviewDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/CreateReviewDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/LikeStateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/LikeStateDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewAllReviewDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewAllReviewDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewCreatedDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewCreatedDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewOneReviewDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/ReviewOneReviewDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/TestsReviewResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/review/TestsReviewResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/updatePassword/PasswordReceived.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/updatePassword/PasswordReceived.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserAllLikesDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserAllLikesDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserAllReviewDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserAllReviewDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserDataDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserDataDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserFollowStateDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserFollowStateDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserLoginDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserLoginDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserProfileDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserProfileDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserSignUpDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/dto/user/UserSignUpDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/LikeState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/LikeState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Likeable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Likeable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Notification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/ResetPasswordToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/ResetPasswordToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/TestsReview.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/TestsReview.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/NotificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/NotificationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ResetPasswordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ResetPasswordRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ResponseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ResponseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/TestsReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/TestsReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/NotificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ResetPasswordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ResetPasswordService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ResponseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ResponseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/TestRunnerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/TestRunnerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/util/JavaSourceFromString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/util/JavaSourceFromString.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/util/TestRunnerResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/util/TestRunnerResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/bootstrap.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/comments.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/comments.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/createReview.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/createReview.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/likes.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/likes.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/notFound.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/notFound.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/askResetPassword.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/askResetPassword.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/invalidToken.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/invalidToken.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/resetPasswordForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/resetPasswordForm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/resetPassword/success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/responses.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/responses.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/review.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/review.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/reviews.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/reviews.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,16 +175,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Application.executor": "Debug",
-    "Maven.UGERevue [compile].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.UGERevue [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.UGERevue [compile,-e,-X].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.UGERevue [compile].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn compile -e -X" />
+    </option>
+  </component>
   <component name="RunManager">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="fr.uge.revue.Application" />
@@ -77,21 +235,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ReviewRestController.java</url>
-          <line>167</line>
-          <properties class="fr.uge.revue.controller.rest.ReviewRestController" method="deleteReview">
+          <line>170</line>
+          <properties class="fr.uge.revue.controller.rest.ReviewRestController">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/UserRestController.java</url>
-          <line>204</line>
-          <properties class="fr.uge.revue.controller.rest.UserRestController" method="banProfile">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

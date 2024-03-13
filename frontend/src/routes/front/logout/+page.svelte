@@ -1,4 +1,5 @@
 <script>
+import { goto } from '$app/navigation';
 import { authToken } from '$lib/auth';
 import { userData } from '$lib/userData';
 
@@ -14,7 +15,8 @@ async function logout() {
 
     authToken.clear();
     userData.clear();
-    console.log("token", $authToken)
+
+    goto("/front")
   } catch (error) {
     console.error(error);
   }
@@ -22,9 +24,3 @@ async function logout() {
 
 logout()
 </script>
-
-Vous avez été déconnnecté, retournez sur la home page
-
-<a href="/front">Home</a>
-
-

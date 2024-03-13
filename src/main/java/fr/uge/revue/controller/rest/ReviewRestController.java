@@ -4,18 +4,21 @@ import fr.uge.revue.dto.comment.CommentDTO;
 import fr.uge.revue.dto.response.ResponseDTO;
 import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.*;
-import fr.uge.revue.model.*;
+import fr.uge.revue.model.Comment;
+import fr.uge.revue.model.Response;
+import fr.uge.revue.model.Role;
+import fr.uge.revue.model.User;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -65,8 +68,8 @@ public class ReviewRestController {
         return ResponseEntity.ok().body(reviews);
     }
 
-    @PostMapping("/createReview")
-    public ResponseEntity<ReviewCreatedDTO> createReview(@RequestBody CreateReviewDTO createReviewDTO, Authentication authentication) {
+    @PostMapping(path = "/createReview", consumes = { "multipart/form-data" })
+    public ResponseEntity<ReviewCreatedDTO> createReview(@ModelAttribute CreateReviewDTO createReviewDTO, Authentication authentication) {
         var user = (User) authentication.getPrincipal();
         var review = reviewService.createReview(createReviewDTO, user);
         return ResponseEntity.ok().body(new ReviewCreatedDTO(review.getId()));
