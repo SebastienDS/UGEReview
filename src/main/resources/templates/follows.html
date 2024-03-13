@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>UGERevue</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/header :: navbar"></div>
+<div class="container">
+    <h1>UGERevue</h1>
+
+    <ul class="list-group">
+        <li th:each="myFollow : ${followsList}" class="list-group-item position-relative">
+            <div class="d-flex justify-content-between">
+                <a th:href="@{'/users/' + ${myFollow.id()}}" class="col-9">
+                    <div th:text="${myFollow.username()}"/>
+                </a>
+
+                <div th:if="${authenticated != null && authenticated && isMyUserPage != null && isMyUserPage}">
+                    <form th:action="@{'/users/' + ${myFollow.id()} + '/unfollow'}" method="post" class="mb-5">
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary" th:text='Unfollow'/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

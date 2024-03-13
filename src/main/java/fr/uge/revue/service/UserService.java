@@ -319,6 +319,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllEmails();
     }
 
+    public Set<User> getFollows(long userId) {
+        var user = userRepository.findByIdWithFollowers(userId).orElseThrow();
+        return user.getFollowers();
+    }
+
     @Transactional
     public void setEmail(long userId, String email) {
         Objects.requireNonNull(email);
