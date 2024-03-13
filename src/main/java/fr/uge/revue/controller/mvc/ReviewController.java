@@ -45,23 +45,25 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public String allReviews(Model model, Authentication authentication,
-                             @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "20") int pageSize) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            var user = (User) authentication.getPrincipal();
-            model.addAttribute("authenticated", true);
-            model.addAttribute("notifications", getNotifications(user));
-        }
+                             @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
         if(pageNumber < 0){
             pageNumber = 0;
         }
         if(pageSize <= 0){
             pageSize = 1;
         }
-        System.out.println(pageNumber + " " + pageSize);
-        var reviews = reviewService.getReviews(pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
-        model.addAttribute("reviews", reviews);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("pageSize", pageSize);
+        if (authentication != null && authentication.isAuthenticated()) {
+            var user = (User) authentication.getPrincipal();
+            model.addAttribute("authenticated", true);
+            model.addAttribute("notifications", getNotifications(user));
+            var reviews = reviewService.getFriendsReview(user, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
+            model.addAttribute("reviews", reviews);
+            return "reviews";
+        }
+        var reviews = reviewService.getReviews(pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
+        model.addAttribute("reviews", reviews);
         return "reviews";
     }
 

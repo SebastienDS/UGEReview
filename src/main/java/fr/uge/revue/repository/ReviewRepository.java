@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Long> {
@@ -40,7 +41,15 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     @Query("SELECT r FROM Review r LEFT JOIN FETCH r.requestNotifications WHERE r.id = :reviewId")
     Optional<Review> findByIdWithNotifications(@Param("reviewId") long reviewId);
 
-    @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author",
+    @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author  ORDER BY r.date DESC",
             countQuery = "SELECT count(r) FROM Review r")
     Page<Review> findReviewPage(Pageable pageable);
+
+    @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id IN :userIds ORDER BY r.date DESC",
+            countQuery = "SELECT count(r) FROM Review r WHERE r.author.id IN :userIds")
+    Page<Review> findUsersPageReviewsOrderDesc(@Param("userIds")List<Long> userIds, Pageable pageable);
+
+    @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id NOT IN :userIds ORDER BY r.date DESC",
+            countQuery = "SELECT count(r) FROM Review r WHERE r.author.id NOT IN :userIds")
+    List<Review> findReviewPageWithoutUserIds(@Param("userIds")List<Long> userIds, Pageable pageable);
 }

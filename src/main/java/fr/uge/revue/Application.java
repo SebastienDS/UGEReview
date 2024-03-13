@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @SpringBootApplication
@@ -30,6 +32,22 @@ public class Application {
             userRepository.save(userBanned);
             var user = new User("User1", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
             userRepository.save(user);
+            var user2 = new User("User2", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
+            userRepository.save(user2);
+            var user3 = new User("User3", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
+            userRepository.save(user3);
+            var user4 = new User("User4", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
+            userRepository.save(user4);
+            var user5 = new User("User5", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
+            userRepository.save(user5);
+            var user6 = new User("User6", "user1@gmail.com", passwordEncoder.encode("user1"), Role.USER);
+            userRepository.save(user6);
+            user.setFollowers(new HashSet<>(Arrays.asList(user2, user3, user4)));
+            user4.setFollowers(new HashSet<>(List.of(user5)));
+            userRepository.save(user);
+            userRepository.save(user4);
+
+
 
             var review = new Review("Review1", "commentary", "code", "test", user);
             review.setUnitTests(new TestsReview(0, 0));
@@ -43,14 +61,29 @@ public class Application {
             var review4 = new Review("Quentin le brigand", "commentary","code", "test", user);
             review4.setUnitTests(new TestsReview(0, 0));
             reviewRepository.save(review4);
+            var review5 = new Review("Review1a", "commentary", "code", "test", user2);
+            review5.setUnitTests(new TestsReview(0, 0));
+            reviewRepository.save(review5);
+            var review6 = new Review("Review1b", "commentary", "code", "test", user3);
+            review6.setUnitTests(new TestsReview(0, 0));
+            reviewRepository.save(review6);
+            var review7 = new Review("Review1c", "commentary", "code", "test", user6);
+            review7.setUnitTests(new TestsReview(0, 0));
+            reviewRepository.save(review7);
+            var review8 = new Review("Review1d", "commentary", "code", "test", user6);
+            review8.setUnitTests(new TestsReview(0, 0));
+            reviewRepository.save(review8);
+            var review9 = new Review("Review1e", "commentary", "code", "test", user5);
+            review9.setUnitTests(new TestsReview(0, 0));
+            reviewRepository.save(review9);
 
-            var user2 = new User("test", "test@gmail.com", passwordEncoder.encode("test"), Role.USER);
-            userRepository.save(user2);
+            var userTest = new User("test", "test@gmail.com", passwordEncoder.encode("test"), Role.USER);
+            userRepository.save(userTest);
             userRepository.save(new User("admin", "admin@gmail.com", passwordEncoder.encode("admin"), Role.ADMIN));
             reviewRepository.findAll().forEach(System.out::println);
 
             var comment = new Comment("Kakukaku", user, review);
-            var comment2 = new Comment("Kukakuka", user2, review);
+            var comment2 = new Comment("Kukakuka", userTest, review);
             var comment3 = new Comment("UwU", user, review2);
             commentRepository.saveAll(List.of(comment, comment2, comment3));
             for (int i = 0; i < 100; i++) {
@@ -58,7 +91,7 @@ public class Application {
             }
 
             responseRepository.save(new Response("response1", user, comment));
-            responseRepository.save(new Response("response2", user2, comment));
+            responseRepository.save(new Response("response2", userTest, comment));
             responseRepository.save(new Response("response3", user, comment2));
         };
     }
