@@ -362,6 +362,14 @@ public class UserService implements UserDetailsService {
         user.setComments(new HashSet<>());
         user.setResponses(new HashSet<>());
         user.setAccountNonLocked(false);
+
+        var reviews = reviewRepository.findAllReviewsWhereUserIsRequestingNotifications(user);
+        reviews.forEach(r -> r.getRequestNotifications().remove(user));
+        reviewRepository.saveAll(reviews);
+
+        notificationRepository.deleteByNotifiedUser(user);
+        notificationRepository.updateUserWhoNotify(user, userBanned);
+
         userRepository.save(user);
         userRepository.save(userBanned);
     }
