@@ -1,6 +1,6 @@
 <script>
     import { authToken } from '$lib/auth';
-    import NavBar from '$lib/components/NavBar.svelte';
+    import Header from '$lib/components/Header.svelte';
     import { formatDate } from '$lib/utils';
     import { userData } from '$lib/userData';
 
@@ -120,7 +120,7 @@
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     {#if data.isAuthenticated && !data.isMyUserPage}
         <div>
@@ -150,6 +150,9 @@
         </div>
         <div class="row">
             <a href="/front/users/{data.userId}/likes">Likes</a>
+        </div>
+        <div class="row">
+            <a href="/front/users/{data.userId}/follows">Follows</a>
         </div>
     </div>
 </div>

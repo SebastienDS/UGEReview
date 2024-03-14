@@ -5,6 +5,7 @@ import fr.uge.revue.dto.likeable.LikeableDTO;
 import fr.uge.revue.dto.response.ResponseUserDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.updatePassword.PasswordReceived;
+import fr.uge.revue.dto.user.UserDTO;
 import fr.uge.revue.dto.user.UserFollowStateDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.Comparator;
@@ -209,4 +211,10 @@ public class UserRestController {
         userService.banUser(id);
         return ResponseEntity.ok("Ok");
     }
+
+    @GetMapping("/users/{userId}/follows")
+    public ResponseEntity<List<UserDTO>> getUserFollows(@PathVariable long userId) {
+        return ResponseEntity.ok().body(userService.getFollows(userId).stream().map(UserDTO::from).toList());
+    }
+
 }

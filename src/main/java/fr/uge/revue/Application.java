@@ -26,8 +26,8 @@ public class Application {
     @Bean
     public CommandLineRunner test(ReviewService reviewService, UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
         return args -> {
-            var userDeleted = new User("UserDeleted", "", "", Role.USER);
-            var userBanned = new User("UserBanned", "", "", Role.USER);
+            var userDeleted = new User("USER_DELETED", "", "", Role.USER);
+            var userBanned = new User("USER_BANNED", "", "", Role.USER);
             userDeleted.setId(1L);
             userBanned.setId(2L);
             userRepository.save(userDeleted);

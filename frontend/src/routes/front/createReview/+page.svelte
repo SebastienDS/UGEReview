@@ -2,7 +2,7 @@
 import { goto } from '$app/navigation';
 import { authToken } from '$lib/auth';
 import { onMount } from 'svelte';
-import NavBar from '$lib/components/NavBar.svelte';
+import Header from '$lib/components/Header.svelte';
 
 const form = {
     title: '',
@@ -71,7 +71,7 @@ async function createReview() {
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <h1>UGERevue</h1>
 

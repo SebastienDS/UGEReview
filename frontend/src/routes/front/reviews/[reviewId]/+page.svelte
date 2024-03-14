@@ -1,7 +1,8 @@
 <script>
     import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
-    import NavBar from '$lib/components/NavBar.svelte';
+    import CodeBlockInjected from '$lib/components/CodeBlockInjected.svelte';
+    import Header from '$lib/components/Header.svelte';
     import ReplyForm from '$lib/components/ReplyForm.svelte';
     import { userData } from '$lib/userData';
     import { formatDate } from '$lib/utils';
@@ -45,7 +46,7 @@
 
         editor.setSize(width, height);
         testEditor.setSize(testWidth, testHeight);
-    });
+    })
 
     function comment() {
         if (!commentValue) {
@@ -294,12 +295,12 @@
 
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <div class="row">
         <div class="col-7">
             <div class="row">
-                <h1 class="text-break text-justify text-wrap">{data.review.title}</h1>
+                <h1 class="text-break text-justify">{data.review.title}</h1>
 
                 {#if isUserAdmin}
                     <form on:submit|preventDefault={deleteReview}>
@@ -394,13 +395,13 @@
             {/if}
         </div>
         <div class="col-11">
-            <p class="row text-break text-justify text-wrap" style="white-space: pre-wrap;">
+            <p class="row text-break text-justify" style="white-space: pre-wrap;">
                {@html data.review.commentary} 
             </p>
             <div class="row form-group">
                 <textarea readonly class="form-control" cols="86" rows="10" bind:this={editorId}>{data.review.code}</textarea>
             </div>
-            <div class="row form-group">
+            <div class="row form-group mt-3">
                 <textarea readonly class="form-control" cols="86" rows="10" bind:this={testEditorId}>{data.review.test}</textarea>
             </div>
         </div>
@@ -471,9 +472,9 @@
                                         </p>
                                     </div>
                                     <div class="row">
-                                        <p class="col-12 text-break text-justify text-wrap" style="white-space: pre-wrap;">
-                                            {@html comment.content}
-                                        </p>
+                                        <div class="col-12">
+                                            <CodeBlockInjected content={comment.content}/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -541,9 +542,9 @@
                                                         </p>
                                                     </div>
                                                     <div class="row">
-                                                        <p class="col-12 text-break text-justify text-wrap" style="white-space: pre-wrap;">
-                                                            {@html response.content}
-                                                        </p>
+                                                        <div class="col-12">
+                                                            <CodeBlockInjected content={response.content}/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

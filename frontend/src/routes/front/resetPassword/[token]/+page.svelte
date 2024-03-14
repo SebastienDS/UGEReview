@@ -1,5 +1,5 @@
 <script>
-    import NavBar from '$lib/components/NavBar.svelte';
+    import Header from '$lib/components/Header.svelte';
 
     export let data;
 
@@ -31,7 +31,7 @@
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <h1>UGERevue</h1>
 

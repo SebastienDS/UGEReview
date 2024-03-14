@@ -1,5 +1,5 @@
 <script>
-import NavBar from '$lib/components/NavBar.svelte';
+import Header from '$lib/components/Header.svelte';
 
 let success = null;
 let email = '';
@@ -23,7 +23,7 @@ async function resetPassword() {
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <h1>UGERevue</h1>
 

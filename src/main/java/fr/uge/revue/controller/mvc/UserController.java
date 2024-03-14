@@ -2,6 +2,7 @@ package fr.uge.revue.controller.mvc;
 
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.updatePassword.PasswordReceived;
+import fr.uge.revue.dto.user.UserDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.model.Role;
 import fr.uge.revue.model.User;
@@ -222,6 +223,23 @@ public class UserController {
     public RedirectView profile(Authentication authentication) {
         var user = (User) authentication.getPrincipal();
         return new RedirectView("/users/" + user.getId());
+    }
+
+    @GetMapping("/users/{userId}/follows")
+    public String getUserFollows(@PathVariable long userId, Authentication authentication, Model model) {
+        var user = userService.getUserById(userId);
+        if (user.isEmpty()) {
+            return "notFound";
+        }
+        if (authentication != null && authentication.isAuthenticated()) {
+            model.addAttribute("authenticated", true);
+            var myId = ((User) authentication.getPrincipal()).getId();
+            if (userId == myId) {
+                model.addAttribute("isMyUserPage", true);
+            }
+        }
+        model.addAttribute("followsList",  userService.getFollows(user.get().getId()).stream().map(UserDTO::from).toList());
+        return "follows";
     }
 }
 
