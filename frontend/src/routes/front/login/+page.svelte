@@ -1,7 +1,7 @@
 <script>
 import { goto } from '$app/navigation';
 import { authToken } from '$lib/auth';
-import NavBar from '$lib/components/NavBar.svelte';
+import Header from '$lib/components/Header.svelte';
 import { userData } from '$lib/userData';
 
 let username = '';
@@ -37,7 +37,7 @@ async function login() {
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <h1>UGERevue</h1>
 

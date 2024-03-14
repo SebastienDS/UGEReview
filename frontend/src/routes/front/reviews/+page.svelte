@@ -2,7 +2,7 @@
     export let data;
 
     import { authToken } from '$lib/auth';
-    import NavBar from '$lib/components/NavBar.svelte';
+    import Header from '$lib/components/Header.svelte';
     import { formatDate } from '$lib/utils';
 
 
@@ -26,7 +26,7 @@
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <h1>UGERevue</h1>
 

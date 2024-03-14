@@ -2,7 +2,7 @@
     export let data;
 
     import { authToken } from '$lib/auth';
-    import NavBar from '$lib/components/NavBar.svelte';
+    import Header from '$lib/components/Header.svelte';
 
     async function unfollowFunction(userId) {
         try {
@@ -24,7 +24,7 @@
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
     <div class="container">
         <h1>UGERevue</h1>
     

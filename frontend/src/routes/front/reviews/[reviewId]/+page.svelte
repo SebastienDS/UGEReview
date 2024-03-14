@@ -1,7 +1,7 @@
 <script>
     import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
-    import NavBar from '$lib/components/NavBar.svelte';
+    import Header from '$lib/components/Header.svelte';
     import ReplyForm from '$lib/components/ReplyForm.svelte';
     import { userData } from '$lib/userData';
     import { formatDate } from '$lib/utils';
@@ -294,7 +294,7 @@
 
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <div class="row">
         <div class="col-7">

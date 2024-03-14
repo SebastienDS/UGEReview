@@ -1,7 +1,6 @@
 <script>
     import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
-    import NavBar from '$lib/components/NavBar.svelte';
 
     let username = '';
     let email = '';

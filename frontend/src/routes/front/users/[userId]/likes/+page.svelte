@@ -3,14 +3,14 @@
 
     import { authToken } from '$lib/auth';
     import { formatDate } from '$lib/utils';
-    import NavBar from '$lib/components/NavBar.svelte';
+    import Header from '$lib/components/Header.svelte';
 
     const isAuthenticated = authToken.get() != null;
 
 </script>
 
 <div class="container">
-    <NavBar/>
+    <Header/>
 
     <ul class="list-group mb-3">
         {#each data.likes as like}

@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.Comparator;
@@ -215,4 +216,5 @@ public class UserRestController {
     public ResponseEntity<List<UserDTO>> getUserFollows(@PathVariable long userId) {
         return ResponseEntity.ok().body(userService.getFollows(userId).stream().map(UserDTO::from).toList());
     }
+
 }
