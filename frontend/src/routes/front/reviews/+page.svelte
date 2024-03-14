@@ -9,10 +9,30 @@
     const isAuthenticated = authToken.get() != null;
 
     let search = '';
+    let pageNumber = 0;
+    let pageSize = 5;
 
     async function searchReviews() {
         try {
             const response = await fetch("/api/v1/reviews?search=" + search, {
+                headers: {
+                    'Authorization': authToken.get()
+                }
+            });
+            var reviews = await response.json();
+            data.reviews = reviews
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function changeReviews(modifier) {
+        try {
+            console.log("pageNumber: " + pageNumber)
+            console.log("modifier: " + modifier)
+            pageNumber =  Math.max(0, pageNumber + modifier)
+            console.log(pageNumber)
+            const response = await fetch("/api/v1/reviews?pageSize=" + pageSize + "&pageNumber=" + pageNumber, {
                 headers: {
                     'Authorization': authToken.get()
                 }
@@ -55,5 +75,9 @@
                 </div>
             </li>
         {/each}
+        <div class="d-flex justify-content-between">
+            <button on:click={() => changeReviews(-1)} class="btn btn-secondary">Précédent</button>
+            <button on:click={() => changeReviews(1)} class="btn btn-secondary">Suivant</button>
+        </div>
     </ul>
 </div>

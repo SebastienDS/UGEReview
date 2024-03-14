@@ -4,21 +4,16 @@ import fr.uge.revue.dto.comment.CommentDTO;
 import fr.uge.revue.dto.response.ResponseDTO;
 import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.*;
-import fr.uge.revue.model.Comment;
-import fr.uge.revue.model.Response;
-import fr.uge.revue.model.Role;
-import fr.uge.revue.model.User;
+import fr.uge.revue.model.*;
 import fr.uge.revue.service.CommentService;
 import fr.uge.revue.service.ResponseService;
 import fr.uge.revue.service.ReviewService;
 import fr.uge.revue.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -61,11 +56,18 @@ public class ReviewRestController {
     }
 
     @GetMapping("/reviews")
-    public ResponseEntity<List<ReviewAllReviewDTO>> allReviews(@RequestParam Optional<String> search) {
+    public ResponseEntity<List<ReviewAllReviewDTO>> allReviews(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize,
+                                                               @RequestParam Optional<String> search, Authentication authentication) {
         var reviews = search.map(reviewService::searchReview)
-                .orElseGet(reviewService::allReviews)
+                .orElseGet(() -> getReview(authentication, pageNumber, pageSize))
                 .stream().map(ReviewAllReviewDTO::from).toList();
         return ResponseEntity.ok().body(reviews);
+    }
+
+    private List<Review> getReview(Authentication authentication, int pageNumber, int pageSize) {
+        var isUserConnected = authentication != null && authentication.isAuthenticated();
+        return (isUserConnected)? reviewService.getFriendsReview((User) authentication.getPrincipal(), pageNumber, pageSize)
+                : reviewService.getReviews(pageNumber, pageSize);
     }
 
     @PostMapping(path = "/createReview", consumes = { "multipart/form-data" })

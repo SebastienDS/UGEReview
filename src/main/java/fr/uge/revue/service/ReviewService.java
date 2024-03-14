@@ -113,8 +113,8 @@ public class ReviewService {
         return true;
     }
 
-    public Page<Review> getReviews(int page, int pageSize) {
-        return reviewRepository.findReviewPage(PageRequest.of(page, pageSize));//, pageSize);
+    public List<Review> getReviews(int page, int pageSize) {
+        return reviewRepository.findReviewPage(PageRequest.of(page, pageSize)).stream().toList();
     }
 
     public List<Review> getFriendsReview(User user, int pageNumber, int pageSize) {
