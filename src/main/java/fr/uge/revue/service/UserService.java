@@ -2,13 +2,9 @@ package fr.uge.revue.service;
 
 import fr.uge.revue.dto.likeable.LikeableDTO;
 import fr.uge.revue.dto.review.LikeStateDTO;
-import fr.uge.revue.dto.user.UserAllLikesDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
-import fr.uge.revue.repository.CommentRepository;
-import fr.uge.revue.repository.ResponseRepository;
-import fr.uge.revue.repository.ReviewRepository;
-import fr.uge.revue.repository.UserRepository;
+import fr.uge.revue.repository.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,13 +23,16 @@ public class UserService implements UserDetailsService {
     private final ReviewRepository reviewRepository;
     private final CommentRepository commentRepository;
     private final ResponseRepository responseRepository;
+    private final NotificationRepository notificationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository,
+                       ResponseRepository responseRepository, NotificationRepository notificationRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = Objects.requireNonNull(userRepository);
         this.reviewRepository = Objects.requireNonNull(reviewRepository);
         this.commentRepository = Objects.requireNonNull(commentRepository);
         this.responseRepository = Objects.requireNonNull(responseRepository);
+        this.notificationRepository = Objects.requireNonNull(notificationRepository);
         this.passwordEncoder = Objects.requireNonNull(passwordEncoder);
     }
 
@@ -281,6 +280,13 @@ public class UserService implements UserDetailsService {
         user.setReviews(Set.of());
         user.setComments(Set.of());
         user.setResponses(Set.of());
+
+        var reviews = reviewRepository.findAllReviewsWhereUserIsRequestingNotifications(user);
+        reviews.forEach(r -> r.getRequestNotifications().remove(user));
+        reviewRepository.saveAll(reviews);
+
+        notificationRepository.deleteByNotifiedUser(user);
+        notificationRepository.updateUserWhoNotify(user, userDeleted);
         userRepository.delete(user);
         userRepository.save(userDeleted);
     }
@@ -356,6 +362,14 @@ public class UserService implements UserDetailsService {
         user.setComments(new HashSet<>());
         user.setResponses(new HashSet<>());
         user.setAccountNonLocked(false);
+
+        var reviews = reviewRepository.findAllReviewsWhereUserIsRequestingNotifications(user);
+        reviews.forEach(r -> r.getRequestNotifications().remove(user));
+        reviewRepository.saveAll(reviews);
+
+        notificationRepository.deleteByNotifiedUser(user);
+        notificationRepository.updateUserWhoNotify(user, userBanned);
+
         userRepository.save(user);
         userRepository.save(userBanned);
     }

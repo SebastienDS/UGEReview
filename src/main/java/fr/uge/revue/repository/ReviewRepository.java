@@ -52,4 +52,7 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id NOT IN :userIds ORDER BY r.date DESC",
             countQuery = "SELECT count(r) FROM Review r WHERE r.author.id NOT IN :userIds")
     List<Review> findReviewPageWithoutUserIds(@Param("userIds")List<Long> userIds, Pageable pageable);
+
+    @Query("SELECT r FROM Review r LEFT JOIN FETCH r.requestNotifications WHERE :user MEMBER OF r.requestNotifications")
+    List<Review> findAllReviewsWhereUserIsRequestingNotifications(@Param("user") User user);
 }

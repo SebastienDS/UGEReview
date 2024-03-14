@@ -12,9 +12,9 @@ public class Notification {
     @GeneratedValue
     private long id;
     private boolean alreadyRead;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User notifiedUser;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User userWhoNotify;
     @Enumerated
     private NotificationType type;
