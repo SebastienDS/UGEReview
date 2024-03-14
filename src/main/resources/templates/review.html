@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-7">
             <div class="row">
-                <h1 th:text="${review.title}" class="text-break text-justify text-wrap"></h1>
+                <h1 th:text="${review.title}" class="text-break text-justify"></h1>
                 <form th:action="@{/deleteReview}" method="post" th:if="${isUserAdmin}">
                     <input type="hidden" name="id" th:value="${reviewId}" />
                     <button type="submit">
@@ -81,11 +81,11 @@
             </form>
         </div>
         <div class="col-11">
-            <p th:text="${review.commentary()}" class="row text-break text-justify text-wrap" style="white-space: pre-wrap;"></p>
+            <p th:text="${review.commentary()}" class="row text-break text-justify" style="white-space: pre-wrap;"></p>
             <div class="row form-group">
                 <textarea id="editor" readonly th:text="${review.code()}" class="form-control" cols="86" rows="10"></textarea>
             </div>
-            <div class="row form-group">
+            <div class="row form-group mt-3">
                 <textarea id="testEditor" readonly th:text="${review.test()}" class="form-control" cols="86" rows="10"></textarea>
             </div>
         </div>
@@ -136,7 +136,7 @@
                                 <p class="col" th:text="${comment.date()}" style="text-align:end;"></p>
                             </div>
                             <div class="row">
-                                <p class="col-12 text-break text-justify text-wrap" th:utext="${comment.content()}" style="white-space: pre-wrap;"></p>
+                                <p class="col-12 text-break text-justify replace-code-blocks" th:utext="${comment.content()}" style="white-space: pre-wrap;"></p>
                             </div>
                         </div>
                     </div>
@@ -184,7 +184,7 @@
                                         <p class="col" th:text="${comment.date()}" style="text-align:end;"></p>
                                     </div>
                                     <div class="row">
-                                        <p class="col-12 text-break text-justify text-wrap" th:utext="${response.content()}" style="white-space: pre-wrap;"></p>
+                                        <p class="col-12 text-break text-justify replace-code-blocks" th:utext="${response.content()}" style="white-space: pre-wrap;"></p>
                                     </div>
                                 </div>
                             </div>
@@ -308,6 +308,22 @@
                 console.error('Erreur lors de la requête PUT :', error);
             });
         }
+
+        const replaceCodeBlocks = document.querySelectorAll(".replace-code-blocks")
+        replaceCodeBlocks.forEach(element => {
+            element.innerHTML = element.innerHTML.replaceAll(/```([^`]*)```/g, "<textarea>$1</textarea>")
+
+            const textareas = element.querySelectorAll("textarea")
+            textareas.forEach(block => {
+                const editor = CodeMirror.fromTextArea(block, {
+                    mode:"text/x-java",
+                    theme: "dracula",
+                    lineNumbers: true,
+                    readOnly: true
+                });
+                editor.setSize(null, "auto")
+            })
+        })
     </script>
 </div>
 </body>
