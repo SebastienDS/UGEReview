@@ -120,6 +120,8 @@ public class UserController {
     public String showUserReviews(@PathVariable long userId, Model model) {
         var reviews = userService.findAllUserReviews(userId).stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
+        model.addAttribute("pageNumber", 0);
+        model.addAttribute("pageSize", 10);
         return "reviews";
     }
 
