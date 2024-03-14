@@ -1,6 +1,7 @@
 <script>
     import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
+    import CodeBlockInjected from '$lib/components/CodeBlockInjected.svelte';
     import Header from '$lib/components/Header.svelte';
     import ReplyForm from '$lib/components/ReplyForm.svelte';
     import { userData } from '$lib/userData';
@@ -45,24 +46,7 @@
 
         editor.setSize(width, height);
         testEditor.setSize(testWidth, testHeight);
-
-
-        const replaceCodeBlocks = document.querySelectorAll(".replace-code-blocks")
-        replaceCodeBlocks.forEach(element => {
-            element.innerHTML = element.innerHTML.replaceAll(/```([^`]*)```/g, "<textarea>$1</textarea>")
-
-            const textareas = element.querySelectorAll("textarea")
-            textareas.forEach(block => {
-                const editor = CodeMirror.fromTextArea(block, {
-                    mode:"text/x-java",
-                    theme: "dracula",
-                    lineNumbers: true,
-                    readOnly: true
-                });
-                editor.setSize(null, "auto")
-            })
-        })
-    });
+    })
 
     function comment() {
         if (!commentValue) {
@@ -488,9 +472,9 @@
                                         </p>
                                     </div>
                                     <div class="row">
-                                        <p class="col-12 text-break text-justify replace-code-blocks" style="white-space: pre-wrap;">
-                                            {@html comment.content}
-                                        </p>
+                                        <div class="col-12">
+                                            <CodeBlockInjected content={comment.content}/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -558,9 +542,9 @@
                                                         </p>
                                                     </div>
                                                     <div class="row">
-                                                        <p class="col-12 text-break text-justify replace-code-blocks" style="white-space: pre-wrap;">
-                                                            {@html response.content}
-                                                        </p>
+                                                        <div class="col-12">
+                                                            <CodeBlockInjected content={response.content}/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
