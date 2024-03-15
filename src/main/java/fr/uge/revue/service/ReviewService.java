@@ -7,11 +7,7 @@ import fr.uge.revue.model.Review;
 import fr.uge.revue.model.TestsReview;
 import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
-import fr.uge.revue.repository.TestsReviewRepository;
 import fr.uge.revue.repository.UserRepository;
-import org.hibernate.Hibernate;
-import org.hibernate.query.Query;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,22 +26,12 @@ import java.util.stream.Collectors;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
-    private final TestsReviewRepository testsReviewRepository;
     private final WebClient webClient;
 
-    public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository, TestsReviewRepository testsReviewRepository, WebClient webClient) {
+    public ReviewService(ReviewRepository reviewRepository, UserRepository userRepository, WebClient webClient) {
         this.reviewRepository = Objects.requireNonNull(reviewRepository);
         this.userRepository = Objects.requireNonNull(userRepository);
-        this.testsReviewRepository = Objects.requireNonNull(testsReviewRepository);
         this.webClient = Objects.requireNonNull(webClient);
-    }
-
-    public List<Review> allReviews() {
-        return reviewRepository.findAll();
-    }
-
-    public List<Review> searchReview(String search) {
-        return reviewRepository.searchReview(Objects.requireNonNull(search));
     }
 
     public Optional<Review> getReview(long reviewID) { return reviewRepository.findByIdWithFullContent(reviewID); }

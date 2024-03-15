@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Long> {
@@ -23,11 +22,6 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     @Query("SELECT r FROM Review r LEFT JOIN FETCH r.author")
     List<Review> findAll();
 
-    @Query("SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE LOWER(r.title) LIKE LOWER(CONCAT('%', :search, '%')) " +
-        "OR LOWER(r.author.username) LIKE LOWER(CONCAT('%', :search, '%')) OR r.code LIKE LOWER(CONCAT('%', :search, '%')) " +
-        "OR LOWER(r.commentary) LIKE LOWER(CONCAT('%', :search, '%')) ORDER BY r.date DESC")
-    List<Review> searchReview(@Param("search") String search);
-
     @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE LOWER(r.title) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(r.author.username) LIKE LOWER(CONCAT('%', :search, '%')) OR r.code LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(r.commentary) LIKE LOWER(CONCAT('%', :search, '%')) ORDER BY r.date DESC",
@@ -35,9 +29,6 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
                     "OR LOWER(r.author.username) LIKE LOWER(CONCAT('%', :search, '%')) OR r.code LIKE LOWER(CONCAT('%', :search, '%')) " +
                     "OR LOWER(r.commentary) LIKE LOWER(CONCAT('%', :search, '%'))")
     Page<Review> searchReview(@Param("search") String search, Pageable pageable);
-
-    @Query("SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id = :userId")
-    List<Review> findAllUserReviews(@Param("userId") long userId);
 
     @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id = :userId ORDER BY r.date DESC",
             countQuery = "SELECT count(r) FROM Review r WHERE r.author.id = :userId")

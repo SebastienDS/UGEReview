@@ -9,7 +9,8 @@ import fr.uge.revue.dto.user.UserDTO;
 import fr.uge.revue.dto.user.UserFollowStateDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
-import fr.uge.revue.model.*;
+import fr.uge.revue.model.Role;
+import fr.uge.revue.model.User;
 import fr.uge.revue.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;

@@ -186,7 +186,7 @@ public class ReviewRestController {
     }
 
     @PostMapping("/deleteComment")
-    public ResponseEntity<?> deleteComment(Authentication authentication, @RequestBody long id, @RequestParam("reviewId") long reviewId) {
+    public ResponseEntity<?> deleteComment(Authentication authentication, @RequestBody long id) {
         var user = (User) authentication.getPrincipal();
         if(user.getRole() != Role.ADMIN){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -199,7 +199,7 @@ public class ReviewRestController {
     }
 
     @PostMapping("/deleteResponse")
-    public ResponseEntity<?> deleteResponse(Authentication authentication, @RequestBody long id, @RequestParam("reviewId") long reviewId) {
+    public ResponseEntity<?> deleteResponse(Authentication authentication, @RequestBody long id) {
         var user = (User) authentication.getPrincipal();
         if(user.getRole() != Role.ADMIN){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

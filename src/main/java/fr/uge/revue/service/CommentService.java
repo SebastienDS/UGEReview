@@ -1,7 +1,6 @@
 package fr.uge.revue.service;
 
 import fr.uge.revue.model.Comment;
-import fr.uge.revue.model.Response;
 import fr.uge.revue.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

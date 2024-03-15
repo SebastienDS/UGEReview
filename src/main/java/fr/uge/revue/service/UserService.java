@@ -5,7 +5,6 @@ import fr.uge.revue.dto.review.LikeStateDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.*;
-import org.hibernate.query.Query;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -76,6 +75,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public LikeStateDTO toggleLikeReview(long userId, Review review) {
+        Objects.requireNonNull(review);
         var user = userRepository.findByIdWithReviewLikes(userId);
         if (user.isEmpty()) {
             return null;
@@ -103,6 +103,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public LikeStateDTO toggleLikeComment(long userId, Comment comment) {
+        Objects.requireNonNull(comment);
         var user = userRepository.findByIdWithCommentLikes(userId);
         if (user.isEmpty()) {
             return null;
@@ -130,6 +131,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public LikeStateDTO toggleLikeResponse(long userId, Response response) {
+        Objects.requireNonNull(response);
         var user = userRepository.findByIdWithResponseLikes(userId);
         if (user.isEmpty()) {
             return null;
@@ -193,6 +195,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public LikeStateDTO toggleDislikeReview(long userId, Review review) {
+        Objects.requireNonNull(review);
         var user = userRepository.findByIdWithReviewLikes(userId);
         if (user.isEmpty()) {
             return null;
@@ -220,6 +223,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public LikeStateDTO toggleDislikeComment(long userId, Comment comment) {
+        Objects.requireNonNull(comment);
         var user = userRepository.findByIdWithCommentLikes(userId);
         if (user.isEmpty()) {
             return null;
@@ -247,6 +251,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public LikeStateDTO toggleDislikeResponse(long userId, Response response) {
+        Objects.requireNonNull(response);
         var user = userRepository.findByIdWithResponseLikes(userId);
         if (user.isEmpty()) {
             return null;
@@ -293,16 +298,6 @@ public class UserService implements UserDetailsService {
         userRepository.save(userDeleted);
     }
 
-    public Set<Comment> getComments(long userId) {
-        var user = userRepository.findByIdWithComments(userId).orElseThrow();
-        return user.getComments();
-    }
-
-    public Set<Response> getResponses(long userId) {
-        var user = userRepository.findByIdWithResponses(userId).orElseThrow();
-        return user.getResponses();
-    }
-
     public List<Review> findAllUserReviews(long userId, int pageNumber, int pageSize) {
         pageNumber = Math.max(pageNumber, 0);
         pageSize = Math.max(pageSize, 1);
@@ -340,15 +335,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(userId).orElseThrow();
         user.setEmail(email);
         userRepository.save(user);
-    }
-
-    public List<LikeableDTO> getLikedListFromUser(long userId) {
-        var user = userRepository.findByIdWithLikes(userId).orElseThrow();
-        return Stream.of(user.getReviewsLikes(), user.getCommentsLikes(), user.getResponsesLikes())
-                .flatMap(Collection::stream)
-                .sorted(Comparator.comparing(Likeable::getDate).reversed())
-                .map(LikeableDTO::from)
-                .toList();
     }
 
     public Optional<User> findUserWithLikesAndDislikes(long userId) {

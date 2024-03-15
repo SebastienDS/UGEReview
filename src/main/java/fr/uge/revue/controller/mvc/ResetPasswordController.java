@@ -64,7 +64,7 @@ public class ResetPasswordController {
     }
 
     @GetMapping("/resetPassword/{token}")
-    public String showResetPasswordPage(Model model, @PathVariable("token") String token) {
+    public String showResetPasswordPage(@PathVariable("token") String token) {
         var resetTokenFound = resetPasswordService.findByToken(token);
         if (resetTokenFound.isEmpty() || resetTokenFound.get().isExpired()) {
             return "resetPassword/invalidToken";
