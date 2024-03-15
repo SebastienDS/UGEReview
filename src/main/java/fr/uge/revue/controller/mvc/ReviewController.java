@@ -48,7 +48,7 @@ public class ReviewController {
                              @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("pageSize", pageSize);
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated() && currentSearch.equals("")) {
             var user = (User) authentication.getPrincipal();
             model.addAttribute("authenticated", true);
             model.addAttribute("notifications", getNotifications(user));
