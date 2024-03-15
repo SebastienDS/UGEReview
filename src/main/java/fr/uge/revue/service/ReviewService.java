@@ -144,4 +144,8 @@ public class ReviewService {
         }
         return listReview;
     }
+
+    public List<Review> searchReviewPage(String search, int pageNumber, int pageSize) {
+        return reviewRepository.searchReview(Objects.requireNonNull(search), PageRequest.of(pageNumber, pageSize)).stream().toList();
+    }
 }
