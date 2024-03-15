@@ -25,6 +25,7 @@ export async function load({ params }) {
 	]);
     return {
         follows,
+        userId: params.userId,
         isMyUserPage: isMyUserPage(params.userId),
         isAuthenticated: authToken.get() != null,
     };

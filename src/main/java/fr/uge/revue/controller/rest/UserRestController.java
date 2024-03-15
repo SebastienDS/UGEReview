@@ -219,8 +219,9 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{userId}/follows")
-    public ResponseEntity<List<UserDTO>> getUserFollows(@PathVariable long userId) {
-        return ResponseEntity.ok().body(userService.getFollows(userId).stream().map(UserDTO::from).toList());
+    public ResponseEntity<List<UserDTO>> getUserFollows(@PathVariable long userId,
+                                                        @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        return ResponseEntity.ok().body(userService.getFollows(userId, pageNumber, pageSize).stream().map(UserDTO::from).toList());
     }
 
 }

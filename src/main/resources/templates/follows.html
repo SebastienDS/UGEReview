@@ -26,6 +26,10 @@
                 </div>
             </div>
         </li>
+        <div class="d-flex justify-content-between">
+            <a th:href="@{'/users/' + ${userId} + '/follows?pageNumber=' + ${pageNumber - 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Précédent</a>
+            <a th:href="@{'/users/' + ${userId} + '/follows?pageNumber=' + ${pageNumber + 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Suivant</a>
+        </div>
     </ul>
 </div>
 

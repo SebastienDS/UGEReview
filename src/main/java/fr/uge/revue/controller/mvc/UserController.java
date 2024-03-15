@@ -240,7 +240,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/follows")
-    public String getUserFollows(@PathVariable long userId, Authentication authentication, Model model) {
+    public String getUserFollows(@PathVariable long userId, Authentication authentication, Model model,
+                                 @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
         var user = userService.getUserById(userId);
         if (user.isEmpty()) {
             return "notFound";
@@ -252,7 +253,9 @@ public class UserController {
                 model.addAttribute("isMyUserPage", true);
             }
         }
-        model.addAttribute("followsList",  userService.getFollows(user.get().getId()).stream().map(UserDTO::from).toList());
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("followsList",  userService.getFollows(user.get().getId(), pageNumber, pageSize).stream().map(UserDTO::from).toList());
         return "follows";
     }
 }

@@ -20,6 +20,24 @@
         }
     }
 
+    let pageNumber = 0;
+    let pageSize = 5;
+
+    async function changePages(modifier) {
+        try {
+            pageNumber =  Math.max(0, pageNumber + modifier)
+            const response = await fetch("/api/v1/users/" + data.userId + "/follows?pageSize=" + pageSize + "&pageNumber=" + pageNumber, {
+                headers: {
+                    'Authorization': authToken.get()
+                }
+            });
+            var follows = await response.json();
+            data.follows = follows
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
 </script>
 
@@ -48,6 +66,10 @@
                     </div>
                 </li>
             {/each}
+            <div class="d-flex justify-content-between">
+                <button on:click={() => changePages(-1)} class="btn btn-secondary">Précédent</button>
+                <button on:click={() => changePages(1)} class="btn btn-secondary">Suivant</button>
+            </div>
         </ul>
     </div>
     

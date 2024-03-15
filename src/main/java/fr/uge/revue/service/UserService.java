@@ -329,9 +329,16 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllEmails();
     }
 
-    public Set<User> getFollows(long userId) {
+    public List<User> getFollows(long userId, int pageNumber, int pageSize) {
+        pageNumber = Math.max(0, pageNumber);
+        pageSize = Math.max(1, pageSize);
         var user = userRepository.findByIdWithFollowers(userId).orElseThrow();
-        return user.getFollowers();
+        return user.getFollowers()
+                .stream()
+                .skip((long) pageNumber * pageSize)
+                .limit(pageSize)
+                .sorted(Comparator.comparing(User::getUsername))
+                .toList();
     }
 
     @Transactional
