@@ -1,7 +1,6 @@
 package fr.uge.revue.util;
 
 import javax.tools.SimpleJavaFileObject;
-import java.io.IOException;
 import java.net.URI;
 
 public class JavaSourceFromString extends SimpleJavaFileObject {
@@ -13,7 +12,7 @@ public class JavaSourceFromString extends SimpleJavaFileObject {
     }
 
     @Override
-    public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
+    public CharSequence getCharContent(boolean ignoreEncodingErrors) {
         return code;
     }
 }
