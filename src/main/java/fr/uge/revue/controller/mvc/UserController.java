@@ -117,12 +117,14 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/reviews")
-    public String showUserReviews(@PathVariable long userId, Model model) {
-        var reviews = userService.findAllUserReviews(userId).stream().map(ReviewAllReviewDTO::from).toList();
+    public String showUserReviews(@PathVariable long userId, Model model,
+                                  @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        var reviews = userService.findAllUserReviews(userId, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("reviews", reviews);
-        model.addAttribute("pageNumber", 0);
-        model.addAttribute("pageSize", 10);
-        return "reviews";
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("userId", userId);
+        return "userReviews";
     }
 
     @PostMapping("/users/{userId}/reviews")

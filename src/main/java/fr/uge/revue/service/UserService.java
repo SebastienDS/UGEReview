@@ -5,6 +5,7 @@ import fr.uge.revue.dto.review.LikeStateDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.*;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -301,8 +302,8 @@ public class UserService implements UserDetailsService {
         return user.getResponses();
     }
 
-    public List<Review> findAllUserReviews(long userId) {
-        return reviewRepository.findAllUserReviews(userId);
+    public List<Review> findAllUserReviews(long userId, int pageNumber, int pageSize) {
+        return reviewRepository.findAllUserReviews(userId, PageRequest.of(pageNumber, pageSize)).stream().toList();
     }
 
     public List<Review> findAllUserReviewsMatching(long userId, String search) {

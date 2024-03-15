@@ -91,7 +91,7 @@ public class UserRestController {
 
     @GetMapping("/users/{userId}/reviews")
     public ResponseEntity<List<ReviewAllReviewDTO>> showUserReviews(@PathVariable long userId, Model model) {
-        var reviews = userService.findAllUserReviews(userId).stream().sorted(Comparator.comparing(Review::getDate).reversed()).map(ReviewAllReviewDTO::from).toList();
+        var reviews = userService.findAllUserReviews(userId, 0, 0).stream().sorted(Comparator.comparing(Review::getDate).reversed()).map(ReviewAllReviewDTO::from).toList();
         return ResponseEntity.ok().body(reviews);
     }
 
