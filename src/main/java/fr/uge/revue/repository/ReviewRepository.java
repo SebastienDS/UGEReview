@@ -39,7 +39,7 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     @Query("SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id = :userId")
     List<Review> findAllUserReviews(@Param("userId") long userId);
 
-    @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id = :userId",
+    @Query(value = "SELECT r FROM Review r LEFT JOIN FETCH r.author WHERE r.author.id = :userId ORDER BY r.date DESC",
             countQuery = "SELECT count(r) FROM Review r WHERE r.author.id = :userId")
     Page<Review> findAllUserReviews(@Param("userId") long userId, Pageable pageable);
 

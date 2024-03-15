@@ -114,10 +114,14 @@ public class ReviewService {
     }
 
     public List<Review> getReviews(int page, int pageSize) {
+        page = Math.max(page, 0);
+        pageSize = Math.max(pageSize, 1);
         return reviewRepository.findReviewPage(PageRequest.of(page, pageSize)).stream().toList();
     }
 
     public List<Review> getFriendsReview(User user, int pageNumber, int pageSize) {
+        pageNumber = Math.max(pageNumber, 0);
+        pageSize = Math.max(pageSize, 1);
         Objects.requireNonNull(user);
         var listReview = new ArrayList<Review>();
         var follows = userRepository.findByIdWithFollowers(user.getId()).get().getFollowers().stream().toList();
@@ -146,6 +150,8 @@ public class ReviewService {
     }
 
     public List<Review> searchReviewPage(String search, int pageNumber, int pageSize) {
+        pageNumber = Math.max(pageNumber, 0);
+        pageSize = Math.max(pageSize, 1);
         return reviewRepository.searchReview(Objects.requireNonNull(search), PageRequest.of(pageNumber, pageSize)).stream().toList();
     }
 }

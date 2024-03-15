@@ -44,14 +44,8 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews")
-    public String allReviews(Model model, Authentication authentication,
+    public String allReviews(Model model, Authentication authentication, @RequestParam(defaultValue = "") String currentSearch,
                              @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
-        if(pageNumber < 0){
-            pageNumber = 0;
-        }
-        if(pageSize <= 0){
-            pageSize = 1;
-        }
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("pageSize", pageSize);
         if (authentication != null && authentication.isAuthenticated()) {
@@ -59,6 +53,12 @@ public class ReviewController {
             model.addAttribute("authenticated", true);
             model.addAttribute("notifications", getNotifications(user));
             var reviews = reviewService.getFriendsReview(user, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
+            model.addAttribute("reviews", reviews);
+            return "reviews";
+        }
+        if(!currentSearch.equals("")){
+            model.addAttribute("currentSearch", currentSearch);
+            var reviews = reviewService.searchReviewPage(currentSearch, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
             model.addAttribute("reviews", reviews);
             return "reviews";
         }
@@ -82,6 +82,7 @@ public class ReviewController {
             model.addAttribute("authenticated", true);
             model.addAttribute("notifications", getNotifications(user));
         }
+        model.addAttribute("currentSearch", search);
         var reviews = reviewService.searchReviewPage(search, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("pageSize", pageSize);

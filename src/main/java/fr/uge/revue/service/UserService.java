@@ -5,6 +5,7 @@ import fr.uge.revue.dto.review.LikeStateDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.*;
+import org.hibernate.query.Query;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -303,6 +304,8 @@ public class UserService implements UserDetailsService {
     }
 
     public List<Review> findAllUserReviews(long userId, int pageNumber, int pageSize) {
+        pageNumber = Math.max(pageNumber, 0);
+        pageSize = Math.max(pageSize, 1);
         return reviewRepository.findAllUserReviews(userId, PageRequest.of(pageNumber, pageSize)).stream().toList();
     }
 
@@ -373,5 +376,31 @@ public class UserService implements UserDetailsService {
 
         userRepository.save(user);
         userRepository.save(userBanned);
+    }
+
+    public List<Comment> getComments(long userId, int pageNumber, int pageSize) {
+        pageNumber = Math.max(pageNumber, 0);
+        pageSize = Math.max(pageSize, 1);
+        var comments = commentRepository.findByAuthorId(userId, PageRequest.of(pageNumber, pageSize));
+        return comments.stream().toList();
+    }
+
+    public List<Response> getResponses(long userId, int pageNumber, int pageSize) {
+        pageNumber = Math.max(pageNumber, 0);
+        pageSize = Math.max(pageSize, 1);
+        return responseRepository.findByAuthorIdPage(userId, PageRequest.of(pageNumber, pageSize)).stream().toList();
+    }
+
+    public List<LikeableDTO> getLikedListFromUser(long userId, int pageNumber, int pageSize) {
+        pageNumber = Math.max(pageNumber, 0);
+        pageSize = Math.max(pageSize, 1);
+        var user = userRepository.findByIdWithLikes(userId).orElseThrow();
+        return Stream.of(user.getReviewsLikes(), user.getCommentsLikes(), user.getResponsesLikes())
+                .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(Likeable::getDate).reversed())
+                .map(LikeableDTO::from)
+                .skip((long) pageNumber * pageSize)
+                .limit(pageSize)
+                .toList();
     }
 }

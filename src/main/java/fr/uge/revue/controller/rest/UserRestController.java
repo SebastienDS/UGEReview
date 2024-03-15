@@ -96,7 +96,10 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{userId}/comments")
-    public ResponseEntity<List<CommentUserDTO>> getUserComments(@PathVariable long userId, Model model) {
+    public ResponseEntity<List<CommentUserDTO>> getUserComments(@PathVariable long userId, Model model,
+                                                                @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        pageNumber = Math.max(pageNumber, 0);
+        pageSize = Math.max(pageSize, 1);
         var comments = userService.getComments(userId).stream().sorted(Comparator.comparing(Comment::getDate).reversed()).map(CommentUserDTO::from).toList();
         return ResponseEntity.ok().body(comments);
     }

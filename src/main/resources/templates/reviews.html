@@ -34,8 +34,11 @@
             </div>
         </li>
         <div class="d-flex justify-content-between">
-            <a th:href="@{'/reviews?pageNumber=' + ${pageNumber - 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Précédent</a>
-            <a th:href="@{'/reviews?pageNumber=' + ${pageNumber + 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Suivant</a>
+            <a th:if="${currentSearch == null}" th:href="@{'/reviews?pageNumber=' + ${pageNumber - 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Précédent</a>
+            <a th:if="${currentSearch == null}" th:href="@{'/reviews?pageNumber=' + ${pageNumber + 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Suivant</a>
+            <a th:if="${currentSearch != null}" th:href="@{'/reviews?currentSearch=' + ${currentSearch} + '&pageNumber=' + ${pageNumber - 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Précédent</a>
+            <a th:if="${currentSearch != null}" th:href="@{'/reviews?currentSearch=' + ${currentSearch} + '&pageNumber=' + ${pageNumber + 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Suivant</a>
+
         </div>
     </ul>
 </div>

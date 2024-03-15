@@ -1,5 +1,6 @@
 package fr.uge.revue.controller.mvc;
 
+import fr.uge.revue.dto.comment.CommentUserDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
 import fr.uge.revue.dto.updatePassword.PasswordReceived;
 import fr.uge.revue.dto.user.UserDTO;
@@ -103,16 +104,22 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/comments")
-    public String getUserComments(@PathVariable long userId, Model model) {
-        var comments = userService.getComments(userId);
+    public String getUserComments(@PathVariable long userId, Model model,
+                                  @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        var comments = userService.getComments(userId, pageNumber, pageSize).stream().map(CommentUserDTO::from).toList();
         model.addAttribute("comments", comments);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("pageSize", pageSize);
         return "comments";
     }
 
     @GetMapping("/users/{userId}/responses")
-    public String getUserResponses(@PathVariable long userId, Model model) {
-        var responses = userService.getResponses(userId);
+    public String getUserResponses(@PathVariable long userId, Model model,
+                                   @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        var responses = userService.getResponses(userId, pageNumber, pageSize);
         model.addAttribute("responses", responses);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("pageSize", pageSize);
         return "responses";
     }
 
@@ -218,8 +225,11 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/likes")
-    public String getLikedContents(@PathVariable long userId, Model model) {
-        model.addAttribute("likedList",  userService.getLikedListFromUser(userId));
+    public String getLikedContents(@PathVariable long userId, Model model,
+                                   @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        model.addAttribute("likedList",  userService.getLikedListFromUser(userId, pageNumber, pageSize));
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("pageSize", pageSize);
         return "likes";
     }
 

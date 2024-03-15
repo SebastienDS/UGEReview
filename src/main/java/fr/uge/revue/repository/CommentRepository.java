@@ -1,6 +1,8 @@
 package fr.uge.revue.repository;
 
 import fr.uge.revue.model.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +17,8 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
 
     @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.responses WHERE c.id = :id")
     Optional<Comment> findByIdWithResponses(@Param("id") long id);
+
+    @Query(value = "SELECT c FROM Comment c LEFT JOIN FETCH c.author WHERE c.author.id = :userId ORDER BY c.date DESC",
+            countQuery = "SELECT count(c) FROM Comment c WHERE c.author.id = :userId" )
+    Page<Comment> findByAuthorId(long userId, Pageable pageable);
 }

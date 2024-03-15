@@ -14,16 +14,20 @@
         <li th:each="like : ${likedList}" class="list-group-item position-relative">
             <div class="row">
                 <a th:href="@{'/reviews/' + ${like.reviewId()} + '#' + ${like.className()} + '_' + ${like.id()} }" class="col-9">
-                    <div th:text="${like.content()}"/>
+                    <div th:text="${like.content()}"></div>
                 </a>
 
 
                 <div class="col-3" style="text-align:end;">
-                    <a th:href="@{'/users/' + ${like.author().id()}}" th:text="${like.author().username()}"/>
+                    <a th:href="@{'/users/' + ${like.author().id()}}" th:text="${like.author().username()}"></a>
                     <p th:text="${like.date()}"></p>
                 </div>
             </div>
         </li>
+        <div class="d-flex justify-content-between">
+            <a th:href="@{'/users/' + ${userId} + '/likes?pageNumber=' + ${pageNumber - 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Précédent</a>
+            <a th:href="@{'/users/' + ${userId} + '/likes?pageNumber=' + ${pageNumber + 1} + '&pageSize=' + ${pageSize}}" class="btn btn-secondary">Suivant</a>
+        </div>
     </ul>
 </div>
 
