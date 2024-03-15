@@ -21,6 +21,7 @@
             });
             var reviews = await response.json();
             data.reviews = reviews
+            pageNumber = 0;
         } catch (error) {
             console.log(error)
         }
@@ -28,11 +29,8 @@
 
     async function changeReviews(modifier) {
         try {
-            console.log("pageNumber: " + pageNumber)
-            console.log("modifier: " + modifier)
             pageNumber =  Math.max(0, pageNumber + modifier)
-            console.log(pageNumber)
-            const response = await fetch("/api/v1/reviews?pageSize=" + pageSize + "&pageNumber=" + pageNumber, {
+            const response = await fetch("/api/v1/reviews?search=" + search + "&pageSize=" + pageSize + "&pageNumber=" + pageNumber, {
                 headers: {
                     'Authorization': authToken.get()
                 }

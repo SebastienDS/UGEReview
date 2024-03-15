@@ -58,10 +58,13 @@ public class ReviewRestController {
     @GetMapping("/reviews")
     public ResponseEntity<List<ReviewAllReviewDTO>> allReviews(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize,
                                                                @RequestParam Optional<String> search, Authentication authentication) {
-        var reviews = search.map(reviewService::searchReview)
-                .orElseGet(() -> getReview(authentication, pageNumber, pageSize))
-                .stream().map(ReviewAllReviewDTO::from).toList();
-        return ResponseEntity.ok().body(reviews);
+        if(search.isEmpty() || search.get().equals("")){
+            return ResponseEntity.ok().body(getReview(authentication, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList());
+        }
+//        var reviews = search.map(s -> reviewService.searchReviewPage(s, pageNumber, pageSize))
+//                .orElseGet(() -> getReview(authentication, pageNumber, pageSize))
+//                .stream().map(ReviewAllReviewDTO::from).toList();
+        return ResponseEntity.ok().body(reviewService.searchReviewPage(search.get(), pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList());
     }
 
     private List<Review> getReview(Authentication authentication, int pageNumber, int pageSize) {

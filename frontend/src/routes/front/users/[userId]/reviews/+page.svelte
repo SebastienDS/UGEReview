@@ -8,6 +8,24 @@
 
     const isAuthenticated = authToken.get() != null;
 
+    let pageNumber = 0;
+    let pageSize = 5;
+
+    async function changeReviews(modifier) {
+        try {
+            pageNumber =  Math.max(0, pageNumber + modifier)
+            const response = await fetch("/api/v1/users/" + data.userId + "/reviews?pageSize=" + pageSize + "&pageNumber=" + pageNumber, {
+                headers: {
+                    'Authorization': authToken.get()
+                }
+            });
+            var reviews = await response.json();
+            data.reviews = reviews
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 </script>
 
 <div class="container">
@@ -31,5 +49,9 @@
                 </div>
             </li>
         {/each}
+        <div class="d-flex justify-content-between">
+            <button on:click={() => changeReviews(-1)} class="btn btn-secondary">Précédent</button>
+            <button on:click={() => changeReviews(1)} class="btn btn-secondary">Suivant</button>
+        </div>
     </ul>
 </div>

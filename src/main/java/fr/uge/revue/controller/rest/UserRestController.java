@@ -90,29 +90,32 @@ public class UserRestController {
     }
 
     @GetMapping("/users/{userId}/reviews")
-    public ResponseEntity<List<ReviewAllReviewDTO>> showUserReviews(@PathVariable long userId, Model model) {
-        var reviews = userService.findAllUserReviews(userId, 0, 0).stream().sorted(Comparator.comparing(Review::getDate).reversed()).map(ReviewAllReviewDTO::from).toList();
+    public ResponseEntity<List<ReviewAllReviewDTO>> showUserReviews(@PathVariable long userId,
+                                                                    @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        var reviews = userService.findAllUserReviews(userId, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList();
         return ResponseEntity.ok().body(reviews);
     }
 
     @GetMapping("/users/{userId}/comments")
-    public ResponseEntity<List<CommentUserDTO>> getUserComments(@PathVariable long userId, Model model,
+    public ResponseEntity<List<CommentUserDTO>> getUserComments(@PathVariable long userId,
                                                                 @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
         pageNumber = Math.max(pageNumber, 0);
         pageSize = Math.max(pageSize, 1);
-        var comments = userService.getComments(userId).stream().sorted(Comparator.comparing(Comment::getDate).reversed()).map(CommentUserDTO::from).toList();
+        var comments = userService.getComments(userId, pageNumber, pageSize).stream().map(CommentUserDTO::from).toList();
         return ResponseEntity.ok().body(comments);
     }
 
     @GetMapping("/users/{userId}/responses")
-    public ResponseEntity<List<ResponseUserDTO>> getUserResponses(@PathVariable long userId, Model model) {
-        var responses = userService.getResponses(userId).stream().sorted(Comparator.comparing(Response::getDate).reversed()).map(ResponseUserDTO::from).toList();
+    public ResponseEntity<List<ResponseUserDTO>> getUserResponses(@PathVariable long userId,
+                                                                  @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        var responses = userService.getResponses(userId, pageNumber, pageSize).stream().map(ResponseUserDTO::from).toList();
         return ResponseEntity.ok().body(responses);
     }
 
     @GetMapping("/users/{userId}/likes")
-    public ResponseEntity<List<LikeableDTO>> getLikedContents(@PathVariable long userId, Model model) {
-        return ResponseEntity.ok().body(userService.getLikedListFromUser(userId));
+    public ResponseEntity<List<LikeableDTO>> getLikedContents(@PathVariable long userId,
+                                                              @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
+        return ResponseEntity.ok().body(userService.getLikedListFromUser(userId, pageNumber, pageSize));
     }
 
     @PutMapping("/users/{userId}/updateUsername")

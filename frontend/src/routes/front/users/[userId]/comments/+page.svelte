@@ -8,6 +8,23 @@
 
     const isAuthenticated = authToken.get() != null;
 
+    let pageNumber = 0;
+    let pageSize = 5;
+
+    async function changeComments(modifier) {
+        try {
+            pageNumber =  Math.max(0, pageNumber + modifier)
+            const response = await fetch("/api/v1/users/" + data.userId + "/comments?pageSize=" + pageSize + "&pageNumber=" + pageNumber, {
+                headers: {
+                    'Authorization': authToken.get()
+                }
+            });
+            var comments = await response.json();
+            data.comments = comments
+        } catch (error) {
+            console.log(error)
+        }
+    }
 </script>
 
 <div class="container">
@@ -31,5 +48,9 @@
                 </div>
             </li>
         {/each}
+        <div class="d-flex justify-content-between">
+            <button on:click={() => changeComments(-1)} class="btn btn-secondary">Précédent</button>
+            <button on:click={() => changeComments(1)} class="btn btn-secondary">Suivant</button>
+        </div>
     </ul>
 </div>

@@ -13,6 +13,7 @@ export async function load({ params }) {
 		fetchReviews(params.userId)
 	]);
     return {
-        reviews
+        reviews,
+        userId: params.userId
     };
 }
