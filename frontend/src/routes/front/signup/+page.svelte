@@ -1,6 +1,7 @@
 <script>
     import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
+    import Header from '$lib/components/Header.svelte';
 
     let username = '';
     let email = '';
@@ -32,6 +33,7 @@
 </script>
 
 <div class="container">
+    <Header/>
     <h1>UGERevue</h1>
 
     <form on:submit|preventDefault={signup} class="mb-5">
