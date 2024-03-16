@@ -4,6 +4,10 @@ import { userData } from '$lib/userData';
 async function fetchReviews(userId) {
     try {
         const follows = await fetch("/api/v1/users/" + userId + "/follows" );
+        if (follows.status !== 200) {
+            goto("/front/error/" + response.status)
+            return;
+        }
         return follows.json();
     } catch (error) {
         console.log(error);

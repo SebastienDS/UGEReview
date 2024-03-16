@@ -1,5 +1,8 @@
 import { authToken } from '$lib/auth';
 import { userData } from '$lib/userData';
+import { goto } from '$app/navigation';
+
+
 
 async function fetchData(userId) {
 	try {
@@ -8,6 +11,10 @@ async function fetchData(userId) {
 				'Authorization': authToken.get()
 			}
 		});
+		if (response.status !== 200) {
+			goto("/front/error/" + response.status)
+			return;
+		}
 		return response.json();
 	} catch (error) {
 		return { error: error }

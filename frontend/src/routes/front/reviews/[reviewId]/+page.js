@@ -1,9 +1,14 @@
 import { authToken } from '$lib/auth';
+import { goto } from '$app/navigation';
 
 
 async function fetchData(reviewId) {
 	try {
 		const response = await fetch("/api/v1/reviews/" + reviewId);
+		if (response.status !== 200) {
+			goto("/front/error/" + response.status)
+			return;
+		}
 		return response.json();
 	} catch (error) {
 		return { error: error }
