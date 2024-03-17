@@ -2,6 +2,7 @@ package fr.uge.revue.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,9 +24,9 @@ public final class Review implements Likeable {
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "review")
-    private Set<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
     @ManyToMany
-    private Set<User> requestNotifications;
+    private Set<User> requestNotifications = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn
     private TestsReview unitTests;

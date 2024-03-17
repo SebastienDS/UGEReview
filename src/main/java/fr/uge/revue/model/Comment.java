@@ -20,7 +20,7 @@ public final class Comment implements Likeable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comment")
-    private Set<Response> responses;
+    private Set<Response> responses = new HashSet<>();
 
     public Comment() {
     }
@@ -30,7 +30,6 @@ public final class Comment implements Likeable {
         this.author = author;
         this.review = review;
         this.date = new Date();
-        this.responses = new HashSet<>();
     }
 
     public long getId() {

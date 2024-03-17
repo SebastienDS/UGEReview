@@ -7,9 +7,11 @@ import fr.uge.revue.repository.ResponseRepository;
 import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.UserRepository;
 import fr.uge.revue.service.ReviewService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -24,6 +26,7 @@ public class Application {
     }
 
     @Bean
+    @ConditionalOnProperty(name = "ENVIRONMENT", havingValue = "PRODUCTION")
     public CommandLineRunner test(ReviewService reviewService, UserRepository userRepository, ReviewRepository reviewRepository, CommentRepository commentRepository, ResponseRepository responseRepository, BCryptPasswordEncoder passwordEncoder) {
         return args -> {
             var userDeleted = new User("USER_DELETED", "", "", Role.USER);

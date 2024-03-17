@@ -20,25 +20,25 @@ public class User implements UserDetails {
     private Role role;
     private Date creationDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-    private Set<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-    private Set<Response> responses;
+    private Set<Response> responses = new HashSet<>();
     @ManyToMany
-    private Set<User> followers;
+    private Set<User> followers = new HashSet<>();
     @ManyToMany
-    private Set<Comment> commentsLikes;
+    private Set<Comment> commentsLikes = new HashSet<>();
     @ManyToMany
-    private Set<Comment> commentsDislikes;
+    private Set<Comment> commentsDislikes = new HashSet<>();
     @ManyToMany
-    private Set<Response> responsesLikes;
+    private Set<Response> responsesLikes = new HashSet<>();
     @ManyToMany
-    private Set<Response> responsesDislikes;
+    private Set<Response> responsesDislikes = new HashSet<>();
     @ManyToMany
-    private Set<Review> reviewsLikes;
+    private Set<Review> reviewsLikes = new HashSet<>();
     @ManyToMany
-    private Set<Review> reviewsDislikes;
+    private Set<Review> reviewsDislikes = new HashSet<>();
 
     @Column(name = "account_non_locked")
     private boolean accountNonLocked = true;

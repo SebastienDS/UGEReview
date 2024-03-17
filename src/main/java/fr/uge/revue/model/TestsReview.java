@@ -1,6 +1,7 @@
 package fr.uge.revue.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public class TestsReview {
     private long totalCount;
     @ElementCollection
     @CollectionTable
-    private List<String> errors;
+    private List<String> errors = new ArrayList<>();
 
     public TestsReview() {
     }

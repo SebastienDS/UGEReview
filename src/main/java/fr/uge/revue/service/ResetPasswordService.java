@@ -35,6 +35,7 @@ public class ResetPasswordService {
     public void updateUserPassword(ResetPasswordToken resetToken, String password) {
         Objects.requireNonNull(resetToken);
         Objects.requireNonNull(password);
+        if (resetToken.isExpired()) throw new IllegalArgumentException();
         userService.updateUserPassword(resetToken.getUser(), password);
         resetPasswordRepository.delete(resetToken);
     }
