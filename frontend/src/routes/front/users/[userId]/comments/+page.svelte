@@ -36,7 +36,7 @@
                 <div class="row">
                     <a href="/front/reviews/{comment.reviewId}#comment_{comment.id}" class="col-9">
                         <div>
-                            <p>{comment.content}</p>
+                            <p class="text-break text-justify" style="white-space: pre-wrap;">{comment.content}</p>
                         </div>
                     </a>
                     <div class="col-3" style="text-align:end;">

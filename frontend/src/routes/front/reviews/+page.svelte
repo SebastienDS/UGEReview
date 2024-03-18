@@ -65,7 +65,7 @@
         {#each data.reviews as review}
             <li class="list-group-item position-relative">
                 <div class="row">
-                    <a href="/front/reviews/{review.id}" class="col-9">{review.title}</a>
+                    <a href="/front/reviews/{review.id}" class="col-9 text-break text-justify" style="white-space: pre-wrap;">{review.title}</a>
                     <div class="col-3" style="text-align:end;">
                         <a href="/front/users/{review.author.id}">{review.author.username}</a>
                         <p>{formatDate(new Date(review.date))}</p>

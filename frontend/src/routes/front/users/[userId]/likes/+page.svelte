@@ -36,7 +36,7 @@
                 <div class="row">
                     <a href="/front/reviews/{like.reviewId}#{like.className}_{like.id}" class="col-9">
                         <div>
-                            <p>{like.content}</p>
+                            <p class="text-break text-justify" style="white-space: pre-wrap;">{like.content}</p>
                         </div>
                     </a>
                     <div class="col-3" style="text-align:end;">

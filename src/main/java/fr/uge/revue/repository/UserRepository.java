@@ -1,5 +1,6 @@
 package fr.uge.revue.repository;
 
+import fr.uge.revue.model.Review;
 import fr.uge.revue.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +44,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.reviewsLikes LEFT JOIN FETCH u.commentsLikes c LEFT JOIN FETCH u.responsesLikes r LEFT JOIN FETCH u.reviewsDislikes LEFT JOIN FETCH u.commentsDislikes LEFT JOIN FETCH u.responsesDislikes WHERE u.id = :userId")
     Optional<User> findByIdWithLikesAndDislikes(@Param("userId") long userId);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.comments LEFT JOIN FETCH u.responses WHERE u.id = :userId")
+    Optional<User> findByIdWithComments(@Param("userId") long userId);
+
 }

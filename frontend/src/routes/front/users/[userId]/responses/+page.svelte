@@ -37,7 +37,7 @@
                 <div class="row">
                     <a href="/front/reviews/{response.reviewId}#response_{response.id}" class="col-9">
                         <div>
-                            <p>{response.content}</p>
+                            <p class="text-break text-justify" style="white-space: pre-wrap;">{response.content}</p>
                         </div>
                     </a>
                     <div class="col-3" style="text-align:end;">

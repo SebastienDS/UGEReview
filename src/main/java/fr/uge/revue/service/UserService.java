@@ -5,6 +5,7 @@ import fr.uge.revue.dto.review.LikeStateDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
 import fr.uge.revue.model.*;
 import fr.uge.revue.repository.*;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -395,5 +396,20 @@ public class UserService implements UserDetailsService {
                 .skip((long) pageNumber * pageSize)
                 .limit(pageSize)
                 .toList();
+    }
+
+    public List<String> searchComments(long userId, String search) {
+        Objects.requireNonNull(search);
+        record Tuple(Date date, String content) {}
+        var user = userRepository.findByIdWithComments(userId);
+        return user.map(value -> Stream.of(value.getComments(), value.getResponses())
+                    .flatMap(Collection::stream)
+                    .filter(likeable -> likeable.getContent().contains(search))
+                    .map(x -> new Tuple(x.getDate(), x.getContent()))
+                    .sorted(Comparator.comparing(Tuple::date).reversed())
+                    .map(Tuple::content)
+                    .limit(20)
+                    .toList()
+                ).orElseGet(List::of);
     }
 }

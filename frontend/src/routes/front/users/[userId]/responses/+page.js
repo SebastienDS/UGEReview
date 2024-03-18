@@ -1,11 +1,11 @@
 async function fetchReviews(userId) {
     try {
-        const responses = await fetch("/api/v1/users/" + userId + "/responses" );
+        const response = await fetch("/api/v1/users/" + userId + "/responses" );
         if (response.status !== 200) {
             goto("/front/error/" + response.status)
             return;
         }
-        return responses.json();
+        return response.json();
     } catch (error) {
         console.log(error);
         return { error: error }

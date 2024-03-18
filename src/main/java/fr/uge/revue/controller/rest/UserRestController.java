@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RestController
@@ -220,6 +221,13 @@ public class UserRestController {
     public ResponseEntity<List<UserDTO>> getUserFollows(@PathVariable long userId,
                                                         @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "5") int pageSize) {
         return ResponseEntity.ok().body(userService.getFollows(userId, pageNumber, pageSize).stream().map(UserDTO::from).toList());
+    }
+
+    @GetMapping("/searchComments")
+    public ResponseEntity<List<String>> searchComments(@RequestParam String search, Authentication authentication) {
+        var userId = ((User) authentication.getPrincipal()).getId();
+        var comments = userService.searchComments(userId, search);
+        return ResponseEntity.ok().body(comments);
     }
 
 }
