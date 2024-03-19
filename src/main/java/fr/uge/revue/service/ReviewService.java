@@ -8,6 +8,8 @@ import fr.uge.revue.model.TestsReview;
 import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ReviewRepository;
 import fr.uge.revue.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,11 +117,7 @@ public class ReviewService {
         var numberToSkip = (long) pageNumber * pageSize;
         while(listReview.size() < pageSize && !follows.isEmpty() ){
             var friends = follows.stream().map(User::getId).toList();
-            var reviews = reviewRepository.findUsersPageReviewsOrderDesc(friends,
-                    PageRequest.of(0, pageSize - listReview.size()));
-            listReview.addAll(reviews.stream().skip(numberToSkip).limit(pageSize).toList());
-            numberToSkip = Math.max(0, numberToSkip - reviews.getTotalElements());
-
+            numberToSkip = manageFriends(friends, listReview, numberToSkip, pageSize);
             idSet.addAll(friends);
             follows = follows.stream()
                     .map(user1 -> userRepository.findByIdWithFollowers(user1.getId()).get().getFollowers())
@@ -129,10 +127,26 @@ public class ReviewService {
         }
         if(listReview.size() < pageSize){
             var reviews = reviewRepository.findReviewPageWithoutUserIds(idSet.stream().toList(),
-                    PageRequest.of(0, pageNumber * pageSize + (pageSize - listReview.size())));
-            listReview.addAll(reviews.stream().skip(numberToSkip).limit(pageSize).toList());
+                    PageRequest.of((int) (numberToSkip / pageSize), pageSize));
+            var reviews2 = reviewRepository.findReviewPageWithoutUserIds(idSet.stream().toList(),
+                    PageRequest.of((int) (numberToSkip / pageSize) + 1, pageSize));
+            listReview.addAll(reviews.stream().skip(numberToSkip % pageSize).limit(pageSize - listReview.size()).toList());
+            listReview.addAll(reviews2.stream().limit(pageSize - listReview.size()).toList());
         }
         return listReview;
+    }
+
+    private long manageFriends(List<Long> friends, ArrayList<Review> listReview, long numberToSkip, int pageSize) {
+        Page<Review> reviews;
+        var page = 0;
+        do{
+            reviews = reviewRepository.findUsersPageReviewsOrderDesc(friends,
+                    PageRequest.of(page, pageSize));
+            listReview.addAll(reviews.stream().skip(numberToSkip).limit(pageSize - listReview.size()).toList());
+            numberToSkip = Math.max(0, numberToSkip - reviews.stream().count());
+            page++;
+        }while (!reviews.isEmpty() && listReview.size() < pageSize);
+        return numberToSkip;
     }
 
     public List<Review> searchReviewPage(String search, int pageNumber, int pageSize) {

@@ -92,7 +92,7 @@ public class Application {
                    Vive League Of Legends (Séb est aigri)
                    ```
                    """);
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 6; j++) {
                     var review = reviewService.createReview(new CreateReviewDTO("Review" + i + "-" + j, "Commentaire",
                             """

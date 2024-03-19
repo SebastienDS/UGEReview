@@ -145,7 +145,7 @@ public class Notification {
     public String getMessage() {
         return switch (type) {
             case NEW_COMMENT -> "L'utilisateur " + userWhoNotify.getUsername() + " a commenté une revue que vous suivez";
-            case NEW_RESPONSE -> "L'utilisateur " + userWhoNotify.getUsername() + " a ajouté un commentaire à une revue que vous suivez";
+            case NEW_RESPONSE -> "L'utilisateur " + userWhoNotify.getUsername() + " a répondu à un commentaire sur une revue que vous suivez";
         };
     }
 }

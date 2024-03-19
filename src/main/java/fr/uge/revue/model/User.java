@@ -41,7 +41,7 @@ public class User implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "dislikes")
     private Set<Review> reviewsDislikes = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ResetPasswordToken token;
 
     @Column(name = "account_non_locked")
