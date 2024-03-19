@@ -14,6 +14,6 @@ public interface ResetPasswordRepository extends CrudRepository<ResetPasswordTok
     @Query("SELECT t from ResetPasswordToken t where t.token = :token")
     Optional<ResetPasswordToken> findByToken(@Param("token") String token);
 
-    @Query("SELECT u from User u where u.token = :token")
-    Optional<User> findUserOfToken(@Param("token") ResetPasswordToken token);
+    @Query("SELECT u from User u LEFT JOIN FETCH u.token where u.token.id = :id")
+    Optional<User> findUserOfToken(@Param("id") long id);
 }

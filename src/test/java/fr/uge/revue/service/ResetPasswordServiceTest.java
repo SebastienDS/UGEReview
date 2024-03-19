@@ -4,6 +4,7 @@ import fr.uge.revue.model.ResetPasswordToken;
 import fr.uge.revue.model.Role;
 import fr.uge.revue.model.User;
 import fr.uge.revue.repository.ResetPasswordRepository;
+import fr.uge.revue.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,10 +26,12 @@ class ResetPasswordServiceTest {
     private ResetPasswordRepository resetPasswordRepository;
     @Mock
     private UserService userService;
+    @Mock
+    private UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
-        resetPasswordService = new ResetPasswordService(resetPasswordRepository, userService);
+        resetPasswordService = new ResetPasswordService(resetPasswordRepository, userService, userRepository);
     }
 
     @Test
@@ -37,15 +40,15 @@ class ResetPasswordServiceTest {
         var token = "token";
         resetPasswordService.createResetPasswordTokenForUser(user, token);
 
-        var captor = ArgumentCaptor.forClass(ResetPasswordToken.class);
-        verify(resetPasswordRepository).save(captor.capture());
-        assertFalse(captor.getValue().isExpired());
+        var captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(captor.capture());
+        assertFalse(captor.getValue().getToken().isExpired());
     }
 
     @Test
     void findByToken() {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var resetPasswordToken = new ResetPasswordToken("token", user, LocalDateTime.now().plusMinutes(15));
+        var resetPasswordToken = new ResetPasswordToken("token", LocalDateTime.now().plusMinutes(15));
         given(resetPasswordRepository.findByToken("token"))
                 .willReturn(Optional.of(resetPasswordToken));
 
@@ -57,9 +60,9 @@ class ResetPasswordServiceTest {
     @Test
     void updateUserPassword() {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var resetPasswordToken = new ResetPasswordToken("token", user, LocalDateTime.now().plusMinutes(15));
+        var resetPasswordToken = new ResetPasswordToken("token", LocalDateTime.now().plusMinutes(15));
         var newPassword = "newPassword";
-
+        given(resetPasswordRepository.findUserOfToken(resetPasswordToken.getId())).willReturn(Optional.of(user));
         resetPasswordService.updateUserPassword(resetPasswordToken, newPassword);
 
         verify(userService).updateUserPassword(user, newPassword);
@@ -70,7 +73,7 @@ class ResetPasswordServiceTest {
     @Test
     void updateUserPassword_expiredTokenThrowException() {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var resetPasswordToken = new ResetPasswordToken("token", user, LocalDateTime.now().minusMinutes(15));
+        var resetPasswordToken = new ResetPasswordToken("token", LocalDateTime.now().minusMinutes(15));
         var newPassword = "newPassword";
 
         assertThrows(IllegalArgumentException.class, () -> resetPasswordService.updateUserPassword(resetPasswordToken, newPassword));

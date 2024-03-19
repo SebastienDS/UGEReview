@@ -16,36 +16,26 @@ class ResetPasswordRepositoryTest {
 
     @Autowired
     private ResetPasswordRepository resetPasswordRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Test
-    public void findByToken_ReturnsResetPasswordTokenWithUser() {
-        User user = new User("testuser", "test@example.com", "password", Role.USER);
-        var resetPasswordToken = new ResetPasswordToken("token", user, LocalDateTime.now().plusMinutes(10));
-        userRepository.save(user);
+    public void findByToken_ReturnsResetPasswordToken() {
+        var resetPasswordToken = new ResetPasswordToken("token", LocalDateTime.now().plusMinutes(10));
         resetPasswordRepository.save(resetPasswordToken);
 
         var foundTokenOptional = resetPasswordRepository.findByToken("token");
 
         assertTrue(foundTokenOptional.isPresent());
-        var foundToken = foundTokenOptional.get();
-        assertEquals(user, foundToken.getUser());
         assertFalse(resetPasswordToken.isExpired());
     }
 
     @Test
     public void findByToken_ReturnsExpiredResetPasswordToken() {
-        User user = new User("testuser", "test@example.com", "password", Role.USER);
-        var resetPasswordToken = new ResetPasswordToken("token", user, LocalDateTime.now().minusMinutes(10));
-        userRepository.save(user);
+        var resetPasswordToken = new ResetPasswordToken("token", LocalDateTime.now().minusMinutes(10));
         resetPasswordRepository.save(resetPasswordToken);
 
         var foundTokenOptional = resetPasswordRepository.findByToken("token");
 
         assertTrue(foundTokenOptional.isPresent());
-        var foundToken = foundTokenOptional.get();
-        assertEquals(user, foundToken.getUser());
         assertTrue(resetPasswordToken.isExpired());
     }
 

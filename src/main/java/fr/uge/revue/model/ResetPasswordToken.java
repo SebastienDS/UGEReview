@@ -15,7 +15,7 @@ public class ResetPasswordToken {
     public ResetPasswordToken() {
     }
 
-    public ResetPasswordToken(String token, User user, LocalDateTime expirationDate) {
+    public ResetPasswordToken(String token, LocalDateTime expirationDate) {
         this.token = Objects.requireNonNull(token);
         this.expirationDate = Objects.requireNonNull(expirationDate);
     }
