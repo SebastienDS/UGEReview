@@ -1,4 +1,5 @@
 <script>
+    import { goto } from '$app/navigation';
     import { authToken } from '$lib/auth';
     import Header from '$lib/components/Header.svelte';
     import { formatDate } from '$lib/utils';
@@ -111,7 +112,8 @@
                 },
                 body: data.userId
             });
-            if (!response.ok) return 
+            if (!response.ok) return
+            goto("/front/reviews")
         } catch (error) {
             console.error(error)
         }

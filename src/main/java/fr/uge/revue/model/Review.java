@@ -31,6 +31,10 @@ public final class Review implements Likeable {
     @JoinColumn
     private TestsReview unitTests;
 
+    @ManyToMany
+    private Set<User> likesSet = new HashSet<>();
+    @ManyToMany
+    private Set<User> dislikes = new HashSet<>();
 
     public Review() {
     }
@@ -43,6 +47,7 @@ public final class Review implements Likeable {
         this.author = Objects.requireNonNull(author);
         this.date = new Date();
     }
+
 
     public long getId() {
         return id;
@@ -163,4 +168,21 @@ public final class Review implements Likeable {
     public long getReviewId(){
         return id;
     }
+
+    public Set<User> getLikesSet() {
+        return likesSet;
+    }
+
+    public void setLikesSet(Set<User> likesSet) {
+        this.likesSet = likesSet;
+    }
+
+    public Set<User> getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(Set<User> dislikes) {
+        this.dislikes = dislikes;
+    }
+
 }

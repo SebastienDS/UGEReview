@@ -22,6 +22,11 @@ public final class Comment implements Likeable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "comment")
     private Set<Response> responses = new HashSet<>();
 
+    @ManyToMany
+    private Set<User> likesSet = new HashSet<>();
+    @ManyToMany
+    private Set<User> dislikes = new HashSet<>();
+
     public Comment() {
     }
 
@@ -120,4 +125,21 @@ public final class Comment implements Likeable {
     public long getReviewId() {
         return review.getId();
     }
+
+    public Set<User> getLikesSet() {
+        return likesSet;
+    }
+
+    public void setLikesSet(Set<User> likesSet) {
+        this.likesSet = likesSet;
+    }
+
+    public Set<User> getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(Set<User> dislikes) {
+        this.dislikes = dislikes;
+    }
+
 }

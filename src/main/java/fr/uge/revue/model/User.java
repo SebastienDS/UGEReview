@@ -27,18 +27,22 @@ public class User implements UserDetails {
     private Set<Response> responses = new HashSet<>();
     @ManyToMany
     private Set<User> followers = new HashSet<>();
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "likesSet")
     private Set<Comment> commentsLikes = new HashSet<>();
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "dislikes")
     private Set<Comment> commentsDislikes = new HashSet<>();
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "likesSet")
     private Set<Response> responsesLikes = new HashSet<>();
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "dislikes")
     private Set<Response> responsesDislikes = new HashSet<>();
-    @ManyToMany
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "likesSet")
     private Set<Review> reviewsLikes = new HashSet<>();
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "dislikes")
     private Set<Review> reviewsDislikes = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private ResetPasswordToken token;
 
     @Column(name = "account_non_locked")
     private boolean accountNonLocked = true;
@@ -241,5 +245,13 @@ public class User implements UserDetails {
 
     public void setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
+    }
+
+    public ResetPasswordToken getToken() {
+        return token;
+    }
+
+    public void setToken(ResetPasswordToken token) {
+        this.token = token;
     }
 }

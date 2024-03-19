@@ -2,7 +2,9 @@ package fr.uge.revue.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -18,6 +20,11 @@ public final class Response implements Likeable {
     private User author;
     @ManyToOne(fetch = FetchType.LAZY)
     private Comment comment;
+
+    @ManyToMany
+    private Set<User> likesSet = new HashSet<>();
+    @ManyToMany
+    private Set<User> dislikes = new HashSet<>();
 
     public Response() {
     }
@@ -35,6 +42,22 @@ public final class Response implements Likeable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Set<User> getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(Set<User> dislikes) {
+        this.dislikes = dislikes;
+    }
+
+    public Set<User> getLikesSet() {
+        return likesSet;
+    }
+
+    public void setLikesSet(Set<User> likesSet) {
+        this.likesSet = likesSet;
     }
 
     public String getContent() {

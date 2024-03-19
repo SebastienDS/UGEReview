@@ -37,7 +37,7 @@
                 <div class="row">
                     <a href="/front/reviews/{review.id}" class="col-9">
                         <div>
-                            <p>{review.title}</p>
+                            <p class="text-break text-justify" style="white-space: pre-wrap;">{review.title}</p>
                         </div>
                     </a>
                     <div class="col-3" style="text-align:end;">

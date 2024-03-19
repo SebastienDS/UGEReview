@@ -61,9 +61,6 @@ public class ReviewRestController {
         if(search.isEmpty() || search.get().equals("")){
             return ResponseEntity.ok().body(getReview(authentication, pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList());
         }
-//        var reviews = search.map(s -> reviewService.searchReviewPage(s, pageNumber, pageSize))
-//                .orElseGet(() -> getReview(authentication, pageNumber, pageSize))
-//                .stream().map(ReviewAllReviewDTO::from).toList();
         return ResponseEntity.ok().body(reviewService.searchReviewPage(search.get(), pageNumber, pageSize).stream().map(ReviewAllReviewDTO::from).toList());
     }
 

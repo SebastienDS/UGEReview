@@ -1,6 +1,7 @@
 <script>
     import { authToken } from '$lib/auth';
     import Notification from './Notification.svelte';
+    import { goto } from '$app/navigation';
 
     const isAuthenticated = authToken.get() != null;
     let notifications = [];
