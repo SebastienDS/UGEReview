@@ -57,7 +57,9 @@ public class Application {
             user4.setFollowers(new HashSet<>(List.of(user5)));
             userRepository.save(user);
             userRepository.save(user4);
-            var users = List.of(user, user2, user3, user4, user5, user6);
+            var arnaud = new User("arnaud", "arnaud@gmail.com", passwordEncoder.encode("arnaud"), Role.USER);
+            userRepository.save(arnaud);
+            var users = List.of(user, user2, user3, user4, user5, user6, arnaud);
             var comments = List.of("UwU",
                     """ 
                     ```
@@ -93,7 +95,7 @@ public class Application {
                    ```
                    """);
             for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 6; j++) {
+                for (int j = 0; j < users.size(); j++) {
                     var review = reviewService.createReview(new CreateReviewDTO("Review" + i + "-" + j, "Commentaire",
                             """
                                     public class ClassToTest {
@@ -121,11 +123,11 @@ public class Application {
                                     }
                                     """, null, null), users.get(j));
                     for (int k = 0; k < 10; k++) {
-                        var comment = new Comment(comments.get(ThreadLocalRandom.current().nextInt(3)), users.get(ThreadLocalRandom.current().nextInt(6)), review);
+                        var comment = new Comment(comments.get(ThreadLocalRandom.current().nextInt(comments.size())), users.get(ThreadLocalRandom.current().nextInt(users.size())), review);
                         commentService.saveComment(comment);
                         for (int l = 0; l < ThreadLocalRandom.current().nextInt(5); l++) {
-                            responseService.saveResponse(new Response(responses.get(ThreadLocalRandom.current().nextInt(3)),
-                                    users.get(ThreadLocalRandom.current().nextInt(6)),
+                            responseService.saveResponse(new Response(responses.get(ThreadLocalRandom.current().nextInt(responses.size())),
+                                    users.get(ThreadLocalRandom.current().nextInt(users.size())),
                                     comment));
                         }
                     }
