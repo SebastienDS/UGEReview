@@ -59,6 +59,8 @@ public class Application {
             userRepository.save(user4);
             var arnaud = new User("arnaud", "arnaud@gmail.com", passwordEncoder.encode("arnaud"), Role.USER);
             userRepository.save(arnaud);
+            var admin = new User("admin", "admin@gmail.com", passwordEncoder.encode("admin"), Role.ADMIN);
+            userRepository.save(admin);
             var users = List.of(user, user2, user3, user4, user5, user6, arnaud);
             var comments = List.of("UwU",
                     """ 

@@ -75,93 +75,78 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public LikeStateDTO toggleLikeReview(long userId, Review review) {
+    public LikeStateDTO toggleLikeReview(User user, Review review) {
         Objects.requireNonNull(review);
-        var user = userRepository.findByIdWithReviewLikes(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        var likes = user.get().getReviewsLikes();
-        var dislikes = user.get().getReviewsDislikes();
-        var likeIsRemoved = likes.remove(review);
-        var dislikeIsRemoved = dislikes.remove(review);
+        var likes =review.getLikesSet();
+        var dislikes = review.getDislikes();
+        var likeIsRemoved = likes.remove(user);
+        var dislikeIsRemoved = dislikes.remove(user);
         if (likeIsRemoved) {
             review.setLikes(review.getLikes() - 1);
         }
         else if (dislikeIsRemoved) {
-            likes.add(review);
+            likes.add(user);
             review.setLikes(review.getLikes() + 2); //like + remove dislike
         }
         else {
-            likes.add(review);
+            likes.add(user);
             review.setLikes(review.getLikes() + 1);
         }
-        userRepository.save(user.get());
         reviewRepository.save(review);
         return new LikeStateDTO(review.getLikes(),
-                getLikeState(user.get(), user.get().getReviewsLikes(), user.get().getReviewsDislikes(), review));
+                getLikeState(user, likes, dislikes));
     }
 
     @Transactional
-    public LikeStateDTO toggleLikeComment(long userId, Comment comment) {
+    public LikeStateDTO toggleLikeComment(User user, Comment comment) {
         Objects.requireNonNull(comment);
-        var user = userRepository.findByIdWithCommentLikes(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        var likes = user.get().getCommentsLikes();
-        var dislikes = user.get().getCommentsDislikes();
-        var likeIsRemoved = likes.remove(comment);
-        var dislikeIsRemoved = dislikes.remove(comment);
+        var likes =comment.getLikesSet();
+        var dislikes = comment.getDislikes();
+        var likeIsRemoved = likes.remove(user);
+        var dislikeIsRemoved = dislikes.remove(user);
         if (likeIsRemoved) {
             comment.setLikes(comment.getLikes() - 1);
         }
         else if (dislikeIsRemoved) {
-            likes.add(comment);
+            likes.add(user);
             comment.setLikes(comment.getLikes() + 2); //like + remove dislike
         }
         else {
-            likes.add(comment);
+            likes.add(user);
             comment.setLikes(comment.getLikes() + 1);
         }
-        userRepository.save(user.get());
         commentRepository.save(comment);
         return new LikeStateDTO(comment.getLikes(),
-                getLikeState(user.get(), user.get().getCommentsLikes(), user.get().getCommentsDislikes(), comment));
+                getLikeState(user, likes, dislikes));
     }
 
     @Transactional
-    public LikeStateDTO toggleLikeResponse(long userId, Response response) {
+    public LikeStateDTO toggleLikeResponse(User user, Response response) {
         Objects.requireNonNull(response);
-        var user = userRepository.findByIdWithResponseLikes(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        var likes = user.get().getResponsesLikes();
-        var dislikes = user.get().getResponsesDislikes();
-        var likeIsRemoved = likes.remove(response);
-        var dislikeIsRemoved = dislikes.remove(response);
+        var likes =response.getLikesSet();
+        var dislikes = response.getDislikes();
+        var likeIsRemoved = likes.remove(user);
+        var dislikeIsRemoved = dislikes.remove(user);
         if (likeIsRemoved) {
             response.setLikes(response.getLikes() - 1);
         }
         else if (dislikeIsRemoved) {
-            likes.add(response);
+            likes.add(user);
             response.setLikes(response.getLikes() + 2); //like + remove dislike
         }
         else {
-            likes.add(response);
+            likes.add(user);
             response.setLikes(response.getLikes() + 1);
         }
-        userRepository.save(user.get());
         responseRepository.save(response);
         return new LikeStateDTO(response.getLikes(),
-                getLikeState(user.get(), user.get().getResponsesLikes(), user.get().getResponsesDislikes(), response));
+                getLikeState(user, likes, dislikes));
     }
 
-    private static <T> LikeState getLikeState(User user, Set<T> likes, Set<T> dislikes, T entity) {
+    private static LikeState getLikeState(User user, Set<User> likes, Set<User> dislikes) {
         if (user == null) return LikeState.NONE;
-        if (likes.contains(entity)) return LikeState.LIKE;
-        if (dislikes.contains(entity)) return LikeState.DISLIKE;
+        if (likes.contains(user)) return LikeState.LIKE;
+        if (dislikes.contains(user)) return LikeState.DISLIKE;
         return LikeState.NONE;
     }
 
@@ -195,87 +180,72 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public LikeStateDTO toggleDislikeReview(long userId, Review review) {
+    public LikeStateDTO toggleDislikeReview(User user, Review review) {
         Objects.requireNonNull(review);
-        var user = userRepository.findByIdWithReviewLikes(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        var likes = user.get().getReviewsLikes();
-        var dislikes = user.get().getReviewsDislikes();
-        var likeIsRemoved = likes.remove(review);
-        var dislikeIsRemoved = dislikes.remove(review);
+        var likes = review.getLikesSet();
+        var dislikes = review.getDislikes();
+        var likeIsRemoved = likes.remove(user);
+        var dislikeIsRemoved = dislikes.remove(user);
         if (likeIsRemoved) {
-            dislikes.add(review);
+            dislikes.add(user);
             review.setLikes(review.getLikes() - 2); //remove like +  dislike
         }
         else if (dislikeIsRemoved) {
             review.setLikes(review.getLikes() + 1);
         }
         else {
-            dislikes.add(review);
+            dislikes.add(user);
             review.setLikes(review.getLikes() - 1);
         }
-        userRepository.save(user.get());
         reviewRepository.save(review);
         return new LikeStateDTO(review.getLikes(),
-                getLikeState(user.get(), user.get().getReviewsLikes(), user.get().getReviewsDislikes(), review));
+                getLikeState(user, likes, dislikes));
     }
 
     @Transactional
-    public LikeStateDTO toggleDislikeComment(long userId, Comment comment) {
+    public LikeStateDTO toggleDislikeComment(User user, Comment comment) {
         Objects.requireNonNull(comment);
-        var user = userRepository.findByIdWithCommentLikes(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        var likes = user.get().getCommentsLikes();
-        var dislikes = user.get().getCommentsDislikes();
-        var likeIsRemoved = likes.remove(comment);
-        var dislikeIsRemoved = dislikes.remove(comment);
+        var likes = comment.getLikesSet();
+        var dislikes = comment.getDislikes();
+        var likeIsRemoved = likes.remove(user);
+        var dislikeIsRemoved = dislikes.remove(user);
         if (likeIsRemoved) {
-            dislikes.add(comment);
+            dislikes.add(user);
             comment.setLikes(comment.getLikes() - 2); //remove like +  dislike
         }
         else if (dislikeIsRemoved) {
             comment.setLikes(comment.getLikes() + 1);
         }
         else {
-            dislikes.add(comment);
+            dislikes.add(user);
             comment.setLikes(comment.getLikes() - 1);
         }
-        userRepository.save(user.get());
         commentRepository.save(comment);
         return  new LikeStateDTO(comment.getLikes(),
-                getLikeState(user.get(), user.get().getCommentsLikes(), user.get().getCommentsDislikes(), comment));
+                getLikeState(user, likes, dislikes));
     }
 
     @Transactional
-    public LikeStateDTO toggleDislikeResponse(long userId, Response response) {
+    public LikeStateDTO toggleDislikeResponse(User user, Response response) {
         Objects.requireNonNull(response);
-        var user = userRepository.findByIdWithResponseLikes(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        var likes = user.get().getResponsesLikes();
-        var dislikes = user.get().getResponsesDislikes();
-        var likeIsRemoved = likes.remove(response);
-        var dislikeIsRemoved = dislikes.remove(response);
+        var likes = response.getLikesSet();
+        var dislikes = response.getDislikes();
+        var likeIsRemoved = likes.remove(user);
+        var dislikeIsRemoved = dislikes.remove(user);
         if (likeIsRemoved) {
-            dislikes.add(response);
+            dislikes.add(user);
             response.setLikes(response.getLikes() - 2); //remove like +  dislike
         }
         else if (dislikeIsRemoved) {
             response.setLikes(response.getLikes() + 1);
         }
         else {
-            dislikes.add(response);
+            dislikes.add(user);
             response.setLikes(response.getLikes() - 1);
         }
-        userRepository.save(user.get());
         responseRepository.save(response);
         return new LikeStateDTO(response.getLikes(),
-                getLikeState(user.get(), user.get().getResponsesLikes(), user.get().getResponsesDislikes(), response));
+                getLikeState(user, likes, dislikes));
     }
 
     @Transactional

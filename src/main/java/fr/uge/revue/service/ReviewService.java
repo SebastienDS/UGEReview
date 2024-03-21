@@ -154,4 +154,7 @@ public class ReviewService {
         pageSize = Math.max(pageSize, 1);
         return reviewRepository.searchReview(Objects.requireNonNull(search), PageRequest.of(pageNumber, pageSize)).stream().toList();
     }
+
+    public Optional<Review> getReviewWithLikes(long reviewID) { return reviewRepository.findByIdWithLike(reviewID); }
+
 }

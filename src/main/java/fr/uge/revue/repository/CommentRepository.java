@@ -21,4 +21,7 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     @Query(value = "SELECT c FROM Comment c LEFT JOIN FETCH c.author WHERE c.author.id = :userId ORDER BY c.date DESC",
             countQuery = "SELECT count(c) FROM Comment c WHERE c.author.id = :userId" )
     Page<Comment> findByAuthorId(long userId, Pageable pageable);
+
+    @Query("SELECT c FROM Comment c LEFT JOIN FETCH c.review LEFT JOIN FETCH c.likesSet LEFT JOIN FETCH c.dislikes WHERE c.id = :commentId")
+    Optional<Comment> findByIdWithReviewAndLikes(long commentId);
 }

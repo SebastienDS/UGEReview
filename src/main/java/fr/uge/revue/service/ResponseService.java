@@ -37,4 +37,8 @@ public class ResponseService {
         responseRepository.delete(response.get());
         return true;
     }
+
+    public Optional<Response> getResponseWithLike(long responseId) {
+        return responseRepository.findByIdWithLikeAndReviewAndComment(responseId);
+    }
 }

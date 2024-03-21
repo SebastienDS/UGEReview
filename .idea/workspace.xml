@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="488e798b-6166-40bb-90b2-865bd3aac8e4" name="Changes" comment="" />
+    <list default="true" id="488e798b-6166-40bb-90b2-865bd3aac8e4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/mvc/ReviewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ReviewRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ReviewRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ResponseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ResponseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/repository/ReviewRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ResponseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ResponseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/uge/revue/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/fr/uge/revue/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/fr/uge/revue/service/UserServiceTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,19 +38,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Application.executor": "Run",
-    "Maven.UGERevue [clean].executor": "Run",
-    "Maven.UGERevue [compile,-e,-X].executor": "Run",
-    "Maven.UGERevue [compile].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/romai/OneDrive/Documents/GitHub/projet-backend-uwu/frontend/static"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.UGERevue [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.UGERevue [compile,-e,-X].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.UGERevue [compile].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/romai/OneDrive/Documents/GitHub/projet-backend-uwu/frontend/static&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\romai\OneDrive\Documents\GitHub\projet-backend-uwu\frontend\static" />
@@ -46,12 +60,14 @@
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn compile -e -X" />
+      <command value="mvn clean" />
+      <command value="mvn compile" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Application">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="fr.uge.revue.Application" />
-      <module name="UGERevue" />
+      <module name="projet-backend-uwu" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="fr.uge.revue.*" />
@@ -62,9 +78,77 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceTest.toggleDislikeComment_cancelDislike" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="projet-backend-uwu" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fr.uge.revue.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="fr.uge.revue.service" />
+      <option name="MAIN_CLASS_NAME" value="fr.uge.revue.service.UserServiceTest" />
+      <option name="METHOD_NAME" value="toggleDislikeComment_cancelDislike" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceTest.toggleDislikeComment_cancelLikeAndDislike" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="projet-backend-uwu" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fr.uge.revue.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="fr.uge.revue.service" />
+      <option name="MAIN_CLASS_NAME" value="fr.uge.revue.service.UserServiceTest" />
+      <option name="METHOD_NAME" value="toggleDislikeComment_cancelLikeAndDislike" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceTest.toggleDislikeResponse_cancelDislike" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="projet-backend-uwu" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fr.uge.revue.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="fr.uge.revue.service" />
+      <option name="MAIN_CLASS_NAME" value="fr.uge.revue.service.UserServiceTest" />
+      <option name="METHOD_NAME" value="toggleDislikeResponse_cancelDislike" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceTest.toggleDislikeResponse_cancelLikeAndDislike" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="projet-backend-uwu" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="fr.uge.revue.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="fr.uge.revue.service" />
+      <option name="MAIN_CLASS_NAME" value="fr.uge.revue.service.UserServiceTest" />
+      <option name="METHOD_NAME" value="toggleDislikeResponse_cancelLikeAndDislike" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Application" />
+        <item itemvalue="JUnit.UserServiceTest.toggleDislikeResponse_cancelLikeAndDislike" />
+        <item itemvalue="JUnit.UserServiceTest.toggleDislikeResponse_cancelDislike" />
+        <item itemvalue="JUnit.UserServiceTest.toggleDislikeComment_cancelLikeAndDislike" />
+        <item itemvalue="JUnit.UserServiceTest.toggleDislikeComment_cancelDislike" />
       </list>
     </recent_temporary>
   </component>
@@ -86,19 +170,22 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/fr/uge/revue/controller/rest/ReviewRestController.java</url>
-          <line>170</line>
-          <properties class="fr.uge.revue.controller.rest.ReviewRestController">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="reviewRepository" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

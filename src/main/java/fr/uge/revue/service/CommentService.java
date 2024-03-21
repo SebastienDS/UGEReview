@@ -41,4 +41,8 @@ public class CommentService {
         commentRepository.delete(comment.get());
         return true;
     }
+
+    public Optional<Comment> getCommentWithLikes(long commentId) {
+        return commentRepository.findByIdWithReviewAndLikes(commentId);
+    }
 }

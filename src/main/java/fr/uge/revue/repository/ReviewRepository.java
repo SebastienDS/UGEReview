@@ -58,4 +58,7 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
 
     @Query("SELECT r FROM Review r LEFT JOIN FETCH r.requestNotifications WHERE :user MEMBER OF r.requestNotifications")
     List<Review> findAllReviewsWhereUserIsRequestingNotifications(@Param("user") User user);
+
+    @Query("SELECT r FROM Review r LEFT JOIN FETCH r.likesSet LEFT JOIN FETCH r.dislikes WHERE r.id = :reviewID")
+    Optional<Review> findByIdWithLike(long reviewID);
 }

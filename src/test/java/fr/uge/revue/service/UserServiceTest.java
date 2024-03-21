@@ -184,84 +184,59 @@ class UserServiceTest {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
         var review = new Review("title", "commentary", "code", "test", user);
 
-        given(userRepository.findByIdWithReviewLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleLikeReview(user.getId(), review);
+        var state = userService.toggleLikeReview(user, review);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var reviewCaptor = ArgumentCaptor.forClass(Review.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(reviewRepository).save(reviewCaptor.capture());
 
         assertNotNull(state);
         assertEquals(1, state.likes());
         assertEquals(LikeState.LIKE, state.likeState());
         assertEquals(1, reviewCaptor.getValue().getLikes());
-        assertTrue(userCaptor.getValue().getReviewsLikes().contains(review));
-        assertFalse(userCaptor.getValue().getReviewsDislikes().contains(review));
-    }
-
-    @Test
-    void toggleLikeReview_notFound() {
-        var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var review = new Review("title", "commentary", "code", "test", user);
-
-        given(userRepository.findByIdWithReviewLikes(5)).willReturn(Optional.empty());
-
-        var state = userService.toggleLikeReview(5, review);
-
-        verify(userRepository, never()).save(any());
-        verify(reviewRepository, never()).save(any());
-
-        assertNull(state);
+        assertTrue(reviewCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(reviewCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
     void toggleLikeReview_cancelLike() {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
         var review = new Review("title", "commentary", "code", "test", user);
-        user.getReviewsLikes().add(review);
+        review.getLikesSet().add(user);
         review.setLikes(1);
 
-        given(userRepository.findByIdWithReviewLikes(user.getId())).willReturn(Optional.of(user));
+        var state = userService.toggleLikeReview(user, review);
 
-        var state = userService.toggleLikeReview(user.getId(), review);
-
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var reviewCaptor = ArgumentCaptor.forClass(Review.class);
-        verify(userRepository).save(userCaptor.capture());
+
         verify(reviewRepository).save(reviewCaptor.capture());
 
         assertNotNull(state);
         assertEquals(0, state.likes());
         assertEquals(LikeState.NONE, state.likeState());
         assertEquals(0, reviewCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getReviewsLikes().contains(review));
-        assertFalse(userCaptor.getValue().getReviewsDislikes().contains(review));
+        assertFalse(reviewCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(reviewCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
     void toggleLikeReview_cancelDislikeAndLike() {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
         var review = new Review("title", "commentary", "code", "test", user);
-        user.getReviewsDislikes().add(review);
+        review.getDislikes().add(user);
         review.setLikes(-1);
 
-        given(userRepository.findByIdWithReviewLikes(user.getId())).willReturn(Optional.of(user));
+        var state = userService.toggleLikeReview(user, review);
 
-        var state = userService.toggleLikeReview(user.getId(), review);
-
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var reviewCaptor = ArgumentCaptor.forClass(Review.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(reviewRepository).save(reviewCaptor.capture());
 
         assertNotNull(state);
         assertEquals(1, state.likes());
         assertEquals(LikeState.LIKE, state.likeState());
         assertEquals(1, reviewCaptor.getValue().getLikes());
-        assertTrue(userCaptor.getValue().getReviewsLikes().contains(review));
-        assertFalse(userCaptor.getValue().getReviewsDislikes().contains(review));
+        assertTrue(reviewCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(reviewCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -271,38 +246,17 @@ class UserServiceTest {
         var comment = new Comment("comment", user, review);
         review.getComments().add(comment);
 
-        given(userRepository.findByIdWithCommentLikes(user.getId())).willReturn(Optional.of(user));
+        var state = userService.toggleLikeComment(user, comment);
 
-        var state = userService.toggleLikeComment(user.getId(), comment);
-
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var commentCaptor = ArgumentCaptor.forClass(Comment.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(commentRepository).save(commentCaptor.capture());
 
         assertNotNull(state);
         assertEquals(1, state.likes());
         assertEquals(LikeState.LIKE, state.likeState());
         assertEquals(1, commentCaptor.getValue().getLikes());
-        assertTrue(userCaptor.getValue().getCommentsLikes().contains(comment));
-        assertFalse(userCaptor.getValue().getCommentsDislikes().contains(comment));
-    }
-
-    @Test
-    void toggleLikeComment_notFound() {
-        var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var review = new Review("title", "commentary", "code", "test", user);
-        var comment = new Comment("comment", user, review);
-        review.getComments().add(comment);
-
-        given(userRepository.findByIdWithCommentLikes(5)).willReturn(Optional.empty());
-
-        var state = userService.toggleLikeComment(5, comment);
-
-        verify(userRepository, never()).save(any());
-        verify(reviewRepository, never()).save(any());
-
-        assertNull(state);
+        assertTrue(commentCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(commentCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -311,24 +265,20 @@ class UserServiceTest {
         var review = new Review("title", "commentary", "code", "test", user);
         var comment = new Comment("comment", user, review);
         review.getComments().add(comment);
-        user.getCommentsLikes().add(comment);
+        comment.getLikesSet().add(user);
         comment.setLikes(1);
 
-        given(userRepository.findByIdWithCommentLikes(user.getId())).willReturn(Optional.of(user));
+        var state = userService.toggleLikeComment(user, comment);
 
-        var state = userService.toggleLikeComment(user.getId(), comment);
-
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var commentCaptor = ArgumentCaptor.forClass(Comment.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(commentRepository).save(commentCaptor.capture());
 
         assertNotNull(state);
         assertEquals(0, state.likes());
         assertEquals(LikeState.NONE, state.likeState());
         assertEquals(0, commentCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getCommentsLikes().contains(comment));
-        assertFalse(userCaptor.getValue().getCommentsDislikes().contains(comment));
+        assertFalse(commentCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(commentCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -337,24 +287,21 @@ class UserServiceTest {
         var review = new Review("title", "commentary", "code", "test", user);
         var comment = new Comment("comment", user, review);
         review.getComments().add(comment);
-        user.getCommentsDislikes().add(comment);
+        comment.getDislikes().add(user);
         comment.setLikes(-1);
 
-        given(userRepository.findByIdWithCommentLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleLikeComment(user.getId(), comment);
+        var state = userService.toggleLikeComment(user, comment);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var commentCaptor = ArgumentCaptor.forClass(Comment.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(commentRepository).save(commentCaptor.capture());
 
         assertNotNull(state);
         assertEquals(1, state.likes());
         assertEquals(LikeState.LIKE, state.likeState());
         assertEquals(1, commentCaptor.getValue().getLikes());
-        assertTrue(userCaptor.getValue().getCommentsLikes().contains(comment));
-        assertFalse(userCaptor.getValue().getCommentsDislikes().contains(comment));
+        assertTrue(commentCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(commentCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -366,40 +313,18 @@ class UserServiceTest {
         review.getComments().add(comment);
         comment.getResponses().add(response);
 
-        given(userRepository.findByIdWithResponseLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleLikeResponse(user.getId(), response);
+        var state = userService.toggleLikeResponse(user, response);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var responseCaptor = ArgumentCaptor.forClass(Response.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(responseRepository).save(responseCaptor.capture());
 
         assertNotNull(state);
         assertEquals(1, state.likes());
         assertEquals(LikeState.LIKE, state.likeState());
         assertEquals(1, responseCaptor.getValue().getLikes());
-        assertTrue(userCaptor.getValue().getResponsesLikes().contains(response));
-        assertFalse(userCaptor.getValue().getResponsesDislikes().contains(response));
-    }
-
-    @Test
-    void toggleLikeResponse_notFound() {
-        var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var review = new Review("title", "commentary", "code", "test", user);
-        var comment = new Comment("comment", user, review);
-        var response = new Response("response", user, comment);
-        review.getComments().add(comment);
-        comment.getResponses().add(response);
-
-        given(userRepository.findByIdWithResponseLikes(5)).willReturn(Optional.empty());
-
-        var state = userService.toggleLikeResponse(5, response);
-
-        verify(userRepository, never()).save(any());
-        verify(responseRepository, never()).save(any());
-
-        assertNull(state);
+        assertTrue(responseCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(responseCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -410,24 +335,21 @@ class UserServiceTest {
         var response = new Response("response", user, comment);
         review.getComments().add(comment);
         comment.getResponses().add(response);
-        user.getResponsesLikes().add(response);
+        response.getLikesSet().add(user);
         response.setLikes(1);
 
-        given(userRepository.findByIdWithResponseLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleLikeResponse(user.getId(), response);
+        var state = userService.toggleLikeResponse(user, response);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var responseCaptor = ArgumentCaptor.forClass(Response.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(responseRepository).save(responseCaptor.capture());
 
         assertNotNull(state);
         assertEquals(0, state.likes());
         assertEquals(LikeState.NONE, state.likeState());
         assertEquals(0, responseCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getResponsesLikes().contains(response));
-        assertFalse(userCaptor.getValue().getResponsesDislikes().contains(response));
+        assertFalse(responseCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(responseCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -438,24 +360,21 @@ class UserServiceTest {
         var response = new Response("response", user, comment);
         review.getComments().add(comment);
         comment.getResponses().add(response);
-        user.getResponsesDislikes().add(response);
+        response.getDislikes().add(user);
         response.setLikes(-1);
 
-        given(userRepository.findByIdWithResponseLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleLikeResponse(user.getId(), response);
+        var state = userService.toggleLikeResponse(user, response);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var responseCaptor = ArgumentCaptor.forClass(Response.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(responseRepository).save(responseCaptor.capture());
 
         assertNotNull(state);
         assertEquals(1, state.likes());
         assertEquals(LikeState.LIKE, state.likeState());
         assertEquals(1, responseCaptor.getValue().getLikes());
-        assertTrue(userCaptor.getValue().getResponsesLikes().contains(response));
-        assertFalse(userCaptor.getValue().getResponsesDislikes().contains(response));
+        assertTrue(responseCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(responseCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -581,84 +500,60 @@ class UserServiceTest {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
         var review = new Review("title", "commentary", "code", "test", user);
 
-        given(userRepository.findByIdWithReviewLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleDislikeReview(user.getId(), review);
+        var state = userService.toggleDislikeReview(user, review);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var reviewCaptor = ArgumentCaptor.forClass(Review.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(reviewRepository).save(reviewCaptor.capture());
 
         assertNotNull(state);
         assertEquals(-1, state.likes());
         assertEquals(LikeState.DISLIKE, state.likeState());
         assertEquals(-1, reviewCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getReviewsLikes().contains(review));
-        assertTrue(userCaptor.getValue().getReviewsDislikes().contains(review));
-    }
-
-    @Test
-    void toggleDislikeReview_notFound() {
-        var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var review = new Review("title", "commentary", "code", "test", user);
-
-        given(userRepository.findByIdWithReviewLikes(5)).willReturn(Optional.empty());
-
-        var state = userService.toggleDislikeReview(5, review);
-
-        verify(userRepository, never()).save(any());
-        verify(reviewRepository, never()).save(any());
-
-        assertNull(state);
+        assertFalse(reviewCaptor.getValue().getLikesSet().contains(user));
+        assertTrue(reviewCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
     void toggleDislikeReview_cancelDislike() {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
         var review = new Review("title", "commentary", "code", "test", user);
-        user.getReviewsDislikes().add(review);
+        review.getDislikes().add(user);
         review.setLikes(-1);
 
-        given(userRepository.findByIdWithReviewLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleDislikeReview(user.getId(), review);
+        var state = userService.toggleDislikeReview(user, review);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var reviewCaptor = ArgumentCaptor.forClass(Review.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(reviewRepository).save(reviewCaptor.capture());
 
         assertNotNull(state);
         assertEquals(0, state.likes());
         assertEquals(LikeState.NONE, state.likeState());
         assertEquals(0, reviewCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getReviewsLikes().contains(review));
-        assertFalse(userCaptor.getValue().getReviewsDislikes().contains(review));
+        assertFalse(reviewCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(reviewCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
     void toggleDislikeReview_cancelLikeAndDislike() {
         var user = new User("testuser", "test@example.com", "password", Role.USER);
         var review = new Review("title", "commentary", "code", "test", user);
-        user.getReviewsLikes().add(review);
+        review.getLikesSet().add(user);
         review.setLikes(1);
 
-        given(userRepository.findByIdWithReviewLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleDislikeReview(user.getId(), review);
+        var state = userService.toggleDislikeReview(user, review);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var reviewCaptor = ArgumentCaptor.forClass(Review.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(reviewRepository).save(reviewCaptor.capture());
 
         assertNotNull(state);
         assertEquals(-1, state.likes());
         assertEquals(LikeState.DISLIKE, state.likeState());
         assertEquals(-1, reviewCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getReviewsLikes().contains(review));
-        assertTrue(userCaptor.getValue().getReviewsDislikes().contains(review));
+        assertFalse(reviewCaptor.getValue().getLikesSet().contains(user));
+        assertTrue(reviewCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -668,38 +563,18 @@ class UserServiceTest {
         var comment = new Comment("comment", user, review);
         review.getComments().add(comment);
 
-        given(userRepository.findByIdWithCommentLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleDislikeComment(user.getId(), comment);
+        var state = userService.toggleDislikeComment(user, comment);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var commentCaptor = ArgumentCaptor.forClass(Comment.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(commentRepository).save(commentCaptor.capture());
 
         assertNotNull(state);
         assertEquals(-1, state.likes());
         assertEquals(LikeState.DISLIKE, state.likeState());
         assertEquals(-1, commentCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getCommentsLikes().contains(comment));
-        assertTrue(userCaptor.getValue().getCommentsDislikes().contains(comment));
-    }
-
-    @Test
-    void toggleDislikeComment_notFound() {
-        var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var review = new Review("title", "commentary", "code", "test", user);
-        var comment = new Comment("comment", user, review);
-        review.getComments().add(comment);
-
-        given(userRepository.findByIdWithCommentLikes(5)).willReturn(Optional.empty());
-
-        var state = userService.toggleDislikeComment(5, comment);
-
-        verify(userRepository, never()).save(any());
-        verify(reviewRepository, never()).save(any());
-
-        assertNull(state);
+        assertFalse(commentCaptor.getValue().getLikesSet().contains(user));
+        assertTrue(commentCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -708,24 +583,20 @@ class UserServiceTest {
         var review = new Review("title", "commentary", "code", "test", user);
         var comment = new Comment("comment", user, review);
         review.getComments().add(comment);
-        user.getCommentsDislikes().add(comment);
+        comment.getDislikes().add(user);
         comment.setLikes(-1);
 
-        given(userRepository.findByIdWithCommentLikes(user.getId())).willReturn(Optional.of(user));
+        var state = userService.toggleDislikeComment(user, comment);
 
-        var state = userService.toggleDislikeComment(user.getId(), comment);
-
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var commentCaptor = ArgumentCaptor.forClass(Comment.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(commentRepository).save(commentCaptor.capture());
 
         assertNotNull(state);
         assertEquals(0, state.likes());
         assertEquals(LikeState.NONE, state.likeState());
         assertEquals(0, commentCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getCommentsLikes().contains(comment));
-        assertFalse(userCaptor.getValue().getCommentsDislikes().contains(comment));
+        assertFalse(commentCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(commentCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -734,24 +605,21 @@ class UserServiceTest {
         var review = new Review("title", "commentary", "code", "test", user);
         var comment = new Comment("comment", user, review);
         review.getComments().add(comment);
-        user.getCommentsLikes().add(comment);
+        comment.getLikesSet().add(user);
         comment.setLikes(1);
 
-        given(userRepository.findByIdWithCommentLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleDislikeComment(user.getId(), comment);
+        var state = userService.toggleDislikeComment(user, comment);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var commentCaptor = ArgumentCaptor.forClass(Comment.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(commentRepository).save(commentCaptor.capture());
 
         assertNotNull(state);
         assertEquals(-1, state.likes());
         assertEquals(LikeState.DISLIKE, state.likeState());
         assertEquals(-1, commentCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getCommentsLikes().contains(comment));
-        assertTrue(userCaptor.getValue().getCommentsDislikes().contains(comment));
+        assertFalse(commentCaptor.getValue().getLikesSet().contains(user));
+        assertTrue(commentCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -762,41 +630,17 @@ class UserServiceTest {
         var response = new Response("response", user, comment);
         review.getComments().add(comment);
         comment.getResponses().add(response);
+        var state = userService.toggleDislikeResponse(user, response);
 
-        given(userRepository.findByIdWithResponseLikes(user.getId())).willReturn(Optional.of(user));
-
-        var state = userService.toggleDislikeResponse(user.getId(), response);
-
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var responseCaptor = ArgumentCaptor.forClass(Response.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(responseRepository).save(responseCaptor.capture());
 
         assertNotNull(state);
         assertEquals(-1, state.likes());
         assertEquals(LikeState.DISLIKE, state.likeState());
         assertEquals(-1, responseCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getResponsesLikes().contains(response));
-        assertTrue(userCaptor.getValue().getResponsesDislikes().contains(response));
-    }
-
-    @Test
-    void toggleDislikeResponse_notFound() {
-        var user = new User("testuser", "test@example.com", "password", Role.USER);
-        var review = new Review("title", "commentary", "code", "test", user);
-        var comment = new Comment("comment", user, review);
-        var response = new Response("response", user, comment);
-        review.getComments().add(comment);
-        comment.getResponses().add(response);
-
-        given(userRepository.findByIdWithResponseLikes(5)).willReturn(Optional.empty());
-
-        var state = userService.toggleDislikeResponse(5, response);
-
-        verify(userRepository, never()).save(any());
-        verify(responseRepository, never()).save(any());
-
-        assertNull(state);
+        assertFalse(responseCaptor.getValue().getLikesSet().contains(user));
+        assertTrue(responseCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -807,24 +651,21 @@ class UserServiceTest {
         var response = new Response("response", user, comment);
         review.getComments().add(comment);
         comment.getResponses().add(response);
-        user.getResponsesDislikes().add(response);
+        response.getDislikes().add(user);
         response.setLikes(-1);
 
-        given(userRepository.findByIdWithResponseLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleDislikeResponse(user.getId(), response);
+        var state = userService.toggleDislikeResponse(user, response);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var responseCaptor = ArgumentCaptor.forClass(Response.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(responseRepository).save(responseCaptor.capture());
 
         assertNotNull(state);
         assertEquals(0, state.likes());
         assertEquals(LikeState.NONE, state.likeState());
         assertEquals(0, responseCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getResponsesLikes().contains(response));
-        assertFalse(userCaptor.getValue().getResponsesDislikes().contains(response));
+        assertFalse(responseCaptor.getValue().getLikesSet().contains(user));
+        assertFalse(responseCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
@@ -835,24 +676,21 @@ class UserServiceTest {
         var response = new Response("response", user, comment);
         review.getComments().add(comment);
         comment.getResponses().add(response);
-        user.getResponsesLikes().add(response);
+        response.getLikesSet().add(user);
         response.setLikes(1);
 
-        given(userRepository.findByIdWithResponseLikes(user.getId())).willReturn(Optional.of(user));
 
-        var state = userService.toggleDislikeResponse(user.getId(), response);
+        var state = userService.toggleDislikeResponse(user, response);
 
-        var userCaptor = ArgumentCaptor.forClass(User.class);
         var responseCaptor = ArgumentCaptor.forClass(Response.class);
-        verify(userRepository).save(userCaptor.capture());
         verify(responseRepository).save(responseCaptor.capture());
 
         assertNotNull(state);
         assertEquals(-1, state.likes());
         assertEquals(LikeState.DISLIKE, state.likeState());
         assertEquals(-1, responseCaptor.getValue().getLikes());
-        assertFalse(userCaptor.getValue().getResponsesLikes().contains(response));
-        assertTrue(userCaptor.getValue().getResponsesDislikes().contains(response));
+        assertFalse(responseCaptor.getValue().getLikesSet().contains(user));
+        assertTrue(responseCaptor.getValue().getDislikes().contains(user));
     }
 
     @Test
