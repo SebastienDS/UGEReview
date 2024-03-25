@@ -2,7 +2,7 @@ package fr.uge.revue.controller.mvc;
 
 import fr.uge.revue.dto.comment.CommentUserDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
-import fr.uge.revue.dto.updatePassword.PasswordReceived;
+import fr.uge.revue.dto.user.update.PasswordReceivedDTO;
 import fr.uge.revue.dto.user.UserDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.model.Role;
@@ -196,7 +196,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}/updatePassword")
-    public ResponseEntity<String> updatePassword(@PathVariable long userId, @Valid @RequestBody PasswordReceived passwords,
+    public ResponseEntity<String> updatePassword(@PathVariable long userId, @Valid @RequestBody PasswordReceivedDTO passwords,
                                                  Authentication authentication, BCryptPasswordEncoder passwordEncoder,
                                                  BindingResult bindingResult){
         Objects.requireNonNull(passwords);

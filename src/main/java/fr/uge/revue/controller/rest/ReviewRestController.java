@@ -1,6 +1,7 @@
 package fr.uge.revue.controller.rest;
 
 import fr.uge.revue.dto.comment.CommentDTO;
+import fr.uge.revue.dto.comment.NewCommentDTO;
 import fr.uge.revue.dto.response.ResponseDTO;
 import fr.uge.revue.dto.response.SendResponseDTO;
 import fr.uge.revue.dto.review.*;
@@ -78,8 +79,9 @@ public class ReviewRestController {
     }
 
     @PostMapping("/reviews/{reviewId}/comment")
-    public ResponseEntity<CommentDTO> createComment(@PathVariable long reviewId, @RequestBody String content, Authentication authentication) {
-        Objects.requireNonNull(content);
+    public ResponseEntity<CommentDTO> createComment(@PathVariable long reviewId, @RequestBody NewCommentDTO newCommentDTO, Authentication authentication) {
+        Objects.requireNonNull(newCommentDTO);
+        var content = newCommentDTO.content();
         var user = (User) authentication.getPrincipal();
         var review = reviewService.getReview(reviewId);
         if(review.isEmpty()){

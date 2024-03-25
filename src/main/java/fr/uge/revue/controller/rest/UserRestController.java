@@ -4,11 +4,13 @@ import fr.uge.revue.dto.comment.CommentUserDTO;
 import fr.uge.revue.dto.likeable.LikeableDTO;
 import fr.uge.revue.dto.response.ResponseUserDTO;
 import fr.uge.revue.dto.review.ReviewAllReviewDTO;
-import fr.uge.revue.dto.updatePassword.PasswordReceived;
+import fr.uge.revue.dto.user.update.EmailReceivedDTO;
+import fr.uge.revue.dto.user.update.PasswordReceivedDTO;
 import fr.uge.revue.dto.user.UserDTO;
 import fr.uge.revue.dto.user.UserFollowStateDTO;
 import fr.uge.revue.dto.user.UserProfileDTO;
 import fr.uge.revue.dto.user.UserSignUpDTO;
+import fr.uge.revue.dto.user.update.UsernameReceivedDTO;
 import fr.uge.revue.model.Role;
 import fr.uge.revue.model.User;
 import fr.uge.revue.service.UserService;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RestController
@@ -118,8 +119,9 @@ public class UserRestController {
     }
 
     @PutMapping("/users/{userId}/updateUsername")
-    public ResponseEntity<String> updateUsername(@PathVariable long userId, @RequestBody String newUsername, Authentication authentication){
-        Objects.requireNonNull(newUsername);
+    public ResponseEntity<String> updateUsername(@PathVariable long userId, @RequestBody UsernameReceivedDTO usernameReceivedDTO, Authentication authentication){
+        Objects.requireNonNull(usernameReceivedDTO);
+        var newUsername = usernameReceivedDTO.newUsername();
         var user = (User) authentication.getPrincipal();
         var userProfile = userService.getUserById(userId);
         if(userProfile.isEmpty()){
@@ -142,8 +144,9 @@ public class UserRestController {
     }
 
     @PutMapping("/users/{userId}/updateEmail")
-    public ResponseEntity<String> updateEmail(@PathVariable long userId, @RequestBody String newEmail, Authentication authentication){
-        Objects.requireNonNull(newEmail);
+    public ResponseEntity<String> updateEmail(@PathVariable long userId, @RequestBody EmailReceivedDTO emailReceivedDTO, Authentication authentication){
+        Objects.requireNonNull(emailReceivedDTO);
+        var newEmail = emailReceivedDTO.newEmail();
         var user = (User) authentication.getPrincipal();
         var userProfile = userService.getUserById(userId);
         if(userProfile.isEmpty()){
@@ -172,7 +175,7 @@ public class UserRestController {
     }
 
     @PutMapping("/users/{userId}/updatePassword")
-    public ResponseEntity<String> updatePassword(@PathVariable long userId, @Valid @RequestBody PasswordReceived passwords,
+    public ResponseEntity<String> updatePassword(@PathVariable long userId, @Valid @RequestBody PasswordReceivedDTO passwords,
                                                  Authentication authentication, BCryptPasswordEncoder passwordEncoder,
                                                  BindingResult bindingResult){
         Objects.requireNonNull(passwords);

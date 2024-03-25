@@ -1,8 +1,8 @@
-package fr.uge.revue.dto.updatePassword;
+package fr.uge.revue.dto.user.update;
 
 import javax.validation.constraints.Size;
 
-public record PasswordReceived(
+public record PasswordReceivedDTO(
     @Size(min = 4) String oldPassword,
     @Size(min = 4) String newPassword
 ){}
